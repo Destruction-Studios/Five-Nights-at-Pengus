@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://8gxfels746n5"]
+
+[ext_resource type="Script" uid="uid://dl1jc6c6rnoiq" path="res://scenes/menu/pengu_menu/pengu_menu.gd" id="1_ey8un"]
+[ext_resource type="Texture2D" uid="uid://rhbsd5xu0je" path="res://assets/images/pengu_menu_states/normal.png" id="2_g23lm"]
+
+[node name="PenguMenu" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_g23lm")
+script = ExtResource("1_ey8un")
+
+[node name="MainChangeTimer" type="Timer" parent="."]
+
+[node name="ChangeBackTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="MainChangeTimer" to="." method="_on_main_change_timer_timeout"]
