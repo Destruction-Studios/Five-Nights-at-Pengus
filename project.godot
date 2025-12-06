@@ -19,17 +19,12 @@ boot_splash/fullsize=false
 boot_splash/image="uid://c7niyrdd3kqwp"
 config/icon="uid://6ficnvsyx2ip"
 
-[autoload]
-
-MouseCursor="*res://globals/mouse_cursor.gd"
-
 [display]
 
 window/size/mode=2
 window/size/sharp_corners=true
 window/stretch/mode="viewport"
 window/vsync/vsync_mode=0
-mouse_cursor/custom_image="uid://rlfwhibwmex0"
 
 [gui]
 
