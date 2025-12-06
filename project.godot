@@ -22,6 +22,7 @@ config/icon="uid://6ficnvsyx2ip"
 [autoload]
 
 SceneFade="*res://globals/scene_fade.tscn"
+GameSettings="*res://globals/game_settings.gd"
 
 [display]
 
