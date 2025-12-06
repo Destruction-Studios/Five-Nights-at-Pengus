@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7ypfeo8f3h3y"]
+
+[ext_resource type="Script" uid="uid://41dnrd7v5jmp" path="res://scenes/game/game.gd" id="1_0sr1o"]
+[ext_resource type="Texture2D" uid="uid://bofhtac8n6os5" path="res://assets/images/game/game_bg.png" id="1_sul5r"]
+[ext_resource type="AudioStream" uid="uid://chg8qc0btbfv1" path="res://assets/audio/music/ambience.ogg" id="2_7h61r"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0sr1o")
+
+[node name="Ambience" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_7h61r")
+autoplay = true
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_sul5r")
+expand_mode = 1
+
+[node name="GameDurationTimer" type="Timer" parent="."]
+wait_time = 240.0
+one_shot = true

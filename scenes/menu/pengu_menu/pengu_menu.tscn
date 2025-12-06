@@ -10,7 +10,9 @@ texture = ExtResource("2_g23lm")
 script = ExtResource("1_ey8un")
 
 [node name="MainChangeTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="ChangeBackTimer" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="timeout" from="MainChangeTimer" to="." method="_on_main_change_timer_timeout"]

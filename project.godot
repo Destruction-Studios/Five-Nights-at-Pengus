@@ -19,6 +19,10 @@ boot_splash/fullsize=false
 boot_splash/image="uid://c7niyrdd3kqwp"
 config/icon="uid://6ficnvsyx2ip"
 
+[autoload]
+
+SceneFade="*res://globals/scene_fade.tscn"
+
 [display]
 
 window/size/mode=2
