@@ -25,5 +25,5 @@ bus/3/name = &"SFX"
 bus/3/solo = false
 bus/3/mute = false
 bus/3/bypass_fx = false
-bus/3/volume_db = -2.9190547
+bus/3/volume_db = -12.984423
 bus/3/send = &"Master"

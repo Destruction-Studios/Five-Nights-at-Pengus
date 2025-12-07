@@ -12,23 +12,24 @@ const RANDOM_SOUNDS: Array[Resource] = [
 	preload("res://assets/audio/sound_effects/random_game_sounds/trash_can_lid.mp3"),
 ]
 
-const PENGU_SOUNDS:Array[Resource] = [
-	preload("res://assets/audio/sound_effects/pengu/attention_spam.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/easy.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/gang_up.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/im_better.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/life_party_unedited.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/meatloaf.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/mmm.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/oh.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/soda_pop.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/soda_pop_2.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/stop.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/took_all_meatloaf.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/where_is_iron.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/YO.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/you_got_nothing.ogg"),
-	preload("res://assets/audio/sound_effects/pengu/y_76.ogg")
+const PENGU_SOUNDS: Array[Resource] = [
+	preload("res://assets/audio/sound_effects/pengu/attention_spam.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/easy.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/gang_up.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/im_better.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/life_party.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/meatloaf.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/mmm.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/oh.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/soda_pop.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/soda_pop_2.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/stop.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/took_all_meatloaf.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/where_is_iron.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/YO.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/you_got_nothing.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/y_76.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/shenanigans.mp3"),
 ]
 
 @onready var time_label: Label = $GameUI/VBoxContainer/Time
@@ -49,6 +50,8 @@ var pengu_sound_range: FloatRange = FloatRange.new(1, 3)
 var rand_sound_range: FloatRange = FloatRange.new(5.0, 22.0)
 var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 var cookie_manager = CookieManager.new()
+
+var availPenguSounds: Array[Resource] = PENGU_SOUNDS.duplicate()
 
 func _ready() -> void:
 	update_cookies()
@@ -122,8 +125,16 @@ func _on_cookie_timer_timeout() -> void:
 
 
 func _on_pengu_sound_timer_timeout() -> void:
+	if availPenguSounds.is_empty():
+		print("Empty sounds, replacing")
+		availPenguSounds = PENGU_SOUNDS.duplicate()
 	print("Pengu speak")
-	pengu_sound.stream = PENGU_SOUNDS.pick_random()
+	var randomInt := randi_range(0, availPenguSounds.size()-1)
+	pengu_sound.stream = availPenguSounds[randomInt]
 	pengu_sound.play()
+	
+	availPenguSounds.remove_at(randomInt)
+	print("Removed: ", randomInt)
+	
 	await pengu_sound.finished
 	pengu_sound_timer.start(pengu_sound_range.rand())
