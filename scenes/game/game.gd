@@ -52,7 +52,7 @@ var light_flickering = false
 var is_game_over = false
 var time = 0
 
-var pengu_sound_range: FloatRange = FloatRange.new(1, 3)
+var pengu_sound_range: FloatRange = FloatRange.new(2.0, 10.0)
 var rand_sound_range: FloatRange = FloatRange.new(5.0, 22.0)
 var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 var cookie_manager = CookieManager.new()

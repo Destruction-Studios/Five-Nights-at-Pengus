@@ -1,7 +1,7 @@
 extends Node
 
-const HOUR_DURATION:int = 1
-const GAME_DURATION_HOURS: int = 3
+const HOUR_DURATION: int = 60
+const GAME_DURATION_HOURS: int = 6
 const GAME_DURATION_SECONDS: int = GAME_DURATION_HOURS * HOUR_DURATION
 
 const START_COOKIES: int = 60
