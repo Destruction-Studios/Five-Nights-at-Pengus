@@ -20,7 +20,7 @@ func transition() -> void:
 	tween.tween_property(color_rect, "modulate:a", 0.0, 2)
 
 
-func transition_to_scene(packed: PackedScene) -> void:
-	SceneFade.transition()
+func transition_to_file(file: String) -> void:
+	transition()
 	await transition_halfway
-	get_tree().change_scene_to_packed(packed)
+	get_tree().change_scene_to_file(file)

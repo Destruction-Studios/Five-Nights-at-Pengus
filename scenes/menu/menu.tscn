@@ -80,6 +80,7 @@ text = "Options"
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_037ec")
+volume_db = 15.0
 autoplay = true
 bus = &"SFX"
 

@@ -52,3 +52,4 @@ Label/font_sizes/font_size = 16
 Label/fonts/font = ExtResource("1_rjbnf")
 Label/styles/focus = SubResource("StyleBoxFlat_70gfe")
 Label/styles/normal = SubResource("StyleBoxEmpty_jtx1y")
+RichTextLabel/fonts/normal_font = ExtResource("1_rjbnf")

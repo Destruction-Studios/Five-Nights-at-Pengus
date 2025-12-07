@@ -3,7 +3,10 @@ extends Control
 const GAME_BG = preload("uid://bofhtac8n6os5")
 const GAME_BG_LIGHTOFF = preload("uid://bs8sy2ahyfbx1")
 
+const BREATHING = preload("res://assets/audio/sound_effects/random_game_sounds/breathing.mp3")
+
 const RANDOM_SOUNDS: Array[Resource] = [
+	BREATHING, BREATHING, BREATHING, BREATHING,
 	preload("res://assets/audio/sound_effects/random_game_sounds/cave.mp3"),
 	preload("res://assets/audio/sound_effects/random_game_sounds/cave_2.mp3"),
 	preload("res://assets/audio/sound_effects/random_game_sounds/door_creak.ogg"),
@@ -31,6 +34,9 @@ const PENGU_SOUNDS: Array[Resource] = [
 	preload("res://assets/audio/sound_effects/pengu/y_76.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/shenanigans.mp3"),
 ]
+
+const MENU = preload("res://scenes/menu/menu.tscn")
+const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
 
 @onready var time_label: Label = $GameUI/VBoxContainer/Time
 @onready var sound_timer: Timer = $Timers/SoundTimer
@@ -73,6 +79,19 @@ func game_over() -> void:
 	$Timers/HourTimer.stop()
 	time = GameSettings.GAME_DURATION_HOURS
 	game_hour_passed()
+	
+	cookie_timer.stop()
+	pengu_sound_timer.stop()
+	random_sound.stop()
+	pengu_sound.stop()
+	
+	var win: WinScreen = WIN_SCREEN.instantiate()
+	add_child(win)
+	win.animation_finished.connect(func():
+		SceneFade.transition_to_file("res://scenes/menu/menu.tscn")	
+	)
+	
+	
 
 func game_hour_passed() -> void:
 	if is_game_over:
