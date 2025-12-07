@@ -23,7 +23,7 @@ func run_timer() -> void:
 
 
 func _on_main_change_timer_timeout() -> void:
-	var randResource: Resource = MOVE_IMAGES[randi_range(0, MOVE_IMAGES.size() - 1)]
+	var randResource: Resource = MOVE_IMAGES.pick_random()
 	self.texture = randResource
 	change_back_timer.start(changeBackRange.rand())
 	await change_back_timer.timeout

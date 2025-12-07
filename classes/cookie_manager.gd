@@ -4,7 +4,10 @@ class_name CookieManager
 signal cookies_updated(cookies: int)
 signal cookies_depleted
 
-var cookies: int = 0
+var cookies: int = GameSettings.START_COOKIES
+
+func get_cookies() -> int:
+	return cookies
 
 func add_cookie():
 	cookies += 1

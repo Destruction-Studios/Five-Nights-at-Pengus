@@ -19,10 +19,15 @@ boot_splash/fullsize=false
 boot_splash/image="uid://c7niyrdd3kqwp"
 config/icon="uid://6ficnvsyx2ip"
 
+[audio]
+
+buses/default_bus_layout="uid://m6d3qmv52ayb"
+
 [autoload]
 
 SceneFade="*res://globals/scene_fade.tscn"
 GameSettings="*res://globals/game_settings.gd"
+Utils="*res://globals/utils.gd"
 
 [display]
 
