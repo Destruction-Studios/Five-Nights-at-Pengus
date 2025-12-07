@@ -12,7 +12,24 @@ const RANDOM_SOUNDS: Array[Resource] = [
 	preload("res://assets/audio/sound_effects/random_game_sounds/trash_can_lid.mp3"),
 ]
 
-var PENGU_SOUNDS: Array[Resource] = []
+const PENGU_SOUNDS:Array[Resource] = [
+	preload("res://assets/audio/sound_effects/pengu/attention_spam.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/easy.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/gang_up.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/im_better.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/life_party_unedited.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/meatloaf.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/mmm.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/oh.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/soda_pop.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/soda_pop_2.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/stop.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/took_all_meatloaf.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/where_is_iron.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/YO.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/you_got_nothing.ogg"),
+	preload("res://assets/audio/sound_effects/pengu/y_76.ogg")
+]
 
 @onready var time_label: Label = $GameUI/VBoxContainer/Time
 @onready var sound_timer: Timer = $Timers/SoundTimer
@@ -34,7 +51,6 @@ var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 var cookie_manager = CookieManager.new()
 
 func _ready() -> void:
-	PENGU_SOUNDS = Utils.load_all(Utils.get_all_in_dir("res://assets/audio/sound_effects/pengu/"))
 	update_cookies()
 	
 	$Timers/GameDurationTimer.wait_time = GameSettings.GAME_DURATION_SECONDS
