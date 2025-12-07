@@ -8,11 +8,8 @@ const JUMP = preload("uid://br2ug6smcuu2j")
 
 const MOVE_IMAGES: Array[Resource] = [HEAD_TILTED, HEAD_TILTED_RIGHT, FACE_SAD, JUMP]
 
-const CHANGE_MIN = .2
-const CHANGE_MAX = 2.0
-
-const CHANGE_BACK_MIN = .06
-const CHANGE_BACK_MAX = .1
+var changeRange: FloatRange = FloatRange.new(.2, 2.0)
+var changeBackRange: FloatRange = FloatRange.new(.06, .1)
 
 @onready var main_change: Timer = $MainChangeTimer
 @onready var change_back_timer: Timer = $ChangeBackTimer
@@ -22,14 +19,13 @@ func _ready() -> void:
 	run_timer()
 
 func run_timer() -> void:
-	main_change.start(randf_range(CHANGE_MIN, CHANGE_MAX))
+	main_change.start(changeRange.rand())
 
 
 func _on_main_change_timer_timeout() -> void:
-	print("Change")
 	var randResource: Resource = MOVE_IMAGES[randi_range(0, MOVE_IMAGES.size() - 1)]
 	self.texture = randResource
-	change_back_timer.start(randf_range(CHANGE_BACK_MIN, CHANGE_BACK_MAX))
+	change_back_timer.start(changeBackRange.rand())
 	await change_back_timer.timeout
 	self.texture = NORMAL
 	run_timer()
