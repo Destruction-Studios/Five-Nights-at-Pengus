@@ -143,17 +143,27 @@ func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 func update_cookies() -> void:
 	cookie_label.text = ": " + str(cookie_manager.get_cookies())
 	
-	if cookie_manager.is_empty():
-		is_door_closed = false
-		update_door()
+	if cookie_manager.is_empty() and is_door_closed:
+		toggle_door(false)
 
-func update_door() -> void:
+func toggle_door(closed: bool) -> void:
+	if is_door_closed == closed:
+		print("Same")
+		return
+	
 	var a = 0.0
-	if is_door_closed:
-		$Sounds/DoorClose.play()
+	if closed and cookie_manager.is_empty() == false:
+		GameSettings.COOKIE_LOSS_INVERVAL.decrease(GameSettings.DOOR_RATE_INCREASE)
 		a = 1.0
+		$Sounds/DoorClose.play()
+		is_door_closed = true
+	else:
+		GameSettings.COOKIE_LOSS_INVERVAL.increase(GameSettings.DOOR_RATE_INCREASE)
+		is_door_closed = false
+		print(is_door_closed)
 	var tween := create_tween()
 	tween.tween_property($Door, "modulate:a", a, .1)
+	print("Door State: ", is_door_closed)
 
 func _on_game_duration_timer_timeout() -> void:
 	game_over()
@@ -228,5 +238,4 @@ func _on_pengu_ai_position_updated() -> void:
 
 
 func _on_door_toggle_button_down() -> void:
-	is_door_closed = !is_door_closed
-	update_door()
+	toggle_door(!is_door_closed)
