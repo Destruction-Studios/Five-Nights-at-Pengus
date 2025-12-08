@@ -14,9 +14,12 @@ var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, Gam
 func _ready() -> void:
 	move_timer.start(move_time_range.rand())
 
-func move() -> void:
+func move(new_pos = -1) -> void:
 	var next_pos
-	if current_pos == Utils.PENGU_POSITIONS.CROSSROADS:
+	if new_pos != -1:
+		print("OVERRIDDEN MOVE TO")
+		next_pos = new_pos
+	elif current_pos == Utils.PENGU_POSITIONS.CROSSROADS:
 		if randi_range(1, GameSettings.BEHIND_CHANCE) == 1:
 			next_pos = Utils.PENGU_POSITIONS.RIGHT_HALLWAY
 		else:
@@ -49,6 +52,13 @@ func try_move() -> bool:
 func _on_move_timer_timeout() -> void:
 	var success
 	if will_jumpscare():
+		if current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed:
+			$MoveTimer.start(GameSettings.MOVE_TO_START_DELAY.rand())
+			await $MoveTimer.timeout
+			Transitions.blink()
+			await Transitions.blink_halfway
+			move(Utils.PENGU_POSITIONS.START)
+			success = false
 		if randi_range(1, GameSettings.ATTACK_CHANCE) == 1:
 			print("Moving, ignoring timer")
 			move()

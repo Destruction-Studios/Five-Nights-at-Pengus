@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=4 uid="uid://b7ypfeo8f3h3y"]
+[gd_scene load_steps=17 format=4 uid="uid://b7ypfeo8f3h3y"]
 
 [ext_resource type="Script" uid="uid://41dnrd7v5jmp" path="res://scenes/game/game.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://cqfr7gfmwkkky" path="res://assets/images/game/game_bg.png" id="1_sul5r"]
 [ext_resource type="AudioStream" uid="uid://chg8qc0btbfv1" path="res://assets/audio/music/ambience.ogg" id="2_7h61r"]
 [ext_resource type="PackedScene" uid="uid://dbkc3124udmd" path="res://scenes/game/pengu_ai/pengu_ai.tscn" id="2_bdhmt"]
 [ext_resource type="AudioStream" uid="uid://bbnpnh36tw7b3" path="res://assets/audio/sound_effects/tick.ogg" id="2_kelw5"]
+[ext_resource type="AudioStream" uid="uid://llbu20112al5" path="res://assets/audio/sound_effects/door_close.mp3" id="5_kp23o"]
 [ext_resource type="Texture2D" uid="uid://cagmbu3h11gtq" path="res://assets/images/game/pengu_visuals/pengu_window_right.png" id="6_4j704"]
 [ext_resource type="Texture2D" uid="uid://cqttjtl5775lu" path="res://assets/images/cookie.png" id="6_5i0tg"]
 [ext_resource type="Texture2D" uid="uid://xm1hwv8b8724" path="res://assets/images/game/door.png" id="7_kp23o"]
@@ -99,6 +100,10 @@ bus = &"Music"
 volume_db = -5.0
 bus = &"Pengu"
 
+[node name="DoorClose" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("5_kp23o")
+volume_db = 1.0
+
 [node name="Timers" type="Node" parent="."]
 
 [node name="LightTimer" type="Timer" parent="Timers"]
@@ -142,7 +147,7 @@ texture = ExtResource("6_4j704")
 expand_mode = 2
 
 [node name="Door" type="TextureRect" parent="."]
-visible = false
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -160,6 +165,46 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Door" type="Control" parent="GameUI"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -65.0
+offset_right = 85.0
+offset_bottom = -15.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="GameUI/Door"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 13.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(-139, 341)
+text = "DOOR"
+horizontal_alignment = 1
+
+[node name="DoorToggle" type="Button" parent="GameUI/Door"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("8_2a8rs")
+theme_override_styles/pressed = ExtResource("8_2a8rs")
+theme_override_styles/hover = ExtResource("9_4j704")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="GameUI"]
 layout_mode = 1
 anchors_preset = 15
@@ -169,6 +214,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="Sep" type="Control" parent="GameUI/VBoxContainer"]
 custom_minimum_size = Vector2(0, 15)
@@ -188,6 +234,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
@@ -255,4 +302,5 @@ vertical_alignment = 1
 [connection signal="timeout" from="Timers/SoundTimer" to="." method="_on_sound_timer_timeout"]
 [connection signal="timeout" from="Timers/CookieTimer" to="." method="_on_cookie_timer_timeout"]
 [connection signal="timeout" from="Timers/PenguSoundTimer" to="." method="_on_pengu_sound_timer_timeout"]
+[connection signal="button_down" from="GameUI/Door/DoorToggle" to="." method="_on_door_toggle_button_down"]
 [connection signal="mouse_entered" from="GameUI/MarginContainer/LocatorButton" to="." method="_on_locator_button_mouse_entered"]

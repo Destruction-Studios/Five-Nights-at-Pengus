@@ -8,4 +8,7 @@ script = ExtResource("1_n5kb3")
 [node name="MoveTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="ResetTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]

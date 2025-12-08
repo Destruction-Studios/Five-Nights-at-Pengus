@@ -82,6 +82,8 @@ var available_pengu_sounds: Array[Resource] = PENGU_SOUNDS.duplicate()
 var current_map: Map
 
 func _ready() -> void:
+	GameSettings.COOKIE_LOSS_INVERVAL.reset()
+	
 	update_cookies()
 	
 	$Timers/GameDurationTimer.wait_time = GameSettings.GAME_DURATION_SECONDS
@@ -140,6 +142,18 @@ func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 
 func update_cookies() -> void:
 	cookie_label.text = ": " + str(cookie_manager.get_cookies())
+	
+	if cookie_manager.is_empty():
+		is_door_closed = false
+		update_door()
+
+func update_door() -> void:
+	var a = 0.0
+	if is_door_closed:
+		$Sounds/DoorClose.play()
+		a = 1.0
+	var tween := create_tween()
+	tween.tween_property($Door, "modulate:a", a, .1)
 
 func _on_game_duration_timer_timeout() -> void:
 	game_over()
@@ -201,10 +215,18 @@ func _on_locator_button_mouse_entered() -> void:
 		inst.pengu_ai = pengu_ai
 		add_child(inst)
 		current_map = inst
+		
+		GameSettings.COOKIE_LOSS_INVERVAL.decrease(GameSettings.LOCATOR_RATE_INCREASE)
 	elif current_map != null:
 		current_map.queue_free()
 		current_map = null
+		GameSettings.COOKIE_LOSS_INVERVAL.increase(GameSettings.LOCATOR_RATE_INCREASE)
 
 
 func _on_pengu_ai_position_updated() -> void:
 	pengu_updated(pengu_ai.current_pos)
+
+
+func _on_door_toggle_button_down() -> void:
+	is_door_closed = !is_door_closed
+	update_door()
