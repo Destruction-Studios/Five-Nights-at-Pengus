@@ -1,12 +1,13 @@
-[gd_scene load_steps=15 format=4 uid="uid://b7ypfeo8f3h3y"]
+[gd_scene load_steps=16 format=4 uid="uid://b7ypfeo8f3h3y"]
 
 [ext_resource type="Script" uid="uid://41dnrd7v5jmp" path="res://scenes/game/game.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://cqfr7gfmwkkky" path="res://assets/images/game/game_bg.png" id="1_sul5r"]
 [ext_resource type="AudioStream" uid="uid://chg8qc0btbfv1" path="res://assets/audio/music/ambience.ogg" id="2_7h61r"]
 [ext_resource type="PackedScene" uid="uid://dbkc3124udmd" path="res://scenes/game/pengu_ai/pengu_ai.tscn" id="2_bdhmt"]
 [ext_resource type="AudioStream" uid="uid://bbnpnh36tw7b3" path="res://assets/audio/sound_effects/tick.ogg" id="2_kelw5"]
-[ext_resource type="Texture2D" uid="uid://do3velowv6815" path="res://assets/images/game/pengu_window_left_lay.png" id="5_5i0tg"]
+[ext_resource type="Texture2D" uid="uid://cagmbu3h11gtq" path="res://assets/images/game/pengu_visuals/pengu_window_right.png" id="6_4j704"]
 [ext_resource type="Texture2D" uid="uid://cqttjtl5775lu" path="res://assets/images/cookie.png" id="6_5i0tg"]
+[ext_resource type="Texture2D" uid="uid://xm1hwv8b8724" path="res://assets/images/game/door.png" id="7_kp23o"]
 [ext_resource type="StyleBox" uid="uid://c0n3qspfsq7he" path="res://resources/theme/game_button_normal.tres" id="8_2a8rs"]
 [ext_resource type="StyleBox" uid="uid://cqbld28mck5lx" path="res://resources/theme/game_button_hover.tres" id="9_4j704"]
 
@@ -73,7 +74,8 @@ libraries = {
 }
 autoplay = "cookie_idle"
 
-[node name="PenguAI" parent="." instance=ExtResource("2_bdhmt")]
+[node name="PenguAI" parent="." node_paths=PackedStringArray("game") instance=ExtResource("2_bdhmt")]
+game = NodePath("..")
 
 [node name="Sounds" type="Node" parent="."]
 
@@ -94,6 +96,7 @@ autoplay = true
 bus = &"Music"
 
 [node name="PenguSound" type="AudioStreamPlayer" parent="Sounds"]
+volume_db = -5.0
 bus = &"Pengu"
 
 [node name="Timers" type="Node" parent="."]
@@ -128,14 +131,25 @@ grow_vertical = 2
 texture = ExtResource("1_sul5r")
 expand_mode = 1
 
-[node name="PenguPos" type="TextureRect" parent="."]
+[node name="PenguVisual" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("5_5i0tg")
+texture = ExtResource("6_4j704")
+expand_mode = 2
+
+[node name="Door" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_kp23o")
 expand_mode = 2
 
 [node name="GameUI" type="Control" parent="."]
@@ -177,7 +191,7 @@ grow_vertical = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
+theme_override_constants/margin_bottom = 1
 
 [node name="CookieLabelCont" type="HBoxContainer" parent="GameUI/MarginContainer"]
 layout_mode = 2
@@ -213,7 +227,7 @@ layout_mode = 2
 text = ": 67"
 
 [node name="LocatorButton" type="Button" parent="GameUI/MarginContainer"]
-custom_minimum_size = Vector2(550, 30)
+custom_minimum_size = Vector2(550, 35)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -234,6 +248,7 @@ text = "Locator"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[connection signal="position_updated" from="PenguAI" to="." method="_on_pengu_ai_position_updated"]
 [connection signal="timeout" from="Timers/LightTimer" to="." method="_on_light_timer_timeout"]
 [connection signal="timeout" from="Timers/GameDurationTimer" to="." method="_on_game_duration_timer_timeout"]
 [connection signal="timeout" from="Timers/HourTimer" to="." method="_on_hour_timer_timeout"]

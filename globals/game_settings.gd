@@ -1,8 +1,14 @@
 extends Node
 
+#GAME
 const HOUR_DURATION: int = 60
 const GAME_DURATION_HOURS: int = 6
 const GAME_DURATION_SECONDS: int = GAME_DURATION_HOURS * HOUR_DURATION
 
+#COOKIES
 const START_COOKIES: int = 60
 var COOKIE_LOSS_INVERVAL: FloatRange = FloatRange.new(.5, 2)
+
+#AI
+const MOVE_CHANCE = 4
+const BEHIND_CHANCE = 2

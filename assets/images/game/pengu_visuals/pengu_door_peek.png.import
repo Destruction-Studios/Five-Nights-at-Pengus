@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://do3velowv6815"
-path="res://.godot/imported/pengu_window_left_lay.png-19a4fd6b151ae2a399696edc9256eb04.ctex"
+uid="uid://c6vjywq1mpxqy"
+path="res://.godot/imported/pengu_door_peek.png-59578b52ecdf5f0af7ba374cf621d187.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/game/pengu_window_left_lay.png"
-dest_files=["res://.godot/imported/pengu_window_left_lay.png-19a4fd6b151ae2a399696edc9256eb04.ctex"]
+source_file="res://assets/images/game/pengu_visuals/pengu_door_peek.png"
+dest_files=["res://.godot/imported/pengu_door_peek.png-59578b52ecdf5f0af7ba374cf621d187.ctex"]
 
 [params]
 
