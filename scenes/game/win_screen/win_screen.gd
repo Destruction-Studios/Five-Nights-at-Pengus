@@ -12,5 +12,4 @@ func _ready() -> void:
 	await animation_player.animation_finished
 	after_timer.start()
 	await after_timer.timeout
-	#SceneFade.transition_to_scene(next_scene)
 	animation_finished.emit()

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drhem5up4hj3p"
-path="res://.godot/imported/pengu_window_left.png-48825b8cb364a360577e303727d20591.ctex"
+uid="uid://xm1hwv8b8724"
+path="res://.godot/imported/door.png-b9b6ecae10b30c3d8566c3dc7662c2e1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/game/pengu_window_left.png"
-dest_files=["res://.godot/imported/pengu_window_left.png-48825b8cb364a360577e303727d20591.ctex"]
+source_file="res://assets/images/game/door.png"
+dest_files=["res://.godot/imported/door.png-b9b6ecae10b30c3d8566c3dc7662c2e1.ctex"]
 
 [params]
 

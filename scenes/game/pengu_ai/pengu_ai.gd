@@ -1,9 +1,11 @@
 extends Node
 class_name PenguAI
 
-signal pengu_moved
+signal pos_updated
 
 @onready var move_timer: Timer = $MoveTimer
+
+var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.DOOR
 
 var move_time_range: FloatRange = FloatRange.new(2.0, 5.0)
 
@@ -15,7 +17,6 @@ func disable_move():
 
 func try_move():
 	pass
-
 
 func _on_move_timer_timeout() -> void:
 	try_move()

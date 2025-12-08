@@ -36,6 +36,13 @@ const PENGU_SOUNDS: Array[Resource] = [
 	preload("res://assets/audio/sound_effects/pengu/shenanigans.mp3"),
 ]
 
+const PENGU_VISUALS = {
+	Utils.PENGU_POSITIONS.WINDOW_RIGHT: preload("res://assets/images/game/pengu_visuals/pengu_window_right.png"),
+	Utils.PENGU_POSITIONS.WINDOW_LEFT: preload("res://assets/images/game/pengu_visuals/pengu_window_left.png"),
+	Utils.PENGU_POSITIONS.WINDOW_LEFT_LAY: preload("res://assets/images/game/pengu_visuals/pengu_window_left_lay.png"),
+	Utils.PENGU_POSITIONS.DOOR: preload("res://assets/images/game/pengu_visuals/pengu_door.png")
+}
+
 const MENU = preload("res://scenes/menu/menu.tscn")
 const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
 const MAP = preload("uid://c46r23oby0gq4")
@@ -79,6 +86,8 @@ func _ready() -> void:
 	
 	cookie_timer.start(GameSettings.COOKIE_LOSS_INVERVAL.rand())
 	pengu_sound_timer.start(pengu_sound_range.rand())
+	
+	update_pengu(pengu_ai.current_pos)
 
 func game_over() -> void:
 	is_game_over = true
@@ -95,10 +104,8 @@ func game_over() -> void:
 	var win: WinScreen = WIN_SCREEN.instantiate()
 	add_child(win)
 	win.animation_finished.connect(func():
-		SceneFade.transition_to_file("res://scenes/menu/menu.tscn")	
+		Transitions.transition_to_file("res://scenes/menu/menu.tscn")	
 	)
-	
-	
 
 func game_hour_passed() -> void:
 	if is_game_over:
@@ -107,6 +114,14 @@ func game_hour_passed() -> void:
 	time_label.text = str(time) + ":00"
 	$Sounds/ClockTickSound.play()
 	print("Hour Passed, ", $Timers/GameDurationTimer.time_left, " left")
+
+func update_pengu(pos: Utils.PENGU_POSITIONS) -> void:
+	var new_texture: Resource
+	if PENGU_VISUALS.has(pos):
+		print("Current Pengu Pos has visual")
+		new_texture = PENGU_VISUALS.get(pos)
+	
+	$PenguVisual.texture = new_texture
 
 func update_cookies() -> void:
 	cookie_label.text = ": " + str(cookie_manager.get_cookies())
@@ -175,3 +190,7 @@ func _on_locator_button_mouse_entered() -> void:
 	elif currentMap != null:
 		currentMap.queue_free()
 		currentMap = null
+
+
+func _on_pengu_ai_pos_updated() -> void:
+	update_pengu(pengu_ai.current_pos)
