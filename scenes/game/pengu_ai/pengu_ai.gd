@@ -2,6 +2,7 @@ extends Node
 class_name PenguAI
 
 signal position_updated
+signal cookies_updated
 
 @export var game: Game
 
@@ -89,6 +90,7 @@ func my_cookies_updated() -> void:
 		if !$Hungry.playing: $Hungry.play()
 	else:
 		$Hungry.stop()
+	cookies_updated.emit()
 
 func feed(amount: int) -> void:
 	has_been_fed = true

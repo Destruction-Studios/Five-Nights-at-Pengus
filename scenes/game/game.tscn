@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://b7ypfeo8f3h3y"]
+[gd_scene load_steps=18 format=4 uid="uid://b7ypfeo8f3h3y"]
 
 [ext_resource type="Script" uid="uid://41dnrd7v5jmp" path="res://scenes/game/game.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://cqfr7gfmwkkky" path="res://assets/images/game/game_bg.png" id="1_sul5r"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://xm1hwv8b8724" path="res://assets/images/game/door.png" id="7_kp23o"]
 [ext_resource type="StyleBox" uid="uid://c0n3qspfsq7he" path="res://resources/theme/game_button_normal.tres" id="8_2a8rs"]
 [ext_resource type="StyleBox" uid="uid://cqbld28mck5lx" path="res://resources/theme/game_button_hover.tres" id="9_4j704"]
+[ext_resource type="Texture2D" uid="uid://ddu1xfre8iurh" path="res://assets/images/pengu.png" id="11_5jirj"]
 
 [sub_resource type="Animation" id="Animation_5i0tg"]
 length = 0.001
@@ -69,7 +70,7 @@ script = ExtResource("1_0sr1o")
 pengu_ai = NodePath("PenguAI")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../GameUI/MarginContainer/CookieLabelCont/Control")
+root_node = NodePath("../GameUI/MarginContainer/VBoxContainer/CookieLabelCont/Control")
 libraries = {
 &"": SubResource("AnimationLibrary_bdhmt")
 }
@@ -240,19 +241,57 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 1
 
-[node name="CookieLabelCont" type="HBoxContainer" parent="GameUI/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="PenguCookies" type="HBoxContainer" parent="GameUI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_constants/separation = 4
 
-[node name="Control" type="Control" parent="GameUI/MarginContainer/CookieLabelCont"]
+[node name="Control" type="Control" parent="GameUI/MarginContainer/VBoxContainer/PenguCookies"]
 custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 
-[node name="Cookie" type="TextureRect" parent="GameUI/MarginContainer/CookieLabelCont/Control"]
+[node name="Image" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer/PenguCookies/Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -17.0
+offset_top = -22.5
+offset_right = 17.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_5jirj")
+expand_mode = 2
+
+[node name="PenguCookieLabel" type="Label" parent="GameUI/MarginContainer/VBoxContainer/PenguCookies"]
+layout_mode = 2
+text = ": 41"
+
+[node name="CookieLabelCont" type="HBoxContainer" parent="GameUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/separation = 4
+
+[node name="Control" type="Control" parent="GameUI/MarginContainer/VBoxContainer/CookieLabelCont"]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="Cookie" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer/CookieLabelCont/Control"]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
@@ -269,7 +308,7 @@ grow_vertical = 2
 texture = ExtResource("6_5i0tg")
 expand_mode = 2
 
-[node name="CookieLabel" type="Label" parent="GameUI/MarginContainer/CookieLabelCont"]
+[node name="CookieLabel" type="Label" parent="GameUI/MarginContainer/VBoxContainer/CookieLabelCont"]
 layout_mode = 2
 text = ": 67"
 
@@ -309,6 +348,7 @@ offset_bottom = 94.01599
 mouse_default_cursor_shape = 2
 disabled = true
 
+[connection signal="cookies_updated" from="PenguAI" to="." method="_on_pengu_ai_cookies_updated"]
 [connection signal="position_updated" from="PenguAI" to="." method="_on_pengu_ai_position_updated"]
 [connection signal="timeout" from="Timers/LightTimer" to="." method="_on_light_timer_timeout"]
 [connection signal="timeout" from="Timers/GameDurationTimer" to="." method="_on_game_duration_timer_timeout"]

@@ -60,7 +60,8 @@ const MAP = preload("uid://c46r23oby0gq4")
 @onready var sound_timer: Timer = $Timers/SoundTimer
 @onready var random_sound: AudioStreamPlayer = $Sounds/RandomSound
 @onready var light_timer: Timer = $Timers/LightTimer
-@onready var cookie_label: Label = $GameUI/MarginContainer/CookieLabelCont/CookieLabel
+@onready var pengu_cookie_label: Label = $GameUI/MarginContainer/VBoxContainer/PenguCookies/PenguCookieLabel
+@onready var cookie_label: Label = $GameUI/MarginContainer/VBoxContainer/CookieLabelCont/CookieLabel
 @onready var cookie_timer: Timer = $Timers/CookieTimer
 @onready var pengu_sound: AudioStreamPlayer = $Sounds/PenguSound
 @onready var pengu_sound_timer: Timer = $Timers/PenguSoundTimer
@@ -99,6 +100,7 @@ func _ready() -> void:
 	pengu_sound_timer.start(pengu_sound_range.rand())
 	
 	pengu_updated(pengu_ai.current_pos)
+	_on_pengu_ai_cookies_updated()
 
 func game_over() -> void:
 	is_game_over = true
@@ -275,3 +277,7 @@ func _on_feed_button_button_down() -> void:
 
 	cookie_manager.take_cookies(feed_amount)
 	pengu_ai.feed(feed_amount)
+
+
+func _on_pengu_ai_cookies_updated() -> void:
+	pengu_cookie_label.text = ": " + str(pengu_ai.my_cookies)
