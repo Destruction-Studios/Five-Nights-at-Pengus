@@ -17,6 +17,11 @@ func is_empty() -> bool:
 		return true
 	return false
 
+func take_cookies(amt: int) -> void:
+	cookies -= amt
+	cookies = maxi(cookies, 0)
+	cookies_updated.emit(cookies)
+
 func remove_cookie():
 	cookies -= 1
 	if cookies <= 0:

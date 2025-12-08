@@ -8,17 +8,19 @@ signal position_updated
 @onready var move_timer: Timer = $MoveTimer
 
 var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
-
 var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, GameSettings.MAX_MOVE_TIME)
+
+var my_cookies: int = GameSettings.PENGU_START_COOKIES
+var has_been_fed: bool = false
 
 func _ready() -> void:
 	move_timer.start(move_time_range.rand())
 
-func move(new_pos = -1) -> void:
+func move(to_start: bool = false) -> void:
 	var next_pos
-	if new_pos != -1:
-		print("OVERRIDDEN MOVE TO")
-		next_pos = new_pos
+	if to_start:
+		has_been_fed = false
+		next_pos = Utils.PENGU_POSITIONS.START
 	elif current_pos == Utils.PENGU_POSITIONS.CROSSROADS:
 		if randi_range(1, GameSettings.BEHIND_CHANCE) == 1:
 			next_pos = Utils.PENGU_POSITIONS.RIGHT_HALLWAY
@@ -29,6 +31,9 @@ func move(new_pos = -1) -> void:
 		return
 	else:
 		next_pos = Utils.get_next_pengu_pos(current_pos)
+	
+	my_cookies -= 1
+	my_cookies_updated()
 	
 	print("Pengu moved: ", next_pos)
 	
@@ -57,7 +62,7 @@ func _on_move_timer_timeout() -> void:
 			await $MoveTimer.timeout
 			Transitions.blink()
 			await Transitions.blink_halfway
-			move(Utils.PENGU_POSITIONS.START)
+			move(true)
 			success = false
 		if randi_range(1, GameSettings.ATTACK_CHANCE) == 1:
 			print("Moving, ignoring timer")
@@ -74,3 +79,16 @@ func _on_move_timer_timeout() -> void:
 		move_timer.start(move_time_range.rand() * 2.0)
 	else:
 		move_timer.start(move_time_range.rand())
+
+
+func my_cookies_updated() -> void:
+	print("Pengu has ", my_cookies, " cookies")
+	if my_cookies <= 4:
+		if !$Hungry.playing: $Hungry.play()
+	else:
+		$Hungry.stop()
+
+func feed(amount: int) -> void:
+	has_been_fed = true
+	my_cookies += amount
+	my_cookies_updated()

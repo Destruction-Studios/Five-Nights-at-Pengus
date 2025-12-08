@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dbkc3124udmd" path="res://scenes/game/pengu_ai/pengu_ai.tscn" id="2_bdhmt"]
 [ext_resource type="AudioStream" uid="uid://bbnpnh36tw7b3" path="res://assets/audio/sound_effects/tick.ogg" id="2_kelw5"]
 [ext_resource type="AudioStream" uid="uid://llbu20112al5" path="res://assets/audio/sound_effects/door_close.mp3" id="5_kp23o"]
-[ext_resource type="Texture2D" uid="uid://cagmbu3h11gtq" path="res://assets/images/game/pengu_visuals/pengu_window_right.png" id="6_4j704"]
 [ext_resource type="Texture2D" uid="uid://cqttjtl5775lu" path="res://assets/images/cookie.png" id="6_5i0tg"]
+[ext_resource type="Texture2D" uid="uid://n1ub2n2p72u2" path="res://assets/images/game/pengu_visuals/pengu_door.png" id="7_5jirj"]
 [ext_resource type="Texture2D" uid="uid://xm1hwv8b8724" path="res://assets/images/game/door.png" id="7_kp23o"]
 [ext_resource type="StyleBox" uid="uid://c0n3qspfsq7he" path="res://resources/theme/game_button_normal.tres" id="8_2a8rs"]
 [ext_resource type="StyleBox" uid="uid://cqbld28mck5lx" path="res://resources/theme/game_button_hover.tres" id="9_4j704"]
@@ -143,7 +143,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("6_4j704")
+texture = ExtResource("7_5jirj")
 expand_mode = 2
 
 [node name="Door" type="TextureRect" parent="."]
@@ -295,6 +295,20 @@ text = "Locator"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="FeedButton" type="Button" parent="GameUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.266
+anchor_top = 0.358
+anchor_right = 0.266
+anchor_bottom = 0.358
+offset_left = -19.432007
+offset_top = -19.984009
+offset_right = 44.567993
+offset_bottom = 94.01599
+mouse_default_cursor_shape = 2
+disabled = true
+
 [connection signal="position_updated" from="PenguAI" to="." method="_on_pengu_ai_position_updated"]
 [connection signal="timeout" from="Timers/LightTimer" to="." method="_on_light_timer_timeout"]
 [connection signal="timeout" from="Timers/GameDurationTimer" to="." method="_on_game_duration_timer_timeout"]
@@ -304,3 +318,4 @@ vertical_alignment = 1
 [connection signal="timeout" from="Timers/PenguSoundTimer" to="." method="_on_pengu_sound_timer_timeout"]
 [connection signal="button_down" from="GameUI/Door/DoorToggle" to="." method="_on_door_toggle_button_down"]
 [connection signal="mouse_entered" from="GameUI/MarginContainer/LocatorButton" to="." method="_on_locator_button_mouse_entered"]
+[connection signal="button_down" from="GameUI/FeedButton" to="." method="_on_feed_button_button_down"]

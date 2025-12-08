@@ -65,6 +65,7 @@ const MAP = preload("uid://c46r23oby0gq4")
 @onready var pengu_sound: AudioStreamPlayer = $Sounds/PenguSound
 @onready var pengu_sound_timer: Timer = $Timers/PenguSoundTimer
 @onready var locator_button: Button = $GameUI/MarginContainer/LocatorButton
+@onready var feed_button: Button = $GameUI/FeedButton
 
 var light_flickering = false
 
@@ -139,6 +140,11 @@ func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 	
 	if current_map:
 		current_map.update()
+	
+	if pos == Utils.PENGU_POSITIONS.DOOR:
+		feed_button.disabled = false
+	else:
+		feed_button.disabled = true
 
 func update_cookies() -> void:
 	cookie_label.text = ": " + str(cookie_manager.get_cookies())
@@ -244,3 +250,28 @@ func _on_pengu_ai_position_updated() -> void:
 
 func _on_door_toggle_button_down() -> void:
 	toggle_door(!is_door_closed)
+
+
+func _on_feed_button_button_down() -> void:
+	if is_door_closed or pengu_ai.has_been_fed:
+		return
+
+	if pengu_ai.my_cookies >= GameSettings.PENGU_MAX_COOKIES:
+		print("He is full")
+		return
+
+	var pengu_space := GameSettings.PENGU_MAX_COOKIES - pengu_ai.my_cookies
+
+	var feed_amount := mini(
+		GameSettings.COOKIES_TO_FEED,
+		mini(pengu_space, cookie_manager.cookies)
+	)
+
+	if feed_amount <= 0:
+		print("Out of cookies")
+		return
+		
+	print("Feeding Pengu: ", feed_amount)
+
+	cookie_manager.take_cookies(feed_amount)
+	pengu_ai.feed(feed_amount)

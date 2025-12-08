@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbkc3124udmd"]
+[gd_scene load_steps=3 format=3 uid="uid://dbkc3124udmd"]
 
 [ext_resource type="Script" uid="uid://d0s1c6wxb026l" path="res://scenes/game/pengu_ai/pengu_ai.gd" id="1_n5kb3"]
+[ext_resource type="AudioStream" uid="uid://dowyuditdngtl" path="res://assets/audio/music/hungry.ogg" id="2_10tgx"]
 
 [node name="PenguAI" type="Node"]
 script = ExtResource("1_n5kb3")
@@ -10,5 +11,9 @@ one_shot = true
 
 [node name="ResetTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Hungry" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_10tgx")
+volume_db = -10.0
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
