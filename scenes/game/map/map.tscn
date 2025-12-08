@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c46r23oby0gq4"]
+[gd_scene load_steps=5 format=3 uid="uid://c46r23oby0gq4"]
 
 [ext_resource type="Script" uid="uid://b6pngbt12o1q3" path="res://scenes/game/map/map.gd" id="1_sxlkg"]
 [ext_resource type="Texture2D" uid="uid://mencxsv5hxms" path="res://assets/images/game/map.png" id="2_ltxuh"]
+[ext_resource type="Texture2D" uid="uid://blelbhw2jitmk" path="res://assets/images/game/locator.png" id="3_0s4hj"]
 [ext_resource type="LabelSettings" uid="uid://bu0s31fl3bi33" path="res://resources/theme/white_32.tres" id="3_er8mx"]
 
 [node name="Map" type="Control"]
@@ -13,6 +14,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_sxlkg")
+
+[node name="BlinkTimer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -45,6 +50,96 @@ layout_mode = 2
 texture = ExtResource("2_ltxuh")
 expand_mode = 1
 
+[node name="pos_1" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 121.0
+offset_top = 45.0
+offset_right = 165.0
+offset_bottom = 89.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_2" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 73.0
+offset_right = 454.0
+offset_bottom = 117.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_6" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 287.0
+offset_top = 128.0
+offset_right = 331.0
+offset_bottom = 172.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_7" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 169.0
+offset_top = 150.0
+offset_right = 213.0
+offset_bottom = 194.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_8" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 150.0
+offset_right = 142.0
+offset_bottom = 194.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_9" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 139.0
+offset_right = 58.0
+offset_bottom = 183.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_10" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 244.0
+offset_right = 67.0
+offset_bottom = 288.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_3" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 390.0
+offset_top = 321.0
+offset_right = 434.0
+offset_bottom = 365.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_4" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 415.0
+offset_right = 344.0
+offset_bottom = 459.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_5" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 417.0
+offset_right = 255.0
+offset_bottom = 461.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
 [node name="Label" type="Label" parent="Panel"]
 layout_mode = 0
 offset_left = 211.0
@@ -54,3 +149,5 @@ offset_bottom = 357.0
 size_flags_horizontal = 4
 text = "YOU"
 label_settings = ExtResource("3_er8mx")
+
+[connection signal="timeout" from="BlinkTimer" to="." method="_on_blink_timer_timeout"]
