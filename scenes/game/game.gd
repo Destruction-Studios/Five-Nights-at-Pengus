@@ -143,8 +143,12 @@ func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 func update_cookies() -> void:
 	cookie_label.text = ": " + str(cookie_manager.get_cookies())
 	
-	if cookie_manager.is_empty() and is_door_closed:
-		toggle_door(false)
+	if cookie_manager.is_empty():
+		if is_door_closed:
+			toggle_door(false)
+		if current_map != null:
+			current_map.queue_free()
+			current_map = null
 
 func toggle_door(closed: bool) -> void:
 	if is_door_closed == closed:
@@ -220,6 +224,7 @@ func _on_pengu_sound_timer_timeout() -> void:
 
 
 func _on_locator_button_mouse_entered() -> void:
+	if cookie_manager.is_empty(): return
 	if current_map == null:
 		var inst: Map = MAP.instantiate()
 		inst.pengu_ai = pengu_ai
