@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cqfr7gfmwkkky"
-path="res://.godot/imported/game_bg.png-5afd6ef189a8a7d6ec74ba31f2d24bbd.ctex"
+uid="uid://bs8sy2ahyfbx1"
+path="res://.godot/imported/game_bg_lightoff.png-f8e70326c05698c6be4cee78af750b6a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/game/game_bg.png"
-dest_files=["res://.godot/imported/game_bg.png-5afd6ef189a8a7d6ec74ba31f2d24bbd.ctex"]
+source_file="res://assets/images/game/old/game_bg_lightoff.png"
+dest_files=["res://.godot/imported/game_bg_lightoff.png-f8e70326c05698c6be4cee78af750b6a.ctex"]
 
 [params]
 

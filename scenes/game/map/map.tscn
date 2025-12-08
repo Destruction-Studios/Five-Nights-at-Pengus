@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3 uid="uid://c46r23oby0gq4"]
+
+[ext_resource type="Script" uid="uid://b6pngbt12o1q3" path="res://scenes/game/map/map.gd" id="1_sxlkg"]
+[ext_resource type="Texture2D" uid="uid://mencxsv5hxms" path="res://assets/images/game/map.png" id="2_ltxuh"]
+[ext_resource type="LabelSettings" uid="uid://bu0s31fl3bi33" path="res://resources/theme/white_32.tres" id="3_er8mx"]
+
+[node name="Map" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_sxlkg")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -243.0
+offset_top = -243.0
+offset_right = 243.0
+offset_bottom = 243.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ltxuh")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 289.0
+offset_right = 283.0
+offset_bottom = 357.0
+size_flags_horizontal = 4
+text = "YOU"
+label_settings = ExtResource("3_er8mx")

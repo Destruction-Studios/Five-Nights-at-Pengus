@@ -1,7 +1,8 @@
 extends Control
+class_name Game
 
-const GAME_BG = preload("uid://bofhtac8n6os5")
-const GAME_BG_LIGHTOFF = preload("uid://bs8sy2ahyfbx1")
+const GAME_BG = preload("res://assets/images/game/game_bg.png")
+const GAME_BG_LIGHTOFF = preload("res://assets/images/game/game_bg_lightoff.png")
 
 const BREATHING = preload("res://assets/audio/sound_effects/random_game_sounds/breathing.mp3")
 
@@ -37,6 +38,9 @@ const PENGU_SOUNDS: Array[Resource] = [
 
 const MENU = preload("res://scenes/menu/menu.tscn")
 const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
+const MAP = preload("uid://c46r23oby0gq4")
+
+@export var pengu_ai: PenguAI
 
 @onready var time_label: Label = $GameUI/VBoxContainer/Time
 @onready var sound_timer: Timer = $Timers/SoundTimer
@@ -46,6 +50,7 @@ const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
 @onready var cookie_timer: Timer = $Timers/CookieTimer
 @onready var pengu_sound: AudioStreamPlayer = $Sounds/PenguSound
 @onready var pengu_sound_timer: Timer = $Timers/PenguSoundTimer
+@onready var locator_button: Button = $GameUI/MarginContainer/LocatorButton
 
 var light_flickering = false
 
@@ -58,6 +63,8 @@ var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 var cookie_manager = CookieManager.new()
 
 var availPenguSounds: Array[Resource] = PENGU_SOUNDS.duplicate()
+
+var currentMap
 
 func _ready() -> void:
 	update_cookies()
@@ -157,3 +164,14 @@ func _on_pengu_sound_timer_timeout() -> void:
 	
 	await pengu_sound.finished
 	pengu_sound_timer.start(pengu_sound_range.rand())
+
+
+func _on_locator_button_mouse_entered() -> void:
+	if currentMap == null:
+		var inst: Map = MAP.instantiate()
+		inst.pengu_ai = pengu_ai
+		add_child(inst)
+		currentMap = inst
+	elif currentMap != null:
+		currentMap.queue_free()
+		currentMap = null
