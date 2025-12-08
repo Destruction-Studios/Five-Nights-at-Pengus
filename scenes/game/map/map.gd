@@ -6,12 +6,16 @@ class_name Map
 var pengu_ai: PenguAI
 
 func _ready():
+	update()
+
+func update() -> void:
 	var locators: Array[Node] = get_tree().get_nodes_in_group("locator")
 	var required_name: String = "pos_" + str(pengu_ai.current_pos)
 	for rect: TextureRect in locators:
 		if rect.name != required_name:
 			rect.visible = false
-			continue
+		else:
+			rect.visible = true
 
 
 func _on_blink_timer_timeout() -> void:

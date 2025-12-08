@@ -62,6 +62,7 @@ const MAP = preload("uid://c46r23oby0gq4")
 var light_flickering = false
 
 var is_game_over = false
+var is_door_closed = false
 var time = 0
 
 var pengu_sound_range: FloatRange = FloatRange.new(2.0, 10.0)
@@ -69,9 +70,9 @@ var rand_sound_range: FloatRange = FloatRange.new(5.0, 22.0)
 var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 var cookie_manager = CookieManager.new()
 
-var availPenguSounds: Array[Resource] = PENGU_SOUNDS.duplicate()
+var available_pengu_sounds: Array[Resource] = PENGU_SOUNDS.duplicate()
 
-var currentMap
+var current_map: Map
 
 func _ready() -> void:
 	update_cookies()
@@ -87,7 +88,7 @@ func _ready() -> void:
 	cookie_timer.start(GameSettings.COOKIE_LOSS_INVERVAL.rand())
 	pengu_sound_timer.start(pengu_sound_range.rand())
 	
-	update_pengu(pengu_ai.current_pos)
+	pengu_updated(pengu_ai.current_pos)
 
 func game_over() -> void:
 	is_game_over = true
@@ -104,7 +105,8 @@ func game_over() -> void:
 	var win: WinScreen = WIN_SCREEN.instantiate()
 	add_child(win)
 	win.animation_finished.connect(func():
-		Transitions.transition_to_file("res://scenes/menu/menu.tscn")	
+		print("Transition Back")
+		Transitions.transition_to_file("res://scenes/menu/menu.tscn")
 	)
 
 func game_hour_passed() -> void:
@@ -115,13 +117,16 @@ func game_hour_passed() -> void:
 	$Sounds/ClockTickSound.play()
 	print("Hour Passed, ", $Timers/GameDurationTimer.time_left, " left")
 
-func update_pengu(pos: Utils.PENGU_POSITIONS) -> void:
+func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 	var new_texture: Resource
 	if PENGU_VISUALS.has(pos):
 		print("Current Pengu Pos has visual")
 		new_texture = PENGU_VISUALS.get(pos)
 	
 	$PenguVisual.texture = new_texture
+	
+	if current_map:
+		current_map.update()
 
 func update_cookies() -> void:
 	cookie_label.text = ": " + str(cookie_manager.get_cookies())
@@ -149,7 +154,7 @@ func _on_light_timer_timeout() -> void:
 	light_flickering = true
 	$Background.texture = GAME_BG_LIGHTOFF
 	$Sounds/FlickerSound.play()
-	light_timer.wait_time = randf_range(.01, .1)
+	light_timer.wait_time = randf_range(.05, 1)
 	light_timer.start()
 	await light_timer.timeout
 	$Background.texture = GAME_BG
@@ -166,31 +171,30 @@ func _on_cookie_timer_timeout() -> void:
 
 
 func _on_pengu_sound_timer_timeout() -> void:
-	if availPenguSounds.is_empty():
+	if available_pengu_sounds.is_empty():
 		print("Empty sounds, replacing")
-		availPenguSounds = PENGU_SOUNDS.duplicate()
+		available_pengu_sounds = PENGU_SOUNDS.duplicate()
 	print("Pengu speak")
-	var randomInt := randi_range(0, availPenguSounds.size()-1)
-	pengu_sound.stream = availPenguSounds[randomInt]
+	var randomInt := randi_range(0, available_pengu_sounds.size()-1)
+	pengu_sound.stream = available_pengu_sounds[randomInt]
 	pengu_sound.play()
 	
-	availPenguSounds.remove_at(randomInt)
-	print("Removed: ", randomInt)
+	available_pengu_sounds.remove_at(randomInt)
 	
 	await pengu_sound.finished
 	pengu_sound_timer.start(pengu_sound_range.rand())
 
 
 func _on_locator_button_mouse_entered() -> void:
-	if currentMap == null:
+	if current_map == null:
 		var inst: Map = MAP.instantiate()
 		inst.pengu_ai = pengu_ai
 		add_child(inst)
-		currentMap = inst
-	elif currentMap != null:
-		currentMap.queue_free()
-		currentMap = null
+		current_map = inst
+	elif current_map != null:
+		current_map.queue_free()
+		current_map = null
 
 
-func _on_pengu_ai_pos_updated() -> void:
-	update_pengu(pengu_ai.current_pos)
+func _on_pengu_ai_position_updated() -> void:
+	pengu_updated(pengu_ai.current_pos)

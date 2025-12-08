@@ -74,7 +74,8 @@ libraries = {
 }
 autoplay = "cookie_idle"
 
-[node name="PenguAI" parent="." instance=ExtResource("2_bdhmt")]
+[node name="PenguAI" parent="." node_paths=PackedStringArray("game") instance=ExtResource("2_bdhmt")]
+game = NodePath("..")
 
 [node name="Sounds" type="Node" parent="."]
 
@@ -189,7 +190,7 @@ grow_vertical = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
+theme_override_constants/margin_bottom = 1
 
 [node name="CookieLabelCont" type="HBoxContainer" parent="GameUI/MarginContainer"]
 layout_mode = 2
@@ -225,7 +226,7 @@ layout_mode = 2
 text = ": 67"
 
 [node name="LocatorButton" type="Button" parent="GameUI/MarginContainer"]
-custom_minimum_size = Vector2(550, 30)
+custom_minimum_size = Vector2(550, 35)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -246,7 +247,7 @@ text = "Locator"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pos_updated" from="PenguAI" to="." method="_on_pengu_ai_pos_updated"]
+[connection signal="position_updated" from="PenguAI" to="." method="_on_pengu_ai_position_updated"]
 [connection signal="timeout" from="Timers/LightTimer" to="." method="_on_light_timer_timeout"]
 [connection signal="timeout" from="Timers/GameDurationTimer" to="." method="_on_game_duration_timer_timeout"]
 [connection signal="timeout" from="Timers/HourTimer" to="." method="_on_hour_timer_timeout"]
