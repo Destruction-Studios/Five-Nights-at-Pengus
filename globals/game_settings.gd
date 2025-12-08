@@ -6,19 +6,18 @@ const GAME_DURATION_HOURS: int = 6
 const GAME_DURATION_SECONDS: int = GAME_DURATION_HOURS * HOUR_DURATION
 
 #COOKIES
-const START_COOKIES: int = 120
+const START_COOKIES: int = 12000
 const LOCATOR_RATE_INCREASE = 3
 const DOOR_RATE_INCREASE = 6
 const COOKIES_TO_FEED = 10
 
 #AI
-const PENGU_START_COOKIES = 10
 const PENGU_MAX_COOKIES = 18
 const MIN_MOVE_TIME: float = 1.0
 const MAX_MOVE_TIME: float = 4.5
 const ATTACK_CHANCE: int = 3
-const MOVE_CHANCE: int = 3
-const BEHIND_CHANCE: int = 3
+const MOVE_CHANCE: int = 1
+const BEHIND_CHANCE: int = 11111111111
 var MOVE_TO_START_DELAY: FloatRange = FloatRange.new(2.0, 5.0)
 
 func reset() -> void:

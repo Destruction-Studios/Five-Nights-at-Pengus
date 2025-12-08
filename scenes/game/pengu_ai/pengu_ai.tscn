@@ -15,9 +15,11 @@ one_shot = true
 
 [node name="Hungry" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_10tgx")
-volume_db = -10.0
+volume_db = -15.0
 
 [node name="Starving" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_6fx6m")
+volume_db = 2.0
+bus = &"Music"
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]

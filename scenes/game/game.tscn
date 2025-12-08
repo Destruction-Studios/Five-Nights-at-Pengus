@@ -82,8 +82,14 @@ autoplay = "cookie_idle"
 min_time = 0.3
 max_time = 1.5
 
-[node name="PenguAI" parent="." node_paths=PackedStringArray("game") instance=ExtResource("2_bdhmt")]
+[node name="PenguCookieController" parent="." instance=ExtResource("2_vaxfo")]
+cookies = 5
+min_time = 2.0
+max_time = 7.5
+
+[node name="PenguAI" parent="." node_paths=PackedStringArray("game", "cookie_controller") instance=ExtResource("2_bdhmt")]
 game = NodePath("..")
+cookie_controller = NodePath("../PenguCookieController")
 
 [node name="Sounds" type="Node" parent="."]
 
@@ -352,7 +358,6 @@ mouse_default_cursor_shape = 2
 disabled = true
 
 [connection signal="cookies_updated" from="CookieController" to="." method="_on_cookie_controller_cookies_updated"]
-[connection signal="cookies_updated" from="PenguAI" to="." method="_on_pengu_ai_cookies_updated"]
 [connection signal="position_updated" from="PenguAI" to="." method="_on_pengu_ai_position_updated"]
 [connection signal="timeout" from="Timers/LightTimer" to="." method="_on_light_timer_timeout"]
 [connection signal="timeout" from="Timers/GameDurationTimer" to="." method="_on_game_duration_timer_timeout"]

@@ -96,7 +96,8 @@ func _ready() -> void:
 	pengu_sound_timer.start(pengu_sound_range.rand())
 	
 	pengu_updated(pengu_ai.current_pos)
-	_on_pengu_ai_cookies_updated()
+	pengus_cookies_updated(pengu_ai.cookie_controller.cookies)
+	pengu_ai.cookie_controller.cookies_updated.connect(pengus_cookies_updated)
 
 func game_over() -> void:
 	is_game_over = true
@@ -144,6 +145,10 @@ func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 		feed_button.disabled = false
 	else:
 		feed_button.disabled = true
+
+func pengus_cookies_updated(cookies: int) -> void:
+	pengu_cookie_label.text = ": " + str(cookies)
+
 
 func update_cookies() -> void:
 	cookie_label.text = cookie_controller.format()
@@ -193,7 +198,6 @@ func _on_sound_timer_timeout() -> void:
 func _on_light_timer_timeout() -> void:
 	if light_flickering:
 		return
-	print("Flicker")
 	light_flickering = true
 	$Background.texture = GAME_BG_LIGHTOFF
 	$Sounds/FlickerSound.play()
@@ -246,24 +250,19 @@ func _on_feed_button_button_down() -> void:
 	if is_door_closed or pengu_ai.has_been_fed:
 		return
 
-	if pengu_ai.my_cookies >= GameSettings.PENGU_MAX_COOKIES:
+	if pengu_ai.cookie_controller.cookies >= GameSettings.PENGU_MAX_COOKIES:
 		print("He is full")
 		return
 
-	var pengu_hunger := GameSettings.PENGU_MAX_COOKIES - pengu_ai.my_cookies
+	var pengu_hunger := GameSettings.PENGU_MAX_COOKIES - pengu_ai.cookie_controller.cookies
 	var feed_amount := cookie_controller.get_cookies_to_feed(pengu_hunger)
 	
 	if feed_amount <= 0: return
 	
 	print("Feeding Pengu: ", feed_amount)
 
-	cookie_controller.take_cookies(feed_amount)
+	cookie_controller.remove_cookies(feed_amount)
 	pengu_ai.feed(feed_amount)
-
-
-func _on_pengu_ai_cookies_updated() -> void:
-	pengu_cookie_label.text = ": " + str(pengu_ai.my_cookies)
-
 
 func _on_cookie_controller_cookies_updated(_cookies: int) -> void:
 	update_cookies()

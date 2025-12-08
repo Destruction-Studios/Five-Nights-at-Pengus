@@ -2,20 +2,20 @@ extends Node
 class_name PenguAI
 
 signal position_updated
-signal cookies_updated
 
 @export var game: Game
+@export var cookie_controller: CookieController
 
 @onready var move_timer: Timer = $MoveTimer
 
 var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
 var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, GameSettings.MAX_MOVE_TIME)
 
-var my_cookies: int = GameSettings.PENGU_START_COOKIES
 var has_been_fed: bool = false
 
 func _ready() -> void:
 	move_timer.start(move_time_range.rand())
+	cookie_controller.cookies_updated.connect(cookies_updated)
 
 func stop() -> void:
 	pass
@@ -36,9 +36,6 @@ func move(to_start: bool = false) -> void:
 	else:
 		next_pos = Utils.get_next_pengu_pos(current_pos)
 	
-	my_cookies -= 1
-	my_cookies_updated()
-	
 	print("Pengu moved: ", next_pos)
 	
 	current_pos = next_pos
@@ -52,7 +49,6 @@ func will_jumpscare() -> bool:
 	return false
 
 func try_move() -> bool:
-	print("Try move")
 	if game.is_door_closed and current_pos == Utils.PENGU_POSITIONS.DOOR: return false
 	if !randi_range(1, GameSettings.MOVE_CHANCE) == 1: return false
 	move()
@@ -84,18 +80,16 @@ func _on_move_timer_timeout() -> void:
 	else:
 		move_timer.start(move_time_range.rand())
 
+func feed(amount: int) -> void:
+	has_been_fed = true
+	cookie_controller.add_cookies(amount)
 
-func my_cookies_updated() -> void:
-	print("Pengu has ", my_cookies, " cookies")
-	if my_cookies <= 0:
+
+func cookies_updated(cookies: int) -> void:
+	print("Pengu has ", cookies, " cookies")
+	if cookies <= 0:
 		if !$Starving.playing: $Starving.play()
-	if my_cookies <= 4:
+	if cookies <= 4:
 		if !$Hungry.playing: $Hungry.play()
 	else:
 		$Hungry.stop()
-	cookies_updated.emit()
-
-func feed(amount: int) -> void:
-	has_been_fed = true
-	my_cookies += amount
-	my_cookies_updated()

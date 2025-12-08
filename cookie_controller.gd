@@ -41,10 +41,15 @@ func remove_cookies(cookies_to_remove: int = 1) -> void:
 	cookies = maxi(cookies, 0)
 	cookies_updated.emit(cookies)
 
+func add_cookies(amount: int = 1) -> void:
+	cookies = abs(amount)
+	cookies_updated.emit(cookies)
+
 func format() -> String:
 	return ": " + str(cookies)
 
 func _on_cookie_timer_timeout() -> void:
 	if stopped: return
-	remove_cookies()
+	remove_cookies(1)
 	cookie_timer.start(randf_range(min_time, max_time))
+	#print("Time Left: ", $CookieTimer.time_left)
