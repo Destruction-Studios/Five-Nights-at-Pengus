@@ -34,6 +34,13 @@ const PENGU_SOUNDS: Array[Resource] = [
 	preload("res://assets/audio/sound_effects/pengu/you_got_nothing.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/y_76.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/shenanigans.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/no_chest.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/off_my_meds.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/my_fortress.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/cant_do_this.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/what_are_you_doing.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/your_nasty.mp3"),
+	preload("res://assets/audio/sound_effects/pengu/huh.mp3")
 ]
 
 const PENGU_VISUALS = {
@@ -65,7 +72,7 @@ var is_game_over = false
 var is_door_closed = false
 var time = 0
 
-var pengu_sound_range: FloatRange = FloatRange.new(2.0, 10.0)
+var pengu_sound_range: FloatRange = FloatRange.new(2.5, 5.5)
 var rand_sound_range: FloatRange = FloatRange.new(5.0, 22.0)
 var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 var cookie_manager = CookieManager.new()

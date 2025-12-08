@@ -96,6 +96,7 @@ autoplay = true
 bus = &"Music"
 
 [node name="PenguSound" type="AudioStreamPlayer" parent="Sounds"]
+volume_db = 3.0
 bus = &"Pengu"
 
 [node name="Timers" type="Node" parent="."]
