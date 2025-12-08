@@ -4,8 +4,10 @@ class_name Map
 @onready var blink_timer: Timer = $BlinkTimer
 
 var pengu_ai: PenguAI
+var on = false
 
 func _ready():
+	set_trans(0)
 	update()
 
 func update() -> void:
@@ -19,9 +21,17 @@ func update() -> void:
 
 
 func _on_blink_timer_timeout() -> void:
+	on = !on
+	
+	if on:
+		$Beep.play()
+	var a = 0
+	if on: a = 1
+	
+	set_trans(a)
+
+func set_trans(a: int) -> void:
 	for item: TextureRect in get_tree().get_nodes_in_group("locator"):
 		if !item.visible:
 			continue
-		var a = 0
-		if item.modulate.a == 0: a = 1
 		item.modulate.a = a

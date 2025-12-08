@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c46r23oby0gq4"]
+[gd_scene load_steps=6 format=3 uid="uid://c46r23oby0gq4"]
 
 [ext_resource type="Script" uid="uid://b6pngbt12o1q3" path="res://scenes/game/map/map.gd" id="1_sxlkg"]
+[ext_resource type="AudioStream" uid="uid://b8xwd1nhrmlmj" path="res://assets/audio/sound_effects/beep.mp3" id="2_f4ov4"]
 [ext_resource type="Texture2D" uid="uid://mencxsv5hxms" path="res://assets/images/game/map.png" id="2_ltxuh"]
 [ext_resource type="Texture2D" uid="uid://blelbhw2jitmk" path="res://assets/images/game/locator.png" id="3_0s4hj"]
 [ext_resource type="LabelSettings" uid="uid://bu0s31fl3bi33" path="res://resources/theme/white_32.tres" id="3_er8mx"]
@@ -15,8 +16,12 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_sxlkg")
 
+[node name="Beep" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_f4ov4")
+volume_db = -20.0
+pitch_scale = 0.9
+
 [node name="BlinkTimer" type="Timer" parent="."]
-wait_time = 0.25
 autostart = true
 
 [node name="Panel" type="Panel" parent="."]
