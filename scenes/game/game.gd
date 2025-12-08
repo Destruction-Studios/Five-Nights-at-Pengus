@@ -124,10 +124,13 @@ func game_hour_passed() -> void:
 	$Sounds/ClockTickSound.play()
 	print("Hour Passed, ", $Timers/GameDurationTimer.time_left, " left")
 
+func lost_game() -> void:
+	is_game_over = true
+	get_tree().change_scene_to_file("res://scenes/game/jumpscare/jumpscare.tscn")
+
 func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 	var new_texture: Resource
 	if PENGU_VISUALS.has(pos):
-		print("Current Pengu Pos has visual")
 		new_texture = PENGU_VISUALS.get(pos)
 	
 	$PenguVisual.texture = new_texture

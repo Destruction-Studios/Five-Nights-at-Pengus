@@ -1,0 +1,171 @@
+[gd_scene load_steps=7 format=3 uid="uid://044jkvm4t1b7"]
+
+[ext_resource type="Script" uid="uid://cbglwhpv4f5rg" path="res://scenes/game/jumpscare/jumpscare.gd" id="1_8pjvt"]
+[ext_resource type="AudioStream" uid="uid://dr55qpgm8c2br" path="res://assets/audio/sound_effects/jumpscare.mp3" id="2_ajang"]
+[ext_resource type="Texture2D" uid="uid://bm04afyv4qbxn" path="res://assets/images/game/jumpscare/jump.png" id="2_mdr0w"]
+
+[sub_resource type="Animation" id="Animation_mdr0w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("JumpscareImage:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("JumpscareImage:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("JumpscareImage:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_mdr0w")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("JumpscareImage:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_ajang"]
+resource_name = "jumpscare"
+length = 1.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("JumpscareImage:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.2),
+"transitions": PackedFloat32Array(1, 2, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(0.1, 0.1), Vector2(1.8, 1.8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("JumpscareImage:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("2_mdr0w"), ExtResource("2_mdr0w")]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Timer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [-1],
+"method": &"start"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("JumpscareImage:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.24608275, 0.30162227, 0.3528895, 0.39304885, 0.45286062, 0.50840014, 0.55966735, 0.5998267, 0.64938504, 0.7049246, 0.75619173, 0.7963511, 0.83745813, 0.8776175, 0.9271758, 0.98271537, 1.0339825, 1.0741419),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.17453292519943295, -0.17453292519943295, 0.17453292519943295, -0.17453292519943295, 0.17453292519943295, -0.17453292519943295, 0.17453292519943295, -0.17453292519943295, 0.17453292519943295, -0.17453292519943295, 0.17453292519943295, -0.17453292519943295, 0.17453292519943295, -0.17453292519943295, 0.17453292519943295, -0.17453292519943295, 0.17453292519943295, -0.17453292519943295]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ajang"]
+_data = {
+&"RESET": SubResource("Animation_mdr0w"),
+&"jumpscare": SubResource("Animation_ajang")
+}
+
+[node name="Jumpscare" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8pjvt")
+
+[node name="Jumpscare" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_ajang")
+autoplay = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ajang")
+}
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="JumpscareImage" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 324)
+texture = ExtResource("2_mdr0w")
+expand_mode = 1
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -9,7 +9,7 @@ signal position_updated
 
 var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
 
-var move_time_range: FloatRange = FloatRange.new(2.0, 6.0)
+var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, GameSettings.MAX_MOVE_TIME)
 
 func _ready() -> void:
 	move_timer.start(move_time_range.rand())
@@ -21,8 +21,8 @@ func move() -> void:
 			next_pos = Utils.PENGU_POSITIONS.RIGHT_HALLWAY
 		else:
 			next_pos = Utils.PENGU_POSITIONS.WINDOW_RIGHT
-	elif current_pos == Utils.PENGU_POSITIONS.DOOR or current_pos == Utils.PENGU_POSITIONS.ROOM_BEHIND:
-		print("GAME OVER :(")
+	elif will_jumpscare():
+		reach_player()
 		return
 	else:
 		next_pos = Utils.get_next_pengu_pos(current_pos)
@@ -32,22 +32,34 @@ func move() -> void:
 	current_pos = next_pos
 	position_updated.emit()
 
+func reach_player() -> void:
+	game.lost_game()
 
-func disable_move() -> void:
-	pass
-
+func will_jumpscare() -> bool:
+	if current_pos == Utils.PENGU_POSITIONS.DOOR or current_pos == Utils.PENGU_POSITIONS.ROOM_BEHIND: return true
+	return false
 
 func try_move() -> bool:
 	print("Try move")
-	if !randi_range(1, GameSettings.MOVE_CHANCE) == 1: return false
 	if game.is_door_closed and current_pos == Utils.PENGU_POSITIONS.DOOR: return false
+	if !randi_range(1, GameSettings.MOVE_CHANCE) == 1: return false
 	move()
 	return true
 
 func _on_move_timer_timeout() -> void:
-	Transitions.blink()
-	await Transitions.blink_halfway
-	var success = try_move()
+	var success
+	if will_jumpscare():
+		if randi_range(1, GameSettings.ATTACK_CHANCE) == 1:
+			print("Moving, ignoring timer")
+			move()
+			return
+		else:
+			success = false
+	else:
+		Transitions.blink()
+		await Transitions.blink_halfway
+		success = try_move()
+	
 	if success: 
 		move_timer.start(move_time_range.rand() * 2.0)
 	else:

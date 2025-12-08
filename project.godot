@@ -28,6 +28,7 @@ buses/default_bus_layout="uid://m6d3qmv52ayb"
 Transitions="*res://globals/scene_fade.tscn"
 GameSettings="*res://globals/game_settings.gd"
 Utils="*res://globals/utils.gd"
+SceneFade="*res://globals/scene_fade.tscn"
 
 [display]
 
