@@ -83,6 +83,8 @@ func _on_move_timer_timeout() -> void:
 
 func my_cookies_updated() -> void:
 	print("Pengu has ", my_cookies, " cookies")
+	if my_cookies <= 0:
+		if !$Starving.playing: $Starving.play()
 	if my_cookies <= 4:
 		if !$Hungry.playing: $Hungry.play()
 	else:
