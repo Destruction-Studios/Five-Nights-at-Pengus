@@ -17,6 +17,9 @@ var has_been_fed: bool = false
 func _ready() -> void:
 	move_timer.start(move_time_range.rand())
 
+func stop() -> void:
+	pass
+
 func move(to_start: bool = false) -> void:
 	var next_pos
 	if to_start:
