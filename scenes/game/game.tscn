@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=4 uid="uid://b7ypfeo8f3h3y"]
+[gd_scene load_steps=19 format=4 uid="uid://b7ypfeo8f3h3y"]
 
 [ext_resource type="Script" uid="uid://41dnrd7v5jmp" path="res://scenes/game/game.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://cqfr7gfmwkkky" path="res://assets/images/game/game_bg.png" id="1_sul5r"]
 [ext_resource type="AudioStream" uid="uid://chg8qc0btbfv1" path="res://assets/audio/music/ambience.ogg" id="2_7h61r"]
 [ext_resource type="PackedScene" uid="uid://dbkc3124udmd" path="res://scenes/game/pengu_ai/pengu_ai.tscn" id="2_bdhmt"]
 [ext_resource type="AudioStream" uid="uid://bbnpnh36tw7b3" path="res://assets/audio/sound_effects/tick.ogg" id="2_kelw5"]
+[ext_resource type="PackedScene" uid="uid://mg5halcrfnsv" path="res://scenes/game/cookie_controller/cookie_controller.tscn" id="2_vaxfo"]
 [ext_resource type="AudioStream" uid="uid://llbu20112al5" path="res://assets/audio/sound_effects/door_close.mp3" id="5_kp23o"]
 [ext_resource type="Texture2D" uid="uid://cqttjtl5775lu" path="res://assets/images/cookie.png" id="6_5i0tg"]
 [ext_resource type="Texture2D" uid="uid://n1ub2n2p72u2" path="res://assets/images/game/pengu_visuals/pengu_door.png" id="7_5jirj"]
@@ -59,7 +60,7 @@ sampling_rate = 44100.0
 [sub_resource type="AudioStreamOggVorbis" id="AudioStreamOggVorbis_lfrn8"]
 packet_sequence = SubResource("OggPacketSequence_ktrky")
 
-[node name="Game" type="Control" node_paths=PackedStringArray("pengu_ai")]
+[node name="Game" type="Control" node_paths=PackedStringArray("pengu_ai", "cookie_controller")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -68,6 +69,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0sr1o")
 pengu_ai = NodePath("PenguAI")
+cookie_controller = NodePath("CookieController")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../GameUI/MarginContainer/VBoxContainer/CookieLabelCont/Control")
@@ -76,8 +78,18 @@ libraries = {
 }
 autoplay = "cookie_idle"
 
-[node name="PenguAI" parent="." node_paths=PackedStringArray("game") instance=ExtResource("2_bdhmt")]
+[node name="CookieController" parent="." instance=ExtResource("2_vaxfo")]
+min_time = 0.3
+max_time = 1.5
+
+[node name="PenguCookieController" parent="." instance=ExtResource("2_vaxfo")]
+cookies = 5
+min_time = 2.0
+max_time = 7.5
+
+[node name="PenguAI" parent="." node_paths=PackedStringArray("game", "cookie_controller") instance=ExtResource("2_bdhmt")]
 game = NodePath("..")
+cookie_controller = NodePath("../PenguCookieController")
 
 [node name="Sounds" type="Node" parent="."]
 
@@ -119,9 +131,6 @@ wait_time = 240.0
 one_shot = true
 
 [node name="SoundTimer" type="Timer" parent="Timers"]
-one_shot = true
-
-[node name="CookieTimer" type="Timer" parent="Timers"]
 one_shot = true
 
 [node name="PenguSoundTimer" type="Timer" parent="Timers"]
@@ -348,13 +357,12 @@ offset_bottom = 94.01599
 mouse_default_cursor_shape = 2
 disabled = true
 
-[connection signal="cookies_updated" from="PenguAI" to="." method="_on_pengu_ai_cookies_updated"]
+[connection signal="cookies_updated" from="CookieController" to="." method="_on_cookie_controller_cookies_updated"]
 [connection signal="position_updated" from="PenguAI" to="." method="_on_pengu_ai_position_updated"]
 [connection signal="timeout" from="Timers/LightTimer" to="." method="_on_light_timer_timeout"]
 [connection signal="timeout" from="Timers/GameDurationTimer" to="." method="_on_game_duration_timer_timeout"]
 [connection signal="timeout" from="Timers/HourTimer" to="." method="_on_hour_timer_timeout"]
 [connection signal="timeout" from="Timers/SoundTimer" to="." method="_on_sound_timer_timeout"]
-[connection signal="timeout" from="Timers/CookieTimer" to="." method="_on_cookie_timer_timeout"]
 [connection signal="timeout" from="Timers/PenguSoundTimer" to="." method="_on_pengu_sound_timer_timeout"]
 [connection signal="button_down" from="GameUI/Door/DoorToggle" to="." method="_on_door_toggle_button_down"]
 [connection signal="mouse_entered" from="GameUI/MarginContainer/LocatorButton" to="." method="_on_locator_button_mouse_entered"]

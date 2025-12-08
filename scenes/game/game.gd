@@ -55,6 +55,7 @@ const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
 const MAP = preload("uid://c46r23oby0gq4")
 
 @export var pengu_ai: PenguAI
+@export var cookie_controller: CookieController
 
 @onready var time_label: Label = $GameUI/VBoxContainer/Time
 @onready var sound_timer: Timer = $Timers/SoundTimer
@@ -62,7 +63,6 @@ const MAP = preload("uid://c46r23oby0gq4")
 @onready var light_timer: Timer = $Timers/LightTimer
 @onready var pengu_cookie_label: Label = $GameUI/MarginContainer/VBoxContainer/PenguCookies/PenguCookieLabel
 @onready var cookie_label: Label = $GameUI/MarginContainer/VBoxContainer/CookieLabelCont/CookieLabel
-@onready var cookie_timer: Timer = $Timers/CookieTimer
 @onready var pengu_sound: AudioStreamPlayer = $Sounds/PenguSound
 @onready var pengu_sound_timer: Timer = $Timers/PenguSoundTimer
 @onready var locator_button: Button = $GameUI/MarginContainer/LocatorButton
@@ -77,15 +77,12 @@ var time = 0
 var pengu_sound_range: FloatRange = FloatRange.new(2.5, 5.5)
 var rand_sound_range: FloatRange = FloatRange.new(5.0, 22.0)
 var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
-var cookie_manager = CookieManager.new()
 
 var available_pengu_sounds: Array[Resource] = PENGU_SOUNDS.duplicate()
 
 var current_map: Map
 
 func _ready() -> void:
-	GameSettings.COOKIE_LOSS_INVERVAL.reset()
-	
 	update_cookies()
 	
 	$Timers/GameDurationTimer.wait_time = GameSettings.GAME_DURATION_SECONDS
@@ -96,11 +93,11 @@ func _ready() -> void:
 	sound_timer.start(rand_sound_range.rand())
 	light_timer.start(flicker_range.rand())
 	
-	cookie_timer.start(GameSettings.COOKIE_LOSS_INVERVAL.rand())
 	pengu_sound_timer.start(pengu_sound_range.rand())
 	
 	pengu_updated(pengu_ai.current_pos)
-	_on_pengu_ai_cookies_updated()
+	pengus_cookies_updated(pengu_ai.cookie_controller.cookies)
+	pengu_ai.cookie_controller.cookies_updated.connect(pengus_cookies_updated)
 
 func game_over() -> void:
 	is_game_over = true
@@ -109,7 +106,8 @@ func game_over() -> void:
 	time = GameSettings.GAME_DURATION_HOURS
 	game_hour_passed()
 	
-	cookie_timer.stop()
+	pengu_ai.stop()
+	cookie_controller.stop()
 	pengu_sound_timer.stop()
 	random_sound.stop()
 	pengu_sound.stop()
@@ -148,10 +146,14 @@ func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 	else:
 		feed_button.disabled = true
 
+func pengus_cookies_updated(cookies: int) -> void:
+	pengu_cookie_label.text = ": " + str(cookies)
+
+
 func update_cookies() -> void:
-	cookie_label.text = ": " + str(cookie_manager.get_cookies())
+	cookie_label.text = cookie_controller.format()
 	
-	if cookie_manager.is_empty():
+	if cookie_controller.is_empty():
 		if is_door_closed:
 			toggle_door(false)
 		if current_map != null:
@@ -164,13 +166,13 @@ func toggle_door(closed: bool) -> void:
 		return
 	
 	var a = 0.0
-	if closed and cookie_manager.is_empty() == false:
-		GameSettings.COOKIE_LOSS_INVERVAL.decrease(GameSettings.DOOR_RATE_INCREASE)
+	if closed and cookie_controller.is_empty() == false:
+		cookie_controller.increase_rate(GameSettings.DOOR_RATE_INCREASE)
 		a = 1.0
 		$Sounds/DoorClose.play()
 		is_door_closed = true
 	else:
-		GameSettings.COOKIE_LOSS_INVERVAL.increase(GameSettings.DOOR_RATE_INCREASE)
+		cookie_controller.decrease_rate(GameSettings.DOOR_RATE_INCREASE)
 		is_door_closed = false
 		print(is_door_closed)
 	var tween := create_tween()
@@ -196,7 +198,6 @@ func _on_sound_timer_timeout() -> void:
 func _on_light_timer_timeout() -> void:
 	if light_flickering:
 		return
-	print("Flicker")
 	light_flickering = true
 	$Background.texture = GAME_BG_LIGHTOFF
 	$Sounds/FlickerSound.play()
@@ -206,15 +207,6 @@ func _on_light_timer_timeout() -> void:
 	$Background.texture = GAME_BG
 	light_flickering = false
 	light_timer.start(flicker_range.rand())
-
-
-func _on_cookie_timer_timeout() -> void:
-	if is_game_over:
-		return
-	cookie_manager.remove_cookie()
-	update_cookies()
-	cookie_timer.start(GameSettings.COOKIE_LOSS_INVERVAL.rand())
-
 
 func _on_pengu_sound_timer_timeout() -> void:
 	if available_pengu_sounds.is_empty():
@@ -232,18 +224,18 @@ func _on_pengu_sound_timer_timeout() -> void:
 
 
 func _on_locator_button_mouse_entered() -> void:
-	if cookie_manager.is_empty(): return
+	if cookie_controller.is_empty(): return
 	if current_map == null:
 		var inst: Map = MAP.instantiate()
 		inst.pengu_ai = pengu_ai
 		add_child(inst)
 		current_map = inst
 		
-		GameSettings.COOKIE_LOSS_INVERVAL.decrease(GameSettings.LOCATOR_RATE_INCREASE)
+		cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
 	elif current_map != null:
 		current_map.queue_free()
 		current_map = null
-		GameSettings.COOKIE_LOSS_INVERVAL.increase(GameSettings.LOCATOR_RATE_INCREASE)
+		cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
 
 
 func _on_pengu_ai_position_updated() -> void:
@@ -258,26 +250,19 @@ func _on_feed_button_button_down() -> void:
 	if is_door_closed or pengu_ai.has_been_fed:
 		return
 
-	if pengu_ai.my_cookies >= GameSettings.PENGU_MAX_COOKIES:
+	if pengu_ai.cookie_controller.cookies >= GameSettings.PENGU_MAX_COOKIES:
 		print("He is full")
 		return
 
-	var pengu_space := GameSettings.PENGU_MAX_COOKIES - pengu_ai.my_cookies
-
-	var feed_amount := mini(
-		GameSettings.COOKIES_TO_FEED,
-		mini(pengu_space, cookie_manager.cookies)
-	)
-
-	if feed_amount <= 0:
-		print("Out of cookies")
-		return
-		
+	var pengu_hunger := GameSettings.PENGU_MAX_COOKIES - pengu_ai.cookie_controller.cookies
+	var feed_amount := cookie_controller.get_cookies_to_feed(pengu_hunger)
+	
+	if feed_amount <= 0: return
+	
 	print("Feeding Pengu: ", feed_amount)
 
-	cookie_manager.take_cookies(feed_amount)
+	cookie_controller.remove_cookies(feed_amount)
 	pengu_ai.feed(feed_amount)
 
-
-func _on_pengu_ai_cookies_updated() -> void:
-	pengu_cookie_label.text = ": " + str(pengu_ai.my_cookies)
+func _on_cookie_controller_cookies_updated(_cookies: int) -> void:
+	update_cookies()
