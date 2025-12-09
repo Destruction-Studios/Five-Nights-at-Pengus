@@ -232,10 +232,12 @@ func _on_locator_button_mouse_entered() -> void:
 		current_map = inst
 		
 		cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
+		$Sounds/LocatorOpen.play()
 	elif current_map != null:
 		current_map.queue_free()
 		current_map = null
 		cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
+		$Sounds/LocatorClose.play()
 
 
 func _on_pengu_ai_position_updated() -> void:

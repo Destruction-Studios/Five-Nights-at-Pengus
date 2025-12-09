@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://b7ypfeo8f3h3y"]
+[gd_scene load_steps=21 format=4 uid="uid://b7ypfeo8f3h3y"]
 
 [ext_resource type="Script" uid="uid://41dnrd7v5jmp" path="res://scenes/game/game.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://cqfr7gfmwkkky" path="res://assets/images/game/game_bg.png" id="1_sul5r"]
@@ -10,7 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://cqttjtl5775lu" path="res://assets/images/cookie.png" id="6_5i0tg"]
 [ext_resource type="Texture2D" uid="uid://n1ub2n2p72u2" path="res://assets/images/game/pengu_visuals/pengu_door.png" id="7_5jirj"]
 [ext_resource type="Texture2D" uid="uid://xm1hwv8b8724" path="res://assets/images/game/door.png" id="7_kp23o"]
+[ext_resource type="AudioStream" uid="uid://bfkgxr1jdkxec" path="res://assets/audio/sound_effects/locator_open.ogg" id="7_otnwt"]
 [ext_resource type="StyleBox" uid="uid://c0n3qspfsq7he" path="res://resources/theme/game_button_normal.tres" id="8_2a8rs"]
+[ext_resource type="AudioStream" uid="uid://cneyv1yknax1c" path="res://assets/audio/sound_effects/locator_close.ogg" id="8_3xj4h"]
 [ext_resource type="StyleBox" uid="uid://cqbld28mck5lx" path="res://resources/theme/game_button_hover.tres" id="9_4j704"]
 [ext_resource type="Texture2D" uid="uid://ddu1xfre8iurh" path="res://assets/images/pengu.png" id="11_5jirj"]
 
@@ -116,6 +118,14 @@ bus = &"Pengu"
 [node name="DoorClose" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("5_kp23o")
 volume_db = 1.0
+
+[node name="LocatorOpen" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_otnwt")
+volume_db = 1.5
+
+[node name="LocatorClose" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_3xj4h")
+volume_db = 1.5
 
 [node name="Timers" type="Node" parent="."]
 

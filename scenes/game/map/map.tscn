@@ -166,10 +166,10 @@ expand_mode = 1
 
 [node name="pos_110" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
 layout_mode = 0
-offset_left = 18.0
-offset_top = 356.0
-offset_right = 62.0
-offset_bottom = 400.0
+offset_left = 13.0
+offset_top = 349.0
+offset_right = 57.0
+offset_bottom = 393.0
 texture = ExtResource("3_0s4hj")
 expand_mode = 1
 
