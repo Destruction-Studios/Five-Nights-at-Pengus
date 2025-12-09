@@ -21,7 +21,12 @@ const MOVE_CHANCE: int = 1
 var ATTACK_DELAY: FloatRange = FloatRange.new(2.0, 5.0)
 
 #Minigame
-const MINIGAME_DURATION = 45 #seconds
+const MINIGAME_DURATION = 20 #seconds
+const BUMP_OFFSET = Vector2(150, 75)
+const START_PROGRESS = 20
+const PROGRESS_INCREASE = 15
+const PROGRESS_DECREASE = 17
+var BUMP_RANGE: FloatRange = FloatRange.new(.2, 1.5)
 
 func reset() -> void:
 	pass
