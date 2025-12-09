@@ -18,6 +18,7 @@ enum PENGU_POSITIONS {
 	HALLWAY_BEHIND_2 = 13,
 	
 	DOOR = 10,
+	TABLE = 11,
 	PLAYER = 999,
 	
 	_RL_ALT = 110,

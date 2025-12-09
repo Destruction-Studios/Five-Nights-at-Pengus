@@ -47,7 +47,8 @@ const PENGU_VISUALS = {
 	Utils.PENGU_POSITIONS.WINDOW_RIGHT: preload("res://assets/images/game/pengu_visuals/pengu_window_right.png"),
 	Utils.PENGU_POSITIONS.WINDOW_LEFT: preload("res://assets/images/game/pengu_visuals/pengu_window_left_new.png"),
 	Utils.PENGU_POSITIONS.WINDOW_LEFT_LAY: preload("res://assets/images/game/pengu_visuals/pengu_window_left_lay.png"),
-	Utils.PENGU_POSITIONS.DOOR: preload("res://assets/images/game/pengu_visuals/pengu_door.png")
+	Utils.PENGU_POSITIONS.DOOR: preload("res://assets/images/game/pengu_visuals/pengu_door.png"),
+	Utils.PENGU_POSITIONS.TABLE: preload("res://assets/images/game/pengu_visuals/pengu_table.png"),
 }
 
 const MENU = preload("res://scenes/menu/menu.tscn")

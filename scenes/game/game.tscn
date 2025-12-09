@@ -112,7 +112,8 @@ autoplay = true
 bus = &"Music"
 
 [node name="PenguSound" type="AudioStreamPlayer" parent="Sounds"]
-volume_db = -5.0
+volume_db = -8.0
+mix_target = 1
 bus = &"Pengu"
 
 [node name="DoorClose" type="AudioStreamPlayer" parent="Sounds"]

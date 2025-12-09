@@ -9,7 +9,7 @@ signal position_updated
 @onready var move_timer: Timer = $MoveTimer
 @onready var attack_timer: Timer = $AttackTimer
 
-var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.ROOM_TOP_LEFT
+var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
 var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, GameSettings.MAX_MOVE_TIME)
 
 var has_been_fed: bool = false

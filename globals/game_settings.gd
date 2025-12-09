@@ -20,5 +20,8 @@ const ATTACK_CHANCE: int = 3
 const MOVE_CHANCE: int = 1
 var ATTACK_DELAY: FloatRange = FloatRange.new(2.0, 5.0)
 
+#Minigame
+const MINIGAME_DURATION = 45 #seconds
+
 func reset() -> void:
 	pass
