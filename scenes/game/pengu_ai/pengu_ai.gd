@@ -9,7 +9,7 @@ signal position_updated
 @onready var move_timer: Timer = $MoveTimer
 @onready var attack_timer: Timer = $AttackTimer
 
-var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
+var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.ROOM_TOP_LEFT
 var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, GameSettings.MAX_MOVE_TIME)
 
 var has_been_fed: bool = false
@@ -90,19 +90,22 @@ func get_next_pos() -> Utils.PENGU_POSITIONS:
 	if paths.size() == 1:
 		return paths.keys()[0]
 	
-	var total = 0
+	var total := 0
 	for w in paths.values():
 		total += w
 	
-	var r = randi() % total
-	var running = 0
-	var winner = current_pos
-	for key in paths.keys():
+	var r := randi_range(0, total - 1)
+	
+	var keys := paths.keys()
+	keys.shuffle()
+	
+	var running := 0
+	for key in keys:
 		running += paths[key]
 		if r < running:
-			winner = key
+			return key
 	
-	return winner
+	return current_pos
 
 
 func move(new_pos: Utils.PENGU_POSITIONS) -> void:
