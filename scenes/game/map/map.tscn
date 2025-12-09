@@ -58,91 +58,118 @@ expand_mode = 1
 
 [node name="pos_1" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
 layout_mode = 0
-offset_left = 121.0
-offset_top = 45.0
-offset_right = 165.0
-offset_bottom = 89.0
+offset_left = 116.0
+offset_top = 43.0
+offset_right = 160.0
+offset_bottom = 87.0
 texture = ExtResource("3_0s4hj")
 expand_mode = 1
 
 [node name="pos_2" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
 layout_mode = 0
-offset_left = 410.0
-offset_top = 73.0
-offset_right = 454.0
-offset_bottom = 117.0
-texture = ExtResource("3_0s4hj")
-expand_mode = 1
-
-[node name="pos_6" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
-layout_mode = 0
-offset_left = 287.0
-offset_top = 128.0
-offset_right = 331.0
-offset_bottom = 172.0
-texture = ExtResource("3_0s4hj")
-expand_mode = 1
-
-[node name="pos_7" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
-layout_mode = 0
-offset_left = 169.0
-offset_top = 150.0
-offset_right = 213.0
-offset_bottom = 194.0
-texture = ExtResource("3_0s4hj")
-expand_mode = 1
-
-[node name="pos_8" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
-layout_mode = 0
-offset_left = 98.0
-offset_top = 150.0
-offset_right = 142.0
-offset_bottom = 194.0
-texture = ExtResource("3_0s4hj")
-expand_mode = 1
-
-[node name="pos_9" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 139.0
-offset_right = 58.0
-offset_bottom = 183.0
-texture = ExtResource("3_0s4hj")
-expand_mode = 1
-
-[node name="pos_10" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
-layout_mode = 0
-offset_left = 23.0
-offset_top = 244.0
-offset_right = 67.0
-offset_bottom = 288.0
+offset_left = 403.0
+offset_top = 62.0
+offset_right = 447.0
+offset_bottom = 106.0
 texture = ExtResource("3_0s4hj")
 expand_mode = 1
 
 [node name="pos_3" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
 layout_mode = 0
 offset_left = 390.0
-offset_top = 321.0
+offset_top = 274.0
 offset_right = 434.0
-offset_bottom = 365.0
+offset_bottom = 318.0
 texture = ExtResource("3_0s4hj")
 expand_mode = 1
 
 [node name="pos_4" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
 layout_mode = 0
-offset_left = 300.0
+offset_left = 288.0
 offset_top = 415.0
-offset_right = 344.0
+offset_right = 332.0
 offset_bottom = 459.0
 texture = ExtResource("3_0s4hj")
 expand_mode = 1
 
 [node name="pos_5" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
 layout_mode = 0
-offset_left = 211.0
-offset_top = 417.0
-offset_right = 255.0
-offset_bottom = 461.0
+offset_left = 205.0
+offset_top = 415.0
+offset_right = 249.0
+offset_bottom = 459.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_6" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 270.0
+offset_top = 150.0
+offset_right = 314.0
+offset_bottom = 194.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_7" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 180.0
+offset_top = 150.0
+offset_right = 224.0
+offset_bottom = 194.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_8" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 81.0
+offset_top = 150.0
+offset_right = 125.0
+offset_bottom = 194.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_9" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 125.0
+offset_right = 42.0
+offset_bottom = 169.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_10" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 244.0
+offset_right = 69.0
+offset_bottom = 288.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_11" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 303.0
+offset_right = 56.0
+offset_bottom = 347.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_12" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 395.0
+offset_right = 67.0
+offset_bottom = 439.0
+texture = ExtResource("3_0s4hj")
+expand_mode = 1
+
+[node name="pos_13" type="TextureRect" parent="Panel/MarginContainer/TextureRect" groups=["locator"]]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 415.0
+offset_right = 120.0
+offset_bottom = 459.0
 texture = ExtResource("3_0s4hj")
 expand_mode = 1
 

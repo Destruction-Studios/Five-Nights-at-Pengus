@@ -20,8 +20,40 @@ func _ready() -> void:
 func stop() -> void:
 	pass
 
+func get_next_pos() -> Utils.PENGU_POSITIONS:
+	var current_path_data: Dictionary = Utils.AI_PATHS[current_pos]
+
+	var max_value := 0
+	for v in current_path_data.values():
+		max_value = maxi(max_value, v)
+
+	var total_weight := 0
+	var inverted := {}
+	for key in current_path_data:
+		var inv = (max_value + 1) - current_path_data[key]
+		inverted[key] = inv
+		total_weight += inv
+
+	var roll := randi_range(1, total_weight)
+
+	var running := 0
+	var winner
+	for key in inverted:
+		running += inverted[key]
+		if roll <= running:
+			winner = key
+	
+	if !winner:
+		push_error("Unable to get next pos")
+		return current_pos
+	
+	print("New Pos: ", Utils.PENGU_POSITIONS.find_key(winner))
+
+	return winner
+
+
 func move(to_start: bool = false) -> void:
-	var next_pos
+	var next_pos #= get_next_pos()
 	if to_start:
 		has_been_fed = false
 		next_pos = Utils.PENGU_POSITIONS.START
@@ -34,7 +66,8 @@ func move(to_start: bool = false) -> void:
 		reach_player()
 		return
 	else:
-		next_pos = Utils.get_next_pengu_pos(current_pos)
+		#next_pos = Utils.get_next_pengu_pos(current_pos)
+		next_pos = get_next_pos()
 	
 	print("Pengu moved: ", next_pos)
 	

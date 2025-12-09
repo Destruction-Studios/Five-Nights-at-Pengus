@@ -45,7 +45,7 @@ const PENGU_SOUNDS: Array[Resource] = [
 
 const PENGU_VISUALS = {
 	Utils.PENGU_POSITIONS.WINDOW_RIGHT: preload("res://assets/images/game/pengu_visuals/pengu_window_right.png"),
-	Utils.PENGU_POSITIONS.WINDOW_LEFT: preload("res://assets/images/game/pengu_visuals/pengu_window_left.png"),
+	Utils.PENGU_POSITIONS.WINDOW_LEFT: preload("res://assets/images/game/pengu_visuals/pengu_window_left_new.png"),
 	Utils.PENGU_POSITIONS.WINDOW_LEFT_LAY: preload("res://assets/images/game/pengu_visuals/pengu_window_left_lay.png"),
 	Utils.PENGU_POSITIONS.DOOR: preload("res://assets/images/game/pengu_visuals/pengu_door.png")
 }
