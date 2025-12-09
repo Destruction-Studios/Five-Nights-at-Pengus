@@ -54,6 +54,7 @@ const PENGU_VISUALS = {
 const MENU = preload("res://scenes/menu/menu.tscn")
 const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
 const MAP = preload("uid://c46r23oby0gq4")
+const BEHIND_MINIGAME = preload("uid://dmdpvvlx8kuo2")
 
 @export var pengu_ai: PenguAI
 @export var cookie_controller: CookieController
@@ -128,9 +129,25 @@ func game_hour_passed() -> void:
 	$Sounds/ClockTickSound.play()
 	print("Hour Passed, ", $Timers/GameDurationTimer.time_left, " left")
 
-func lost_game() -> void:
+func jumpscare() -> void:
 	is_game_over = true
 	get_tree().change_scene_to_file("res://scenes/game/jumpscare/jumpscare.tscn")
+
+func start_minigame() -> bool:
+	if current_map:
+		current_map.queue_free()
+		current_map = null
+	
+	var inst: StarvingMinigame = BEHIND_MINIGAME.instantiate()
+	add_child(inst)
+	await inst.minigame_completed
+	
+	if inst.failed:
+		jumpscare()
+		return false
+	else:
+		inst.queue_free()
+		return true
 
 func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 	var new_texture: Resource

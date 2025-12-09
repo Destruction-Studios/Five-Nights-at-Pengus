@@ -1,7 +1,7 @@
 extends Control
 class_name StarvingMinigame
 
-signal minigame_completed(success: bool)
+signal minigame_completed()
 
 const LERP_INTERP = 7.0
 
@@ -18,6 +18,7 @@ var current_pos = target_pos
 var progress: float = GameSettings.START_PROGRESS
 
 var is_bumped = false
+var failed = false
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -55,11 +56,21 @@ func _process(delta: float) -> void:
 	
 	update_progress()
 
+func reset() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 func update_progress() -> void:
 	progress = clampf(progress, 0.0, 100.0)
 	progress_bar.value = progress
 	
-	minigame_completed.emit(!progress <= 0.0)
+	if progress <= 0.0:
+		reset()
+		failed = true
+		minigame_completed.emit()
+	elif progress >= 100.0:
+		reset()
+		failed = false
+		minigame_completed.emit()
 
 func _input(event: InputEvent) -> void:
 	if is_bumped: 

@@ -9,7 +9,7 @@ signal position_updated
 @onready var move_timer: Timer = $MoveTimer
 @onready var attack_timer: Timer = $AttackTimer
 
-var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
+var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.ROOM_BEHIND
 var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, GameSettings.MAX_MOVE_TIME)
 
 var has_been_fed: bool = false
@@ -118,7 +118,7 @@ func move(new_pos: Utils.PENGU_POSITIONS) -> void:
 	position_updated.emit()
 
 func reach_player() -> void:
-	game.lost_game()
+	game.jumpscare()
 
 func will_jumpscare() -> bool:
 	if current_pos == Utils.PENGU_POSITIONS.DOOR or current_pos == Utils.PENGU_POSITIONS.ROOM_BEHIND: return true
@@ -127,23 +127,36 @@ func will_jumpscare() -> bool:
 func try_move() -> void:
 	var next_pos = get_next_pos()
 	if next_pos == Utils.PENGU_POSITIONS.PLAYER:
-		attack_timer.start(GameSettings.ATTACK_DELAY.rand())
-		await attack_timer.timeout
-		
-		var can_attack = true
-		if current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed:
-			can_attack = false
-		
-		if !can_attack: 
+		if current_pos == Utils.PENGU_POSITIONS.ROOM_BEHIND or current_pos == Utils.PENGU_POSITIONS._RBH_ALT:
+			print("Do Minigame")
+			
+			cookie_controller.paused = true
+			
+			move(Utils.PENGU_POSITIONS.TABLE)
+			var success = await game.start_minigame()
+			if !success: return
 			Transitions.blink()
 			await Transitions.blink_halfway
 			move(Utils.PENGU_POSITIONS.START)
-			#TODO make it no delay in hard
-			move_timer.start(move_time_range.rand())
-			return
+			cookie_controller.paused = false
+		else:
+			attack_timer.start(GameSettings.ATTACK_DELAY.rand())
+			await attack_timer.timeout
 		
-		game.lost_game()
-		return
+			var can_attack = true
+			if current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed:
+				can_attack = false
+			
+			if !can_attack: 
+				Transitions.blink()
+				await Transitions.blink_halfway
+				move(Utils.PENGU_POSITIONS.START)
+				#TODO make it no delay in hard
+				move_timer.start(move_time_range.rand())
+				return
+			
+			game.jumpscare()
+			return
 	if !randi_range(1, GameSettings.MOVE_CHANCE) == 1:
 		move_timer.start(move_time_range.rand())
 		return
