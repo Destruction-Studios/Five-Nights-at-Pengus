@@ -26,7 +26,7 @@ const PENGU_SOUNDS: Array[Resource] = [
 	preload("res://assets/audio/sound_effects/pengu/mmm.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/oh.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/soda_pop.mp3"),
-	preload("res://assets/audio/sound_effects/pengu/soda_pop_2.mp3"),
+	#preload("res://assets/audio/sound_effects/pengu/soda_pop_2.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/stop.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/took_all_meatloaf.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/where_is_iron.mp3"),

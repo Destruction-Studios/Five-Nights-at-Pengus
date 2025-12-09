@@ -32,7 +32,6 @@ SceneFade="*res://globals/scene_fade.tscn"
 
 [display]
 
-window/size/mode=2
 window/size/sharp_corners=true
 window/stretch/mode="viewport"
 window/vsync/vsync_mode=0

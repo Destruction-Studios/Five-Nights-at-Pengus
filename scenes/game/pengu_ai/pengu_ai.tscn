@@ -7,6 +7,9 @@
 [node name="PenguAI" type="Node"]
 script = ExtResource("1_n5kb3")
 
+[node name="AttackTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="MoveTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -15,7 +18,7 @@ one_shot = true
 
 [node name="Hungry" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_10tgx")
-volume_db = -15.0
+volume_db = -12.0
 
 [node name="Starving" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_6fx6m")

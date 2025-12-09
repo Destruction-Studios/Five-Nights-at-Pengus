@@ -15,10 +15,10 @@ const COOKIES_TO_FEED = 10
 const PENGU_MAX_COOKIES = 18
 const MIN_MOVE_TIME: float = 1.0
 const MAX_MOVE_TIME: float = 4.5
+const MOVE_SUCCESS_TIME_MULTI: float = 1.5
 const ATTACK_CHANCE: int = 3
 const MOVE_CHANCE: int = 1
-const BEHIND_CHANCE: int = 3
-var MOVE_TO_START_DELAY: FloatRange = FloatRange.new(2.0, 5.0)
+var ATTACK_DELAY: FloatRange = FloatRange.new(2.0, 5.0)
 
 func reset() -> void:
 	pass

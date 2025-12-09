@@ -7,6 +7,7 @@ signal position_updated
 @export var cookie_controller: CookieController
 
 @onready var move_timer: Timer = $MoveTimer
+@onready var attack_timer: Timer = $AttackTimer
 
 var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
 var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, GameSettings.MAX_MOVE_TIME)
@@ -20,58 +21,97 @@ func _ready() -> void:
 func stop() -> void:
 	pass
 
+#func get_next_pos() -> Utils.PENGU_POSITIONS:
+	##var current_path_data: Dictionary = Utils.AI_PATHS[current_pos]
+##
+	##var max_value := 0
+	##for v in current_path_data.values():
+		##max_value = maxi(max_value, v)
+##
+	##var total_weight := 0
+	##var inverted := {}
+	##for key in current_path_data:
+		##var inv = (max_value + 1) - current_path_data[key]
+		##inverted[key] = inv
+		##total_weight += inv
+##
+	##var roll := randi_range(1, total_weight)
+##
+	##var running := 0
+	##var winner
+	##for key in inverted:
+		##running += inverted[key]
+		##if roll <= running:
+			##winner = key
+	#
+	#var paths: Dictionary = Utils.AI_PATHS[current_pos]
+	#
+	#var max_value := 0
+	#var entries := []
+	#
+	#for key in paths:
+		#var v = paths[key]
+		#max_value = maxi(max_value, v)
+		#entries.append({ "key": key, "value": v })
+	#
+	#print(entries)
+	#
+	#var total_weight := 0
+	#for e in entries:
+		#e.inv = max(1, (max_value + 1) - e.value)
+		#total_weight += e.inv
+	#
+	#print(total_weight)
+	#
+	#var roll := randi_range(1, total_weight)
+	#var running := 0
+	#
+	#print("R:", roll)
+	#
+	#var winner
+	#for e in entries:
+		#print(e)
+		#running += e.inv
+		#print("RG ", running)
+		#if roll <= running:
+			#winner =  e.value
+	#
+	#if !winner:
+		#push_error("Unable to get next pos")
+		#return current_pos
+	#
+	#print("New Pos: ", Utils.PENGU_POSITIONS.find_key(winner))
+	#
+	#return winner
+
 func get_next_pos() -> Utils.PENGU_POSITIONS:
-	var current_path_data: Dictionary = Utils.AI_PATHS[current_pos]
-
-	var max_value := 0
-	for v in current_path_data.values():
-		max_value = maxi(max_value, v)
-
-	var total_weight := 0
-	var inverted := {}
-	for key in current_path_data:
-		var inv = (max_value + 1) - current_path_data[key]
-		inverted[key] = inv
-		total_weight += inv
-
-	var roll := randi_range(1, total_weight)
-
-	var running := 0
-	var winner
-	for key in inverted:
-		running += inverted[key]
-		if roll <= running:
+	var paths: Dictionary = Utils.AI_PATHS[current_pos]
+	
+	if paths.size() == 1:
+		return paths.keys()[0]
+	
+	var total = 0
+	for w in paths.values():
+		total += w
+	
+	var r = randi() % total
+	var running = 0
+	var winner = current_pos
+	for key in paths.keys():
+		running += paths[key]
+		if r < running:
 			winner = key
 	
-	if !winner:
-		push_error("Unable to get next pos")
-		return current_pos
-	
-	print("New Pos: ", Utils.PENGU_POSITIONS.find_key(winner))
-
 	return winner
 
 
-func move(to_start: bool = false) -> void:
-	var next_pos #= get_next_pos()
-	if to_start:
-		has_been_fed = false
-		next_pos = Utils.PENGU_POSITIONS.START
-	elif current_pos == Utils.PENGU_POSITIONS.CROSSROADS:
-		if randi_range(1, GameSettings.BEHIND_CHANCE) == 1:
-			next_pos = Utils.PENGU_POSITIONS.RIGHT_HALLWAY
-		else:
-			next_pos = Utils.PENGU_POSITIONS.WINDOW_RIGHT
-	elif will_jumpscare():
-		reach_player()
-		return
-	else:
-		#next_pos = Utils.get_next_pengu_pos(current_pos)
-		next_pos = get_next_pos()
+func move(new_pos: Utils.PENGU_POSITIONS) -> void:
+	if new_pos == Utils.PENGU_POSITIONS.START:
+		has_been_fed = true
 	
-	print("Pengu moved: ", next_pos)
+	print("Pengu moved to: ", Utils.PENGU_POSITIONS.find_key(new_pos))
 	
-	current_pos = next_pos
+	current_pos = new_pos
 	position_updated.emit()
 
 func reach_player() -> void:
@@ -81,37 +121,36 @@ func will_jumpscare() -> bool:
 	if current_pos == Utils.PENGU_POSITIONS.DOOR or current_pos == Utils.PENGU_POSITIONS.ROOM_BEHIND: return true
 	return false
 
-func try_move() -> bool:
-	if game.is_door_closed and current_pos == Utils.PENGU_POSITIONS.DOOR: return false
-	if !randi_range(1, GameSettings.MOVE_CHANCE) == 1: return false
-	move()
-	return true
-
-func _on_move_timer_timeout() -> void:
-	var success
-	if will_jumpscare():
+func try_move() -> void:
+	var next_pos = get_next_pos()
+	if next_pos == Utils.PENGU_POSITIONS.PLAYER:
+		attack_timer.start(GameSettings.ATTACK_DELAY.rand())
+		await attack_timer.timeout
+		
+		var can_attack = true
 		if current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed:
-			$MoveTimer.start(GameSettings.MOVE_TO_START_DELAY.rand())
-			await $MoveTimer.timeout
+			can_attack = false
+		
+		if !can_attack: 
 			Transitions.blink()
 			await Transitions.blink_halfway
-			move(true)
-			success = false
-		if randi_range(1, GameSettings.ATTACK_CHANCE) == 1:
-			print("Moving, ignoring timer")
-			move()
+			move(Utils.PENGU_POSITIONS.START)
+			#TODO make it no delay in hard
+			move_timer.start(move_time_range.rand())
 			return
-		else:
-			success = false
-	else:
-		Transitions.blink()
-		await Transitions.blink_halfway
-		success = try_move()
-	
-	if success: 
-		move_timer.start(move_time_range.rand() * 2.0)
-	else:
+		
+		game.lost_game()
+		return
+	if !randi_range(1, GameSettings.MOVE_CHANCE) == 1:
 		move_timer.start(move_time_range.rand())
+		return
+	Transitions.blink()
+	await Transitions.blink_halfway
+	move(next_pos)
+	move_timer.start(move_time_range.rand() * GameSettings.MOVE_SUCCESS_TIME_MULTI)
+
+func _on_move_timer_timeout() -> void:
+	try_move()
 
 func feed(amount: int) -> void:
 	has_been_fed = true
