@@ -13,11 +13,11 @@ const COOKIES_TO_FEED = 10
 
 #AI
 const PENGU_MAX_COOKIES = 18
-const MIN_MOVE_TIME: float = 1.0
-const MAX_MOVE_TIME: float = 4.5
+const MIN_MOVE_TIME: float = 2.0
+const MAX_MOVE_TIME: float = 5.5
 const MOVE_SUCCESS_TIME_MULTI: float = 1.5
 const ATTACK_CHANCE: int = 3
-const MOVE_CHANCE: int = 1
+const MOVE_CHANCE: int = 3
 var ATTACK_DELAY: FloatRange = FloatRange.new(2.0, 5.0)
 
 #Minigame

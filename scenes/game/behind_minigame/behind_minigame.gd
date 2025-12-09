@@ -40,15 +40,13 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if Input.is_key_label_pressed(KEY_ESCAPE):
-		get_tree().quit()
 	current_pos = lerp(current_pos, target_pos, LERP_INTERP * delta)
 	
 	mouse_circle.circle_position = current_pos
 	mouse_circle.queue_redraw()
 	
 	var distance = circle.circle_position.distance_to(current_pos)
-	#print(distance)
+
 	if distance > circle.radius:
 		progress -= GameSettings.PROGRESS_DECREASE * delta
 	else:

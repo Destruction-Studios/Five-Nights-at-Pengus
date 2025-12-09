@@ -85,9 +85,9 @@ min_time = 0.3
 max_time = 1.5
 
 [node name="PenguCookieController" parent="." instance=ExtResource("2_vaxfo")]
-cookies = 5
-min_time = 2.0
-max_time = 7.5
+cookies = 18
+min_time = 4.0
+max_time = 12.0
 
 [node name="PenguAI" parent="." node_paths=PackedStringArray("game", "cookie_controller") instance=ExtResource("2_bdhmt")]
 game = NodePath("..")
@@ -108,6 +108,7 @@ bus = &"SFX"
 
 [node name="AmbienceSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("2_7h61r")
+volume_db = -20.0
 autoplay = true
 bus = &"Music"
 
@@ -118,15 +119,12 @@ bus = &"Pengu"
 
 [node name="DoorClose" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("5_kp23o")
-volume_db = 1.0
 
 [node name="LocatorOpen" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("7_otnwt")
-volume_db = 1.5
 
 [node name="LocatorClose" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("8_3xj4h")
-volume_db = 1.5
 
 [node name="Timers" type="Node" parent="."]
 

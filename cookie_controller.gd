@@ -50,8 +50,8 @@ func format() -> String:
 	return ": " + str(cookies)
 
 func _on_cookie_timer_timeout() -> void:
-	if paused: return
 	if stopped: return
-	remove_cookies(1)
+	if !paused:
+		remove_cookies(1)
 	cookie_timer.start(randf_range(min_time, max_time))
 	#print("Time Left: ", $CookieTimer.time_left)

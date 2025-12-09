@@ -76,7 +76,7 @@ var is_game_over = false
 var is_door_closed = false
 var time = 0
 
-var pengu_sound_range: FloatRange = FloatRange.new(2.5, 5.5)
+var pengu_sound_range: FloatRange = FloatRange.new(2.5, 7.5)
 var rand_sound_range: FloatRange = FloatRange.new(5.0, 22.0)
 var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 

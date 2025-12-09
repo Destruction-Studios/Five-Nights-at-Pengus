@@ -75,17 +75,6 @@ volume_db = -10.0
 mix_target = 1
 bus = &"Music"
 
-[node name="MouseCircle" parent="." instance=ExtResource("3_i41h5")]
-layout_mode = 1
-radius = 18.0
-thickness = 3.0
-filled = true
-
-[node name="Circle" parent="." instance=ExtResource("3_i41h5")]
-layout_mode = 1
-radius = 35.0
-thickness = 3.5
-
 [node name="Progress" type="ProgressBar" parent="."]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
@@ -102,6 +91,17 @@ grow_horizontal = 2
 grow_vertical = 2
 value = 50.0
 show_percentage = false
+
+[node name="MouseCircle" parent="." instance=ExtResource("3_i41h5")]
+layout_mode = 1
+radius = 18.0
+thickness = 3.0
+filled = true
+
+[node name="Circle" parent="." instance=ExtResource("3_i41h5")]
+layout_mode = 1
+radius = 35.0
+thickness = 3.5
 
 [node name="Vignette" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_i41h5")
