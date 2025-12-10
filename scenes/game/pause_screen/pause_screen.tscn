@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7vjkiyy0e5io"]
+
+[ext_resource type="Script" uid="uid://c67xoj1qkuijl" path="res://scenes/game/pause_screen/pause_screen.gd" id="1_kv3x2"]
+[ext_resource type="StyleBox" uid="uid://c0n3qspfsq7he" path="res://resources/theme/game_button_normal.tres" id="2_sckth"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kv3x2"]
+font_size = 20
+
+[node name="PauseScreen" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kv3x2")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.17648
+offset_top = -27.0
+offset_right = 94.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "y/n"
+label_settings = SubResource("LabelSettings_kv3x2")
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_sckth")
+theme_override_styles/pressed = ExtResource("2_sckth")
+theme_override_styles/hover = ExtResource("2_sckth")
+text = "Fullscreen"
+
+[connection signal="button_down" from="Panel/MarginContainer/VBoxContainer/Button" to="." method="_on_button_button_down"]

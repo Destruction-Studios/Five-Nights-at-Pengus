@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://b7ypfeo8f3h3y"]
+[gd_scene load_steps=29 format=4 uid="uid://b7ypfeo8f3h3y"]
 
 [ext_resource type="Script" uid="uid://41dnrd7v5jmp" path="res://scenes/game/game.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://cqfr7gfmwkkky" path="res://assets/images/game/game_bg.png" id="1_sul5r"]
@@ -10,9 +10,18 @@
 [ext_resource type="Texture2D" uid="uid://cqttjtl5775lu" path="res://assets/images/cookie.png" id="6_5i0tg"]
 [ext_resource type="Texture2D" uid="uid://n1ub2n2p72u2" path="res://assets/images/game/pengu_visuals/pengu_door.png" id="7_5jirj"]
 [ext_resource type="Texture2D" uid="uid://xm1hwv8b8724" path="res://assets/images/game/door.png" id="7_kp23o"]
+[ext_resource type="AudioStream" uid="uid://bfkgxr1jdkxec" path="res://assets/audio/sound_effects/locator_open.ogg" id="7_otnwt"]
 [ext_resource type="StyleBox" uid="uid://c0n3qspfsq7he" path="res://resources/theme/game_button_normal.tres" id="8_2a8rs"]
+[ext_resource type="AudioStream" uid="uid://cneyv1yknax1c" path="res://assets/audio/sound_effects/locator_close.ogg" id="8_3xj4h"]
 [ext_resource type="StyleBox" uid="uid://cqbld28mck5lx" path="res://resources/theme/game_button_hover.tres" id="9_4j704"]
+[ext_resource type="AudioStream" uid="uid://hgd38ushup3o" path="res://assets/audio/music/starving.mp3" id="9_5v6r0"]
+[ext_resource type="Texture2D" uid="uid://b8jd8rcwhwtxp" path="res://assets/images/game/shudders.png" id="10_3xj4h"]
+[ext_resource type="AudioStream" uid="uid://otj3b7d673dh" path="res://assets/audio/sound_effects/grandfather_clock.mp3" id="10_uyinl"]
 [ext_resource type="Texture2D" uid="uid://ddu1xfre8iurh" path="res://assets/images/pengu.png" id="11_5jirj"]
+[ext_resource type="AudioStream" uid="uid://bax10rmq4gh0k" path="res://assets/audio/sound_effects/bag_down.mp3" id="11_gc57s"]
+[ext_resource type="AudioStream" uid="uid://das2gtk35xvy1" path="res://assets/audio/sound_effects/bag_up.mp3" id="12_8b66f"]
+[ext_resource type="Texture2D" uid="uid://bwglon04v3ybr" path="res://assets/images/game/bag.png" id="15_10c2w"]
+[ext_resource type="StyleBox" uid="uid://cm1t2qo1xkex3" path="res://resources/theme/progress_filled_white.tres" id="20_8b66f"]
 
 [sub_resource type="Animation" id="Animation_5i0tg"]
 length = 0.001
@@ -27,6 +36,35 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../../../../Bag:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -662)]
+}
+
+[sub_resource type="Animation" id="Animation_10c2w"]
+resource_name = "bag"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../../../../Bag:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(3.4821994, 1),
+"update": 0,
+"values": [Vector2(0, -662), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_lfrn8"]
@@ -49,6 +87,7 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bdhmt"]
 _data = {
 &"RESET": SubResource("Animation_5i0tg"),
+&"bag": SubResource("Animation_10c2w"),
 &"cookie_idle": SubResource("Animation_lfrn8")
 }
 
@@ -83,9 +122,9 @@ min_time = 0.3
 max_time = 1.5
 
 [node name="PenguCookieController" parent="." instance=ExtResource("2_vaxfo")]
-cookies = 5
-min_time = 2.0
-max_time = 7.5
+cookies = 18
+min_time = 4.0
+max_time = 12.0
 
 [node name="PenguAI" parent="." node_paths=PackedStringArray("game", "cookie_controller") instance=ExtResource("2_bdhmt")]
 game = NodePath("..")
@@ -102,20 +141,44 @@ stream = ExtResource("2_kelw5")
 bus = &"SFX"
 
 [node name="RandomSound" type="AudioStreamPlayer" parent="Sounds"]
+volume_db = 3.0
 bus = &"SFX"
 
 [node name="AmbienceSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("2_7h61r")
+volume_db = -12.0
 autoplay = true
 bus = &"Music"
 
 [node name="PenguSound" type="AudioStreamPlayer" parent="Sounds"]
-volume_db = -5.0
+volume_db = -8.0
+mix_target = 1
 bus = &"Pengu"
 
 [node name="DoorClose" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("5_kp23o")
+
+[node name="LocatorOpen" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_otnwt")
+
+[node name="LocatorClose" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_3xj4h")
+
+[node name="Starving" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("9_5v6r0")
+volume_db = -8.0
+mix_target = 1
+bus = &"Music"
+
+[node name="GrandfatherClock" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("10_uyinl")
 volume_db = 1.0
+
+[node name="BagDown" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("11_gc57s")
+
+[node name="BagUp" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("12_8b66f")
 
 [node name="Timers" type="Node" parent="."]
 
@@ -128,7 +191,6 @@ one_shot = true
 
 [node name="HourTimer" type="Timer" parent="Timers"]
 wait_time = 240.0
-one_shot = true
 
 [node name="SoundTimer" type="Timer" parent="Timers"]
 one_shot = true
@@ -144,6 +206,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_sul5r")
+expand_mode = 1
+
+[node name="Shudders" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_3xj4h")
 expand_mode = 1
 
 [node name="PenguVisual" type="TextureRect" parent="."]
@@ -166,6 +239,44 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_kp23o")
 expand_mode = 2
+
+[node name="MapCover" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Bag" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -662.0
+offset_bottom = -662.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Bag"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="TextureRect" type="TextureRect" parent="Bag"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_10c2w")
 
 [node name="GameUI" type="Control" parent="."]
 layout_mode = 1
@@ -215,6 +326,71 @@ theme_override_styles/normal = ExtResource("8_2a8rs")
 theme_override_styles/pressed = ExtResource("8_2a8rs")
 theme_override_styles/hover = ExtResource("9_4j704")
 
+[node name="Bag" type="Control" parent="GameUI"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 110.0
+offset_top = -65.0
+offset_right = 180.0
+offset_bottom = -15.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="GameUI/Bag"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = 13.0
+offset_right = -6.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(-139, 341)
+text = "BAG"
+horizontal_alignment = 1
+
+[node name="BagToggle" type="Button" parent="GameUI/Bag"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("8_2a8rs")
+theme_override_styles/pressed = ExtResource("8_2a8rs")
+theme_override_styles/hover = ExtResource("9_4j704")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/Bag"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 10
+
+[node name="AirProgress" type="ProgressBar" parent="GameUI/Bag/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+mouse_filter = 2
+theme_override_styles/fill = ExtResource("20_8b66f")
+value = 100.0
+fill_mode = 3
+show_percentage = false
+
 [node name="VBoxContainer" type="VBoxContainer" parent="GameUI"]
 layout_mode = 1
 anchors_preset = 15
@@ -256,6 +432,7 @@ mouse_filter = 2
 alignment = 2
 
 [node name="PenguCookies" type="HBoxContainer" parent="GameUI/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
@@ -365,5 +542,6 @@ disabled = true
 [connection signal="timeout" from="Timers/SoundTimer" to="." method="_on_sound_timer_timeout"]
 [connection signal="timeout" from="Timers/PenguSoundTimer" to="." method="_on_pengu_sound_timer_timeout"]
 [connection signal="button_down" from="GameUI/Door/DoorToggle" to="." method="_on_door_toggle_button_down"]
+[connection signal="button_down" from="GameUI/Bag/BagToggle" to="." method="_on_bag_toggle_button_down"]
 [connection signal="mouse_entered" from="GameUI/MarginContainer/LocatorButton" to="." method="_on_locator_button_mouse_entered"]
 [connection signal="button_down" from="GameUI/FeedButton" to="." method="_on_feed_button_button_down"]

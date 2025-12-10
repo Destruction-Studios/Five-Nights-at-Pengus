@@ -4,6 +4,9 @@ class_name Game
 const GAME_BG = preload("res://assets/images/game/game_bg.png")
 const GAME_BG_LIGHTOFF = preload("res://assets/images/game/game_bg_lightoff.png")
 
+const PROGRESS_FILLED_WHITE = preload("uid://cm1t2qo1xkex3")
+const PROGRESS_FILLED_RED = preload("uid://cxcadu4o5po31")
+
 const BREATHING = preload("res://assets/audio/sound_effects/random_game_sounds/breathing.mp3")
 
 const RANDOM_SOUNDS: Array[Resource] = [
@@ -26,7 +29,7 @@ const PENGU_SOUNDS: Array[Resource] = [
 	preload("res://assets/audio/sound_effects/pengu/mmm.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/oh.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/soda_pop.mp3"),
-	preload("res://assets/audio/sound_effects/pengu/soda_pop_2.mp3"),
+	#preload("res://assets/audio/sound_effects/pengu/soda_pop_2.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/stop.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/took_all_meatloaf.mp3"),
 	preload("res://assets/audio/sound_effects/pengu/where_is_iron.mp3"),
@@ -45,14 +48,17 @@ const PENGU_SOUNDS: Array[Resource] = [
 
 const PENGU_VISUALS = {
 	Utils.PENGU_POSITIONS.WINDOW_RIGHT: preload("res://assets/images/game/pengu_visuals/pengu_window_right.png"),
-	Utils.PENGU_POSITIONS.WINDOW_LEFT: preload("res://assets/images/game/pengu_visuals/pengu_window_left.png"),
+	Utils.PENGU_POSITIONS.WINDOW_LEFT: preload("res://assets/images/game/pengu_visuals/pengu_window_left_new.png"),
 	Utils.PENGU_POSITIONS.WINDOW_LEFT_LAY: preload("res://assets/images/game/pengu_visuals/pengu_window_left_lay.png"),
-	Utils.PENGU_POSITIONS.DOOR: preload("res://assets/images/game/pengu_visuals/pengu_door.png")
+	Utils.PENGU_POSITIONS.DOOR: preload("res://assets/images/game/pengu_visuals/pengu_door.png"),
+	Utils.PENGU_POSITIONS.TABLE: preload("res://assets/images/game/pengu_visuals/pengu_table.png"),
 }
 
 const MENU = preload("res://scenes/menu/menu.tscn")
 const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
 const MAP = preload("uid://c46r23oby0gq4")
+const BEHIND_MINIGAME = preload("uid://dmdpvvlx8kuo2")
+const PAUSE_SCREEN = preload("uid://b7vjkiyy0e5io")
 
 @export var pengu_ai: PenguAI
 @export var cookie_controller: CookieController
@@ -67,15 +73,20 @@ const MAP = preload("uid://c46r23oby0gq4")
 @onready var pengu_sound_timer: Timer = $Timers/PenguSoundTimer
 @onready var locator_button: Button = $GameUI/MarginContainer/LocatorButton
 @onready var feed_button: Button = $GameUI/FeedButton
+@onready var air_progress: ProgressBar = $GameUI/Bag/MarginContainer/AirProgress
 
 var light_flickering = false
 
+var is_hard_mode = false
 var is_game_over = false
 var is_door_closed = false
+var is_bag_down = false
+var must_wait_until_air_full = false
+var air: float = 100.0
 var time = 0
 
-var pengu_sound_range: FloatRange = FloatRange.new(2.5, 5.5)
-var rand_sound_range: FloatRange = FloatRange.new(5.0, 22.0)
+var pengu_sound_range: FloatRange = FloatRange.new(2.5, 7.5)
+var rand_sound_range: FloatRange = FloatRange.new(3.0, 7.0)
 var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 
 var available_pengu_sounds: Array[Resource] = PENGU_SOUNDS.duplicate()
@@ -83,6 +94,9 @@ var available_pengu_sounds: Array[Resource] = PENGU_SOUNDS.duplicate()
 var current_map: Map
 
 func _ready() -> void:
+	GameSettings.reset()
+	SceneFade.enable_blinking()
+	
 	update_cookies()
 	
 	$Timers/GameDurationTimer.wait_time = GameSettings.GAME_DURATION_SECONDS
@@ -99,6 +113,29 @@ func _ready() -> void:
 	pengus_cookies_updated(pengu_ai.cookie_controller.cookies)
 	pengu_ai.cookie_controller.cookies_updated.connect(pengus_cookies_updated)
 
+func _process(delta: float) -> void:
+	if is_bag_down:
+		air -= GameSettings.AIR_DECREASE * delta
+	else:
+		air += GameSettings.AIR_INCREASE * delta
+	air = clampf(air, 0.0, 100.0)
+	air_progress.value = air
+	
+	if air <= 0.0:
+		must_wait_until_air_full = true
+		is_bag_down = false
+		bag_up()
+		air_progress.add_theme_stylebox_override("fill", PROGRESS_FILLED_RED)
+	elif air >= 100.0 and must_wait_until_air_full:
+		print("Air refilled")
+		must_wait_until_air_full = false
+		air_progress.add_theme_stylebox_override("fill", PROGRESS_FILLED_WHITE)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		var inst = PAUSE_SCREEN.instantiate()
+		add_child(inst)
+
 func game_over() -> void:
 	is_game_over = true
 	print("Game Over!")
@@ -112,29 +149,60 @@ func game_over() -> void:
 	random_sound.stop()
 	pengu_sound.stop()
 	
-	var win: WinScreen = WIN_SCREEN.instantiate()
-	add_child(win)
-	win.animation_finished.connect(func():
-		print("Transition Back")
-		Transitions.transition_to_file("res://scenes/menu/menu.tscn")
-	)
+	get_tree().change_scene_to_file("res://scenes/game/win_screen/win_screen.tscn")
+
+func init_hard_mode():
+	SceneFade.blink()
+	await SceneFade.blink_halfway
+	is_hard_mode = true
+	$Shudders.visible = true
+	$Sounds/Starving.play()
+	pengu_updated(pengu_ai.current_pos)
+	SceneFade.disable_blinking()
+	GameSettings.set_hard()
 
 func game_hour_passed() -> void:
 	if is_game_over:
 		return
 	time += 1
 	time_label.text = str(time) + ":00"
-	$Sounds/ClockTickSound.play()
-	print("Hour Passed, ", $Timers/GameDurationTimer.time_left, " left")
+	
+	if time == GameSettings.HARD_MODE_START:
+		$Sounds/GrandfatherClock.play()
+		await $Sounds/GrandfatherClock.finished
+		init_hard_mode()
+	else:
+		$Sounds/ClockTickSound.play()
 
-func lost_game() -> void:
+func jumpscare() -> void:
 	is_game_over = true
 	get_tree().change_scene_to_file("res://scenes/game/jumpscare/jumpscare.tscn")
+
+func start_minigame() -> bool:
+	if current_map:
+		close_map()
+	
+	var inst: StarvingMinigame = BEHIND_MINIGAME.instantiate()
+	add_child(inst)
+	await inst.minigame_completed
+	
+	if inst.failed:
+		jumpscare()
+		return false
+	else:
+		inst.queue_free()
+		return true
 
 func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 	var new_texture: Resource
 	if PENGU_VISUALS.has(pos):
-		new_texture = PENGU_VISUALS.get(pos)
+		if is_hard_mode:
+			if pos != Utils.PENGU_POSITIONS.DOOR and pos != Utils.PENGU_POSITIONS.TABLE:
+				new_texture = null
+			else:
+				new_texture = PENGU_VISUALS.get(pos)
+		else:
+			new_texture = PENGU_VISUALS.get(pos)
 	
 	$PenguVisual.texture = new_texture
 	
@@ -157,8 +225,7 @@ func update_cookies() -> void:
 		if is_door_closed:
 			toggle_door(false)
 		if current_map != null:
-			current_map.queue_free()
-			current_map = null
+			close_map()
 
 func toggle_door(closed: bool) -> void:
 	if is_door_closed == closed:
@@ -188,7 +255,6 @@ func _on_hour_timer_timeout() -> void:
 
 
 func _on_sound_timer_timeout() -> void:
-	print("Play rand sound")
 	random_sound.stream = RANDOM_SOUNDS.pick_random()
 	random_sound.play()
 	await random_sound.finished
@@ -212,7 +278,6 @@ func _on_pengu_sound_timer_timeout() -> void:
 	if available_pengu_sounds.is_empty():
 		print("Empty sounds, replacing")
 		available_pengu_sounds = PENGU_SOUNDS.duplicate()
-	print("Pengu speak")
 	var randomInt := randi_range(0, available_pengu_sounds.size()-1)
 	pengu_sound.stream = available_pengu_sounds[randomInt]
 	pengu_sound.play()
@@ -222,20 +287,29 @@ func _on_pengu_sound_timer_timeout() -> void:
 	await pengu_sound.finished
 	pengu_sound_timer.start(pengu_sound_range.rand())
 
+func close_map() -> void:
+	current_map.queue_free()
+	current_map = null
+	$MapCover.visible = false
+	cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
+	$Sounds/LocatorClose.play()
+
+func open_map() -> void:
+	var inst: Map = MAP.instantiate()
+	inst.pengu_ai = pengu_ai
+	add_child(inst)
+	current_map = inst
+	$MapCover.visible = true
+	cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
+	$Sounds/LocatorOpen.play()
 
 func _on_locator_button_mouse_entered() -> void:
+	if is_bag_down: return
 	if cookie_controller.is_empty(): return
 	if current_map == null:
-		var inst: Map = MAP.instantiate()
-		inst.pengu_ai = pengu_ai
-		add_child(inst)
-		current_map = inst
-		
-		cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
+		open_map()
 	elif current_map != null:
-		current_map.queue_free()
-		current_map = null
-		cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
+		close_map()
 
 
 func _on_pengu_ai_position_updated() -> void:
@@ -243,6 +317,7 @@ func _on_pengu_ai_position_updated() -> void:
 
 
 func _on_door_toggle_button_down() -> void:
+	if is_bag_down: return
 	toggle_door(!is_door_closed)
 
 
@@ -266,3 +341,24 @@ func _on_feed_button_button_down() -> void:
 
 func _on_cookie_controller_cookies_updated(_cookies: int) -> void:
 	update_cookies()
+
+func bag_up() -> void:
+	is_bag_down = false
+	$Sounds/BagUp.play()
+	$AnimationPlayer.play_backwards("bag")
+
+func bag_down() -> void:
+	is_bag_down = true
+	if current_map:
+		close_map()
+		
+	$AnimationPlayer.play("bag")
+	$Sounds/BagDown.play()
+
+func _on_bag_toggle_button_down() -> void:
+	if must_wait_until_air_full: return
+	is_bag_down = !is_bag_down
+	if is_bag_down:
+		bag_down()
+	else:
+		bag_up()

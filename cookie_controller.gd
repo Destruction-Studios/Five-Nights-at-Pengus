@@ -10,6 +10,7 @@ signal cookies_updated(cookies: int)
 @onready var cookie_timer: Timer = $CookieTimer
 
 var stopped = false
+var paused = false
 
 func _ready() -> void:
 	cookie_timer.start(randf_range(min_time, max_time))
@@ -50,6 +51,7 @@ func format() -> String:
 
 func _on_cookie_timer_timeout() -> void:
 	if stopped: return
-	remove_cookies(1)
+	if !paused:
+		remove_cookies(1)
 	cookie_timer.start(randf_range(min_time, max_time))
 	#print("Time Left: ", $CookieTimer.time_left)
