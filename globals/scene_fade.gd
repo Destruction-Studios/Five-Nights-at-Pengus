@@ -37,7 +37,7 @@ func blink() -> void:
 	if !blinking_enabled:
 		call_deferred("_emit_b_halfway")
 		return
-	$AnimationPlayer.play("blink")
+	$AnimationPlayer.play("blink_new")
 
 func _emit_b_halfway() -> void:
 	blink_halfway.emit()

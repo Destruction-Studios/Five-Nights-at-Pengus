@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://drb1dfhmti8fx"]
+[gd_scene load_steps=8 format=3 uid="uid://drb1dfhmti8fx"]
 
 [ext_resource type="Script" uid="uid://dt3sf00xekohv" path="res://globals/scene_fade.gd" id="1_rphsy"]
+[ext_resource type="Shader" uid="uid://b005g7b3wdpbd" path="res://globals/blink.gdshader" id="2_oqai7"]
 
 [sub_resource type="Animation" id="Animation_oqai7"]
 length = 0.001
@@ -51,6 +52,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 324)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Blink:material:shader_parameter/open_amount")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.999999977648]
 }
 
 [sub_resource type="Animation" id="Animation_rphsy"]
@@ -119,11 +132,48 @@ tracks/4/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_rm848"]
+resource_name = "blink_new"
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Blink:material:shader_parameter/open_amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25568363, 0.35, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.999999977648, 0.0, 0.0, 0.999999977648]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.27500004),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_emit_b_halfway"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rm848"]
 _data = {
 &"RESET": SubResource("Animation_oqai7"),
-&"blink": SubResource("Animation_rphsy")
+&"blink": SubResource("Animation_rphsy"),
+&"blink_new": SubResource("Animation_rm848")
 }
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rm848"]
+shader = ExtResource("2_oqai7")
+shader_parameter/open_amount = 0.999999977648
+shader_parameter/edge_blur_amount = 0.2999999932944
+shader_parameter/color = Color(0, 0, 0, 1)
 
 [node name="SceneFade" type="CanvasLayer"]
 process_mode = 3
@@ -171,8 +221,17 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -324.0
-offset_bottom = 6.1035156e-05
+offset_bottom = 0.00024414063
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 color = Color(0.050980393, 0.050980393, 0.050980393, 0)
+
+[node name="Blink" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_rm848")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
