@@ -22,7 +22,6 @@ volume_db = -20.0
 pitch_scale = 0.9
 
 [node name="BlinkTimer" type="Timer" parent="."]
-autostart = true
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

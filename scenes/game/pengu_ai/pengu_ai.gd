@@ -137,18 +137,18 @@ func try_move() -> void:
 	var next_pos = get_next_pos()
 
 	# DOOR MOVE
-	if next_pos == Utils.PENGU_POSITIONS.DOOR:
-		await do_blink()
-		move(next_pos)
-		start_move_timer(0.3)
-		return
+	#if next_pos == Utils.PENGU_POSITIONS.DOOR:
+		#await do_blink()
+		#move(next_pos)
+		#start_move_timer(0.5)
+		#return
 
 	# PLAYER MOVE
 	if next_pos == Utils.PENGU_POSITIONS.PLAYER:
 		print("To Player, waiting")
-		var delay = GameSettings.ATTACK_DELAY.rand()
-		attack_timer.start(delay)
-		await attack_timer.timeout
+		#var delay = GameSettings.ATTACK_DELAY.rand()
+		#attack_timer.start(delay)
+		#await attack_timer.timeout
 
 		var can_attack := !(current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed)
 		if !can_attack:
@@ -178,7 +178,7 @@ func try_move() -> void:
 				return
 		
 		cookie_controller.paused = true
-
+		print("Starting minigame from: ", Utils.PENGU_POSITIONS.find_key(current_pos))
 		move(Utils.PENGU_POSITIONS.TABLE)
 
 		var success = await game.start_minigame()
@@ -196,11 +196,15 @@ func try_move() -> void:
 		do_blink()
 		start_move_timer()
 		return
-
+	
+	var multi: float = 1.0
+	if next_pos == Utils.PENGU_POSITIONS.DOOR:
+		multi = 0.3
+	
 	# DEFAULT MOVE
 	do_blink()
 	move(next_pos)
-	start_move_timer(GameSettings.MOVE_TIME.rand())
+	start_move_timer(multi)
 
 func _on_move_timer_timeout() -> void:
 	print("Try Move")

@@ -7,6 +7,7 @@ var pengu_ai: PenguAI
 var on = false
 
 func _ready():
+	blink_timer.start(.25)
 	set_trans(0)
 	update()
 
@@ -21,6 +22,7 @@ func update() -> void:
 
 
 func _on_blink_timer_timeout() -> void:
+	blink_timer.wait_time = 0.6
 	on = !on
 	
 	if on:

@@ -4,6 +4,9 @@ class_name Game
 const GAME_BG = preload("res://assets/images/game/game_bg.png")
 const GAME_BG_LIGHTOFF = preload("res://assets/images/game/game_bg_lightoff.png")
 
+const PROGRESS_FILLED_WHITE = preload("uid://cm1t2qo1xkex3")
+const PROGRESS_FILLED_RED = preload("uid://cxcadu4o5po31")
+
 const BREATHING = preload("res://assets/audio/sound_effects/random_game_sounds/breathing.mp3")
 
 const RANDOM_SOUNDS: Array[Resource] = [
@@ -70,6 +73,7 @@ const PAUSE_SCREEN = preload("uid://b7vjkiyy0e5io")
 @onready var pengu_sound_timer: Timer = $Timers/PenguSoundTimer
 @onready var locator_button: Button = $GameUI/MarginContainer/LocatorButton
 @onready var feed_button: Button = $GameUI/FeedButton
+@onready var air_progress: ProgressBar = $GameUI/Bag/MarginContainer/AirProgress
 
 var light_flickering = false
 
@@ -77,6 +81,8 @@ var is_hard_mode = false
 var is_game_over = false
 var is_door_closed = false
 var is_bag_down = false
+var must_wait_until_air_full = false
+var air: float = 100.0
 var time = 0
 
 var pengu_sound_range: FloatRange = FloatRange.new(2.5, 7.5)
@@ -106,6 +112,24 @@ func _ready() -> void:
 	pengu_updated(pengu_ai.current_pos)
 	pengus_cookies_updated(pengu_ai.cookie_controller.cookies)
 	pengu_ai.cookie_controller.cookies_updated.connect(pengus_cookies_updated)
+
+func _process(delta: float) -> void:
+	if is_bag_down:
+		air -= GameSettings.AIR_DECREASE * delta
+	else:
+		air += GameSettings.AIR_INCREASE * delta
+	air = clampf(air, 0.0, 100.0)
+	air_progress.value = air
+	
+	if air <= 0.0:
+		must_wait_until_air_full = true
+		is_bag_down = false
+		bag_up()
+		air_progress.add_theme_stylebox_override("fill", PROGRESS_FILLED_RED)
+	elif air >= 100.0 and must_wait_until_air_full:
+		print("Air refilled")
+		must_wait_until_air_full = false
+		air_progress.add_theme_stylebox_override("fill", PROGRESS_FILLED_WHITE)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
@@ -320,15 +344,23 @@ func _on_feed_button_button_down() -> void:
 func _on_cookie_controller_cookies_updated(_cookies: int) -> void:
 	update_cookies()
 
+func bag_up() -> void:
+	is_bag_down = false
+	$Sounds/BagUp.play()
+	$AnimationPlayer.play_backwards("bag")
+
+func bag_down() -> void:
+	is_bag_down = true
+	if current_map:
+		close_map()
+		
+	$AnimationPlayer.play("bag")
+	$Sounds/BagDown.play()
 
 func _on_bag_toggle_button_down() -> void:
+	if must_wait_until_air_full: return
 	is_bag_down = !is_bag_down
 	if is_bag_down:
-		if current_map:
-			close_map()
-		
-		$AnimationPlayer.play("bag")
-		$Sounds/BagDown.play()
+		bag_down()
 	else:
-		$Sounds/BagUp.play()
-		$AnimationPlayer.play_backwards("bag")
+		bag_up()
