@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cjwrwa6l1m076"]
+[gd_scene load_steps=5 format=3 uid="uid://drb1dfhmti8fx"]
 
 [ext_resource type="Script" uid="uid://dt3sf00xekohv" path="res://globals/scene_fade.gd" id="1_rphsy"]
 

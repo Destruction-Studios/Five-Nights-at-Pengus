@@ -10,12 +10,11 @@ signal position_updated
 @onready var attack_timer: Timer = $AttackTimer
 
 var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
-var move_time_range: FloatRange = FloatRange.new(GameSettings.MIN_MOVE_TIME, GameSettings.MAX_MOVE_TIME)
 
 var has_been_fed: bool = false
 
 func _ready() -> void:
-	move_timer.start(move_time_range.rand())
+	move_timer.start(GameSettings.MOVE_TIME.rand())
 	cookie_controller.cookies_updated.connect(cookies_updated)
 
 func stop() -> void:
@@ -87,6 +86,9 @@ func stop() -> void:
 func get_next_pos() -> Utils.PENGU_POSITIONS:
 	var paths: Dictionary = Utils.AI_PATHS[current_pos]
 	
+	if current_pos == Utils.PENGU_POSITIONS.PLAYER:
+		return Utils.PENGU_POSITIONS.PLAYER
+	
 	if paths.size() == 1:
 		return paths.keys()[0]
 	
@@ -124,49 +126,84 @@ func will_jumpscare() -> bool:
 	if current_pos == Utils.PENGU_POSITIONS.DOOR or current_pos == Utils.PENGU_POSITIONS.ROOM_BEHIND: return true
 	return false
 
-func try_move() -> void:
-	var next_pos = get_next_pos()
-	if next_pos == Utils.PENGU_POSITIONS.PLAYER:
-		if current_pos == Utils.PENGU_POSITIONS.ROOM_BEHIND or current_pos == Utils.PENGU_POSITIONS._RBH_ALT:
-			print("Do Minigame")
-			
-			cookie_controller.paused = true
-			
-			move(Utils.PENGU_POSITIONS.TABLE)
-			var success = await game.start_minigame()
-			if !success: return
-			Transitions.blink()
-			await Transitions.blink_halfway
-			move(Utils.PENGU_POSITIONS.START)
-			move_timer.start(move_time_range.rand() * GameSettings.MOVE_SUCCESS_TIME_MULTI)
-			cookie_controller.paused = false
-		else:
-			attack_timer.start(GameSettings.ATTACK_DELAY.rand())
-			await attack_timer.timeout
-		
-			var can_attack = true
-			if current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed:
-				can_attack = false
-			
-			if !can_attack: 
-				Transitions.blink()
-				await Transitions.blink_halfway
-				move(Utils.PENGU_POSITIONS.START)
-				#TODO make it no delay in hard
-				move_timer.start(move_time_range.rand())
-				return
-			
-			game.jumpscare()
-			return
-	if !randi_range(1, GameSettings.MOVE_CHANCE) == 1:
-		move_timer.start(move_time_range.rand())
-		return
+func do_blink() -> void:
 	Transitions.blink()
 	await Transitions.blink_halfway
+
+func start_move_timer(multi: float = 1.0) -> void:
+	move_timer.start(GameSettings.MOVE_TIME.rand() * multi)
+
+func try_move() -> void:
+	var next_pos = get_next_pos()
+
+	# DOOR MOVE
+	if next_pos == Utils.PENGU_POSITIONS.DOOR:
+		await do_blink()
+		move(next_pos)
+		start_move_timer(0.3)
+		return
+
+	# PLAYER MOVE
+	if next_pos == Utils.PENGU_POSITIONS.PLAYER:
+		print("To Player, waiting")
+		var delay = GameSettings.ATTACK_DELAY.rand()
+		attack_timer.start(delay)
+		await attack_timer.timeout
+
+		var can_attack := !(current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed)
+		if !can_attack:
+			do_blink()
+			move(Utils.PENGU_POSITIONS.START)
+			start_move_timer()
+			return
+
+		game.jumpscare()
+		return
+
+	# TABLE (Minigame)
+	if next_pos == Utils.PENGU_POSITIONS.TABLE:
+		if game.is_bag_down:
+			var i: float = 0.0
+			var start_minigame = false
+			while i < GameSettings.BAG_WAIT:
+				if !game.is_bag_down:
+					start_minigame = true
+					break
+				await get_tree().create_timer(.1).timeout
+				i += 0.1
+			if !start_minigame:
+				await do_blink()
+				move(Utils.PENGU_POSITIONS.START)
+				start_move_timer(0.5)
+				return
+		
+		cookie_controller.paused = true
+
+		move(Utils.PENGU_POSITIONS.TABLE)
+
+		var success = await game.start_minigame()
+		if !success:
+			return
+
+		do_blink()
+		move(Utils.PENGU_POSITIONS.START)
+		start_move_timer()
+		cookie_controller.paused = false
+		return
+
+	# RANDOM MOVE CHANCE
+	if randi_range(1, GameSettings.MOVE_CHANCE) != 1:
+		do_blink()
+		start_move_timer()
+		return
+
+	# DEFAULT MOVE
+	do_blink()
 	move(next_pos)
-	move_timer.start(move_time_range.rand() * GameSettings.MOVE_SUCCESS_TIME_MULTI)
+	start_move_timer(GameSettings.MOVE_TIME.rand())
 
 func _on_move_timer_timeout() -> void:
+	print("Try Move")
 	try_move()
 
 func feed(amount: int) -> void:
@@ -174,11 +211,12 @@ func feed(amount: int) -> void:
 	cookie_controller.add_cookies(amount)
 
 
-func cookies_updated(cookies: int) -> void:
-	print("Pengu has ", cookies, " cookies")
-	if cookies <= 0:
-		if !$Starving.playing: $Starving.play()
-	if cookies <= 4:
-		if !$Hungry.playing: $Hungry.play()
-	else:
-		$Hungry.stop()
+func cookies_updated(_cookies: int) -> void:
+	pass
+	#print("Pengu has ", cookies, " cookies")
+	#if cookies <= 0:
+		#if !$Starving.playing: $Starving.play()
+	#if cookies <= 4:
+		#if !$Hungry.playing: $Hungry.play()
+	#else:
+		#$Hungry.stop()

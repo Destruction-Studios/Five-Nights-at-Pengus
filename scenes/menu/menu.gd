@@ -2,11 +2,13 @@ extends Control
 
 @onready var button_sound: AudioStreamPlayer = $ButtonSound
 
+func _ready() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 func _on_play_button_down() -> void:
 	Transitions.transition_to_file("res://scenes/game/game.tscn")
 	button_sound.play()
 	
-
 
 func _on_fullscreen_button_down() -> void:
 	var mode = DisplayServer.window_get_mode()

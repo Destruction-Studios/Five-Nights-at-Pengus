@@ -73,8 +73,10 @@ const PAUSE_SCREEN = preload("uid://b7vjkiyy0e5io")
 
 var light_flickering = false
 
+var is_hard_mode = false
 var is_game_over = false
 var is_door_closed = false
+var is_bag_down = false
 var time = 0
 
 var pengu_sound_range: FloatRange = FloatRange.new(2.5, 7.5)
@@ -86,6 +88,9 @@ var available_pengu_sounds: Array[Resource] = PENGU_SOUNDS.duplicate()
 var current_map: Map
 
 func _ready() -> void:
+	GameSettings.reset()
+	SceneFade.enable_blinking()
+	
 	update_cookies()
 	
 	$Timers/GameDurationTimer.wait_time = GameSettings.GAME_DURATION_SECONDS
@@ -120,20 +125,30 @@ func game_over() -> void:
 	random_sound.stop()
 	pengu_sound.stop()
 	
-	var win: WinScreen = WIN_SCREEN.instantiate()
-	add_child(win)
-	win.animation_finished.connect(func():
-		print("Transition Back")
-		Transitions.transition_to_file("res://scenes/menu/menu.tscn")
-	)
+	get_tree().change_scene_to_file("res://scenes/game/win_screen/win_screen.tscn")
+
+func init_hard_mode():
+	SceneFade.blink()
+	await SceneFade.blink_halfway
+	is_hard_mode = true
+	$Shudders.visible = true
+	$Sounds/Starving.play()
+	pengu_updated(pengu_ai.current_pos)
+	SceneFade.disable_blinking()
+	GameSettings.set_hard()
 
 func game_hour_passed() -> void:
 	if is_game_over:
 		return
 	time += 1
 	time_label.text = str(time) + ":00"
-	$Sounds/ClockTickSound.play()
-	print("Hour Passed, ", $Timers/GameDurationTimer.time_left, " left")
+	
+	if time == GameSettings.HARD_MODE_START:
+		$Sounds/GrandfatherClock.play()
+		await $Sounds/GrandfatherClock.finished
+		init_hard_mode()
+	else:
+		$Sounds/ClockTickSound.play()
 
 func jumpscare() -> void:
 	is_game_over = true
@@ -141,8 +156,7 @@ func jumpscare() -> void:
 
 func start_minigame() -> bool:
 	if current_map:
-		current_map.queue_free()
-		current_map = null
+		close_map()
 	
 	var inst: StarvingMinigame = BEHIND_MINIGAME.instantiate()
 	add_child(inst)
@@ -158,7 +172,13 @@ func start_minigame() -> bool:
 func pengu_updated(pos: Utils.PENGU_POSITIONS) -> void:
 	var new_texture: Resource
 	if PENGU_VISUALS.has(pos):
-		new_texture = PENGU_VISUALS.get(pos)
+		if is_hard_mode:
+			if pos != Utils.PENGU_POSITIONS.DOOR and pos != Utils.PENGU_POSITIONS.TABLE:
+				new_texture = null
+			else:
+				new_texture = PENGU_VISUALS.get(pos)
+		else:
+			new_texture = PENGU_VISUALS.get(pos)
 	
 	$PenguVisual.texture = new_texture
 	
@@ -181,8 +201,7 @@ func update_cookies() -> void:
 		if is_door_closed:
 			toggle_door(false)
 		if current_map != null:
-			current_map.queue_free()
-			current_map = null
+			close_map()
 
 func toggle_door(closed: bool) -> void:
 	if is_door_closed == closed:
@@ -246,22 +265,27 @@ func _on_pengu_sound_timer_timeout() -> void:
 	await pengu_sound.finished
 	pengu_sound_timer.start(pengu_sound_range.rand())
 
+func close_map() -> void:
+	current_map.queue_free()
+	current_map = null
+	cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
+	$Sounds/LocatorClose.play()
+
+func open_map() -> void:
+	var inst: Map = MAP.instantiate()
+	inst.pengu_ai = pengu_ai
+	add_child(inst)
+	current_map = inst
+	cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
+	$Sounds/LocatorOpen.play()
 
 func _on_locator_button_mouse_entered() -> void:
+	if is_bag_down: return
 	if cookie_controller.is_empty(): return
 	if current_map == null:
-		var inst: Map = MAP.instantiate()
-		inst.pengu_ai = pengu_ai
-		add_child(inst)
-		current_map = inst
-		
-		cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
-		$Sounds/LocatorOpen.play()
+		open_map()
 	elif current_map != null:
-		current_map.queue_free()
-		current_map = null
-		cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
-		$Sounds/LocatorClose.play()
+		close_map()
 
 
 func _on_pengu_ai_position_updated() -> void:
@@ -269,6 +293,7 @@ func _on_pengu_ai_position_updated() -> void:
 
 
 func _on_door_toggle_button_down() -> void:
+	if is_bag_down: return
 	toggle_door(!is_door_closed)
 
 
@@ -292,3 +317,16 @@ func _on_feed_button_button_down() -> void:
 
 func _on_cookie_controller_cookies_updated(_cookies: int) -> void:
 	update_cookies()
+
+
+func _on_bag_toggle_button_down() -> void:
+	is_bag_down = !is_bag_down
+	if is_bag_down:
+		if current_map:
+			close_map()
+		
+		$AnimationPlayer.play("bag")
+		$Sounds/BagDown.play()
+	else:
+		$Sounds/BagUp.play()
+		$AnimationPlayer.play_backwards("bag")
