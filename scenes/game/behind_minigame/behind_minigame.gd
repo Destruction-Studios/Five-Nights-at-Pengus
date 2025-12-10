@@ -31,9 +31,9 @@ func _ready() -> void:
 	target_pos = circle.circle_position
 	current_pos = circle.circle_position
 	
-	Input.warp_mouse(current_pos)
+	Input.warp_mouse(target_pos)
 	
-	$BumpTimer.start(.05)
+	$BumpTimer.start(.1)
 	$GameTimer.start(GameSettings.MINIGAME_DURATION)
 	
 	update_progress()

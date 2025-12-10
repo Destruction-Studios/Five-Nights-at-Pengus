@@ -13,17 +13,17 @@ const COOKIES_TO_FEED = 10
 
 #AI
 const PENGU_MAX_COOKIES = 18
-const MIN_MOVE_TIME: float = 2.0
-const MAX_MOVE_TIME: float = 5.5
-const MOVE_SUCCESS_TIME_MULTI: float = 1.5
+const MIN_MOVE_TIME: float = 1.0
+const MAX_MOVE_TIME: float = 3.0
+const MOVE_SUCCESS_TIME_MULTI: float = 1.2
 const ATTACK_CHANCE: int = 3
 const MOVE_CHANCE: int = 3
-var ATTACK_DELAY: FloatRange = FloatRange.new(2.0, 5.0)
+var ATTACK_DELAY: FloatRange = FloatRange.new(2.0, 4.5)
 
 #Minigame
 const MINIGAME_DURATION = 20 #seconds
 const BUMP_OFFSET = Vector2(130, 75)
-const START_PROGRESS = 20
+const START_PROGRESS = 30
 const PROGRESS_INCREASE = 16
 const PROGRESS_DECREASE = 17
 var BUMP_RANGE: FloatRange = FloatRange.new(.22, 1.5)
