@@ -268,6 +268,7 @@ func _on_pengu_sound_timer_timeout() -> void:
 func close_map() -> void:
 	current_map.queue_free()
 	current_map = null
+	$MapCover.visible = false
 	cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
 	$Sounds/LocatorClose.play()
 
@@ -276,6 +277,7 @@ func open_map() -> void:
 	inst.pengu_ai = pengu_ai
 	add_child(inst)
 	current_map = inst
+	$MapCover.visible = true
 	cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
 	$Sounds/LocatorOpen.play()
 
