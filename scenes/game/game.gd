@@ -55,6 +55,7 @@ const MENU = preload("res://scenes/menu/menu.tscn")
 const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
 const MAP = preload("uid://c46r23oby0gq4")
 const BEHIND_MINIGAME = preload("uid://dmdpvvlx8kuo2")
+const PAUSE_SCREEN = preload("uid://b7vjkiyy0e5io")
 
 @export var pengu_ai: PenguAI
 @export var cookie_controller: CookieController
@@ -100,6 +101,11 @@ func _ready() -> void:
 	pengu_updated(pengu_ai.current_pos)
 	pengus_cookies_updated(pengu_ai.cookie_controller.cookies)
 	pengu_ai.cookie_controller.cookies_updated.connect(pengus_cookies_updated)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		var inst = PAUSE_SCREEN.instantiate()
+		add_child(inst)
 
 func game_over() -> void:
 	is_game_over = true
