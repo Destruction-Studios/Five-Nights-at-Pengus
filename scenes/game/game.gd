@@ -86,7 +86,7 @@ var air: float = 100.0
 var time = 0
 
 var pengu_sound_range: FloatRange = FloatRange.new(2.5, 7.5)
-var rand_sound_range: FloatRange = FloatRange.new(5.0, 22.0)
+var rand_sound_range: FloatRange = FloatRange.new(3.0, 7.0)
 var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 
 var available_pengu_sounds: Array[Resource] = PENGU_SOUNDS.duplicate()
@@ -255,7 +255,6 @@ func _on_hour_timer_timeout() -> void:
 
 
 func _on_sound_timer_timeout() -> void:
-	print("Play rand sound")
 	random_sound.stream = RANDOM_SOUNDS.pick_random()
 	random_sound.play()
 	await random_sound.finished
@@ -279,7 +278,6 @@ func _on_pengu_sound_timer_timeout() -> void:
 	if available_pengu_sounds.is_empty():
 		print("Empty sounds, replacing")
 		available_pengu_sounds = PENGU_SOUNDS.duplicate()
-	print("Pengu speak")
 	var randomInt := randi_range(0, available_pengu_sounds.size()-1)
 	pengu_sound.stream = available_pengu_sounds[randomInt]
 	pengu_sound.play()

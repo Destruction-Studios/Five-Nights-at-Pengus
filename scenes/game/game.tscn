@@ -141,11 +141,12 @@ stream = ExtResource("2_kelw5")
 bus = &"SFX"
 
 [node name="RandomSound" type="AudioStreamPlayer" parent="Sounds"]
+volume_db = 3.0
 bus = &"SFX"
 
 [node name="AmbienceSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("2_7h61r")
-volume_db = -20.0
+volume_db = -12.0
 autoplay = true
 bus = &"Music"
 

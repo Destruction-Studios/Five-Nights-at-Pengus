@@ -86,10 +86,13 @@ func stop() -> void:
 func get_next_pos() -> Utils.PENGU_POSITIONS:
 	var paths: Dictionary = Utils.AI_PATHS[current_pos]
 	
+	print("Paths from ", Utils.PENGU_POSITIONS.find_key(current_pos), ": ", paths)
+	
 	if current_pos == Utils.PENGU_POSITIONS.PLAYER:
 		return Utils.PENGU_POSITIONS.PLAYER
 	
 	if paths.size() == 1:
+		print("return single")
 		return paths.keys()[0]
 	
 	var total := 0
@@ -152,7 +155,7 @@ func try_move() -> void:
 
 		var can_attack := !(current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed)
 		if !can_attack:
-			do_blink()
+			await do_blink()
 			move(Utils.PENGU_POSITIONS.START)
 			start_move_timer()
 			return
@@ -185,7 +188,7 @@ func try_move() -> void:
 		if !success:
 			return
 
-		do_blink()
+		await do_blink()
 		move(Utils.PENGU_POSITIONS.START)
 		start_move_timer()
 		cookie_controller.paused = false
@@ -193,7 +196,7 @@ func try_move() -> void:
 
 	# RANDOM MOVE CHANCE
 	if randi_range(1, GameSettings.MOVE_CHANCE) != 1:
-		do_blink()
+		await do_blink()
 		start_move_timer()
 		return
 	
@@ -202,7 +205,7 @@ func try_move() -> void:
 		multi = 0.3
 	
 	# DEFAULT MOVE
-	do_blink()
+	await do_blink()
 	move(next_pos)
 	start_move_timer(multi)
 

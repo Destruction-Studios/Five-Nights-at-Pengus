@@ -2,11 +2,11 @@ extends Node
 
 # GAME
 const _HARD_MODE_START: int = 1
-const _HOUR_DURATION: int = 5
+const _HOUR_DURATION: int = 10
 const _GAME_DURATION_HOURS: int = 60
 const _GAME_DURATION_SECONDS: int = _GAME_DURATION_HOURS * _HOUR_DURATION
 
-const _AIR_DECREASE = 100.0/2.2
+const _AIR_DECREASE = 100.0/3.2
 const _AIR_INCREASE = 100.0/7.0
 
 # COOKIES
@@ -21,7 +21,7 @@ const _MOVE_SUCCESS_TIME_MULTI: float = 1.2
 const _MOVE_CHANCE: int = 3
 
 # MINIGAME
-const _BAG_WAIT: float = 3.0
+const _BAG_WAIT: float = 1.5
 const _MINIGAME_DURATION: int = 20
 const _BUMP_OFFSET: Vector2 = Vector2(130, 75)
 const _START_PROGRESS: int = 30
