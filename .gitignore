@@ -16,7 +16,8 @@ data_*/
 mono_crash.*.json
 
 #stuff
-*.exe
-*.console.exe
-*.zip
-.exports/exe/fnap.console.exe
+.exports/
+# *.exe
+# *.console.exe
+# *.zip
+# .exports/exe/fnap.console.exe
