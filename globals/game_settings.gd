@@ -2,7 +2,7 @@ extends Node
 
 # GAME
 const _HARD_MODE_START: int = 1
-const _HOUR_DURATION: int = 10
+const _HOUR_DURATION: int = 1000
 const _GAME_DURATION_HOURS: int = 60
 const _GAME_DURATION_SECONDS: int = _GAME_DURATION_HOURS * _HOUR_DURATION
 
@@ -10,12 +10,12 @@ const _AIR_DECREASE = 100.0/8.0
 const _AIR_INCREASE = 100.0/10.0
 
 # COOKIES
-const _START_COOKIES: int = 12000
-const _LOCATOR_RATE_INCREASE: int = 3
-const _DOOR_RATE_INCREASE: int = 6
+const _START_COOKIES: int = 50
+const _LOCATOR_RATE_INCREASE: int = 2
+const _DOOR_RATE_INCREASE: int = 3
 const _COOKIES_TO_FEED: int = 10
 
-const _COOKIE_REWARD = 100
+const _COOKIE_REWARD = 50
 const _TOTAL_BARS = 3
 const _FILL_INCREASE_RATE = 50.0
 const _FILL_DECREASE_RATE = 6.0

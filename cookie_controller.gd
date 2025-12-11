@@ -43,7 +43,7 @@ func remove_cookies(cookies_to_remove: int = 1) -> void:
 	cookies_updated.emit(cookies)
 
 func add_cookies(amount: int = 1) -> void:
-	cookies = abs(amount)
+	cookies += abs(amount)
 	cookies_updated.emit(cookies)
 
 func format() -> String:

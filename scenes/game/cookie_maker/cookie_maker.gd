@@ -5,8 +5,6 @@ signal completed
 
 const BAR = preload("uid://cfd2vushe61th")
 
-@export var cookie_controller: CookieController
-
 var bars: Array[CookieMakerBar] = []
 var progresses: Array[float] = []
 var acceptable_ranges: Array = []

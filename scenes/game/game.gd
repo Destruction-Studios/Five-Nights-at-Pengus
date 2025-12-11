@@ -81,7 +81,7 @@ const COOKIE_MAKER = preload("uid://q6xblmvrg2u7")
 var light_flickering = false
 
 var has_ui_open = false
-
+var cookie_maker_cooldown = false
 var is_hard_mode = false
 var is_game_over = false
 var is_door_closed = false
@@ -234,27 +234,34 @@ func update_cookies() -> void:
 	
 	if cookie_controller.is_empty():
 		if is_door_closed:
-			toggle_door(false)
+			open_door()
 		if current_map != null:
 			close_map()
 
-func toggle_door(closed: bool) -> void:
-	if is_door_closed == closed:
-		print("Same")
-		return
-	
-	var a = 0.0
-	if closed and cookie_controller.is_empty() == false:
-		cookie_controller.increase_rate(GameSettings.DOOR_RATE_INCREASE)
-		a = 1.0
-		$Sounds/DoorClose.play()
-		is_door_closed = true
-	else:
-		cookie_controller.decrease_rate(GameSettings.DOOR_RATE_INCREASE)
-		is_door_closed = false
-		print(is_door_closed)
+func close_door() -> void:
+	cookie_controller.increase_rate(GameSettings.DOOR_RATE_INCREASE)
+	$Sounds/DoorClose.play()
+	is_door_closed = true
+
 	var tween := create_tween()
-	tween.tween_property($Door, "modulate:a", a, .1)
+	tween.tween_property($Door, "modulate:a", 1.0, .1)
+
+func open_door() -> void:
+	cookie_controller.decrease_rate(GameSettings.DOOR_RATE_INCREASE)
+	is_door_closed = false
+	
+	var tween := create_tween()
+	tween.tween_property($Door, "modulate:a", 0.0, .1)
+
+func toggle_door(closed: bool) -> void:
+	if is_door_closed == closed: return
+	if cookie_controller.is_empty(): return
+	
+	if closed:
+		close_door()
+	else:
+		open_door()
+	
 	print("Door State: ", is_door_closed)
 
 func _on_game_duration_timer_timeout() -> void:
@@ -306,7 +313,7 @@ func close_map() -> void:
 	$Sounds/LocatorClose.play()
 	
 	%Buttons.visible = true
-	has_ui_open = true
+	has_ui_open = false
 	trashy.disable_moving()
 
 func open_map() -> void:
@@ -395,25 +402,38 @@ func _on_trashy_stop_button_down() -> void:
 	if success:
 		$Sounds/HitTrashy.play()
 
+func close_cookie_maker() -> void:
+	%Buttons.visible = true
+	%LocatorButton.visible = true
+	current_cookie_maker.queue_free()
+	current_cookie_maker = null
+	has_ui_open = false
+	%TrashyStop.visible = true
+
+func open_cookie_maker() -> void:
+	var inst: CookieMaker = COOKIE_MAKER.instantiate()
+	
+	var is_enabled = false
+	if cookie_controller.cookies <= 20:
+		is_enabled = true
+	
+	inst.is_active = is_enabled
+	inst.completed.connect(func():
+		print("Awarding Cookies")
+		cookie_maker_cooldown = true
+		cookie_controller.add_cookies(GameSettings.COOKIE_REWARD)
+		close_cookie_maker()
+	)
+		
+	$CMCont.add_child(inst)
+	current_cookie_maker = inst
+	has_ui_open = true
+	%Buttons.visible = false
+	%TrashyStop.visible = false
+	%LocatorButton.visible = false
 
 func _on_cookie_button_button_down() -> void:
 	if current_cookie_maker:
-		%Buttons.visible = true
-		%LocatorButton.visible = true
-		current_cookie_maker.queue_free()
-		current_cookie_maker = null
-		has_ui_open = false
-		%TrashyStop.visible = true
-		
-		#trashy.disable_moving()
+		close_cookie_maker()
 	else:
-		var inst = COOKIE_MAKER.instantiate()
-		inst.cookie_controller = cookie_controller
-		$CMCont.add_child(inst)
-		current_cookie_maker = inst
-		has_ui_open = true
-		%Buttons.visible = false
-		%TrashyStop.visible = false
-		%LocatorButton.visible = false
-		
-		#trashy.enable_moving()
+		open_cookie_maker()
