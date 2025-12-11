@@ -1,3 +1,5 @@
 - Change min cookies to 20
 - Decrease the cookie rate
 - Trashy volume increase
+- Increase trashy delay
+- make = (cookies) to + (cookies)
