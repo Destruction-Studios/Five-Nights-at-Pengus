@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfd2vushe61th"]
+
+[ext_resource type="Script" uid="uid://bwruml77hewy4" path="res://scenes/game/cookie_maker/bar/bar.gd" id="1_7bvjk"]
+[ext_resource type="StyleBox" uid="uid://c0n3qspfsq7he" path="res://resources/theme/game_button_normal.tres" id="1_o02mq"]
+[ext_resource type="StyleBox" uid="uid://cqbld28mck5lx" path="res://resources/theme/game_button_hover.tres" id="2_7bvjk"]
+
+[node name="Bar" type="Control"]
+custom_minimum_size = Vector2(30, 450)
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_7bvjk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
+custom_minimum_size = Vector2(30, 450)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+fill_mode = 3
+show_percentage = false
+
+[node name="Range" type="ColorRect" parent="VBoxContainer/ProgressBar"]
+custom_minimum_size = Vector2(30, 5)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -15.0
+offset_right = 15.0
+offset_bottom = 500.0
+grow_horizontal = 2
+color = Color(1, 1, 1, 0.5764706)
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(150, 85)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("1_o02mq")
+theme_override_styles/pressed = ExtResource("1_o02mq")
+theme_override_styles/hover = ExtResource("2_7bvjk")
+
+[node name="Label" type="Label" parent="VBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 6.5
+offset_bottom = 6.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "FILL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="button_down" from="VBoxContainer/Button" to="." method="_on_button_button_down"]
+[connection signal="button_up" from="VBoxContainer/Button" to="." method="_on_button_button_up"]

@@ -1,0 +1,243 @@
+[gd_scene load_steps=10 format=3 uid="uid://dvnbsrvtdfuwf"]
+
+[ext_resource type="LabelSettings" uid="uid://gqd788f1nt5m" path="res://resources/theme/white_54.tres" id="1_0nhwl"]
+[ext_resource type="Script" uid="uid://buua4tl0nwvp4" path="res://scenes/game/win_screen/win_screen.gd" id="1_po6pu"]
+[ext_resource type="LabelSettings" uid="uid://bu0s31fl3bi33" path="res://resources/theme/white_32.tres" id="2_4famm"]
+[ext_resource type="AudioStream" uid="uid://envk7juvlmm0" path="res://assets/audio/sound_effects/alarm_clock.mp3" id="2_xjt1r"]
+[ext_resource type="AudioStream" uid="uid://vie4br5jfpap" path="res://assets/audio/sound_effects/win_yay.mp3" id="3_ww8e3"]
+[ext_resource type="SpriteFrames" uid="uid://qbjuvevavery" path="res://resources/confetti_sprite.tres" id="4_xjt1r"]
+
+[sub_resource type="Animation" id="Animation_6pe4r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/Control/Main:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["5:00"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer/Control/or_7:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer/Win:text")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [""]
+}
+
+[sub_resource type="Animation" id="Animation_14xkp"]
+resource_name = "default"
+length = 7.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/Control/Main:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8, 1.2, 1.5, 1.9, 2.3000002, 2.7000003, 3, 3.4, 3.8, 4.2000003, 4.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": ["5:00", "", "5:00", "", "5:00", "", "5:00", "", "5:00", "", "5:00", "", "6:00"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer/Control/or_7:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5, 3, 5, 5.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer/Win:text")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5, 3, 6.5000005, 6.6, 6.6999993, 6.7999997, 6.902617, 7.0000005, 7.1, 7.1999993),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": ["", "", "", "", "Y", "Yo", "You", "You W", "You Wi", "You Win", "You Win!!!"]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Beep")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.5, 2.3000002, 3, 3.8, 4.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Yay")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(7.1999993),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pfmgx"]
+_data = {
+&"RESET": SubResource("Animation_6pe4r"),
+&"default": SubResource("Animation_14xkp")
+}
+
+[node name="WinScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_po6pu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_pfmgx")
+}
+
+[node name="AfterTimer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
+[node name="Beep" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_xjt1r")
+volume_db = -10.0
+
+[node name="Yay" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ww8e3")
+volume_db = -10.0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(576.779, 321.5)
+scale = Vector2(2.3542001, 2.344203)
+sprite_frames = ExtResource("4_xjt1r")
+animation = &"confetti"
+speed_scale = 3.5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+
+[node name="or_7" type="Label" parent="VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 76.0
+offset_top = -34.0
+offset_right = 164.0
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+text = " or 7"
+label_settings = ExtResource("2_4famm")
+horizontal_alignment = 1
+
+[node name="Main" type="Label" parent="VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -67.5
+offset_top = -58.0
+offset_right = 67.5
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5:00"
+label_settings = ExtResource("1_0nhwl")
+horizontal_alignment = 1
+
+[node name="Sep" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Win" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+label_settings = ExtResource("2_4famm")
+horizontal_alignment = 1

@@ -1,0 +1,90 @@
+[gd_scene load_steps=4 format=3 uid="uid://q6xblmvrg2u7"]
+
+[ext_resource type="Script" uid="uid://dpva60xae4c1b" path="res://scenes/game/cookie_maker/cookie_maker.gd" id="1_v6406"]
+[ext_resource type="LabelSettings" uid="uid://bu0s31fl3bi33" path="res://resources/theme/white_32.tres" id="2_i2vhl"]
+[ext_resource type="Texture2D" uid="uid://cqttjtl5775lu" path="res://assets/images/cookie.png" id="3_j0y34"]
+
+[node name="CookieMaker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v6406")
+
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ProgressBars" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 200
+alignment = 1
+
+[node name="Fade" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.6862745)
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(50, 0)
+anchors_preset = 0
+offset_left = 931.0
+offset_right = 981.0
+offset_bottom = 648.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_right = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CookieLabel" type="Label" parent="Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "="
+label_settings = ExtResource("2_i2vhl")
+
+[node name="Control" type="Control" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Control/HBoxContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -9.0
+offset_right = -1.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_j0y34")
+expand_mode = 1

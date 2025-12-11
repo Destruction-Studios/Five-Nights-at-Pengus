@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://db2ggwppht65o"]
+[gd_scene load_steps=7 format=3 uid="uid://db2ggwppht65o"]
 
 [ext_resource type="PackedScene" uid="uid://b58cxu6yv1577" path="res://scenes/menu/static/static.tscn" id="1_klgdb"]
+[ext_resource type="Script" uid="uid://fu4tpuin3up7" path="res://scenes/menu/menu.gd" id="1_y1o0p"]
 [ext_resource type="PackedScene" uid="uid://8gxfels746n5" path="res://scenes/menu/pengu_menu/pengu_menu.tscn" id="2_037ec"]
 [ext_resource type="LabelSettings" uid="uid://gqd788f1nt5m" path="res://resources/theme/white_54.tres" id="3_e0arn"]
 [ext_resource type="AudioStream" uid="uid://be0nyb7ixlx1l" path="res://assets/audio/music/menu.ogg" id="4_037ec"]
+[ext_resource type="AudioStream" uid="uid://b81rmc4t8l6ew" path="res://assets/audio/sound_effects/button_click.mp3" id="6_r8yej"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -12,6 +14,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_y1o0p")
 
 [node name="BG" type="Node" parent="."]
 
@@ -61,10 +64,11 @@ label_settings = ExtResource("3_e0arn")
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
+[node name="Play" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 34
 text = "Play"
 
@@ -72,9 +76,29 @@ text = "Play"
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 34
 text = "Options"
 
+[node name="Fullscreen" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 34
+text = "Fullscreen
+"
+
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_037ec")
+volume_db = 3.0
 autoplay = true
+mix_target = 1
+bus = &"SFX"
+
+[node name="ButtonSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_r8yej")
+bus = &"SFX"
+
+[connection signal="button_down" from="Menu/MarginContainer/VBoxContainer/Play" to="." method="_on_play_button_down"]
+[connection signal="button_down" from="Menu/MarginContainer/VBoxContainer/Fullscreen" to="." method="_on_fullscreen_button_down"]
