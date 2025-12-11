@@ -1,9 +1,9 @@
 extends Node
 
 # GAME
-const _HARD_MODE_START: int = 1
-const _HOUR_DURATION: int = 1000
-const _GAME_DURATION_HOURS: int = 60
+const _HARD_MODE_START: int = 2
+const _HOUR_DURATION: int = 100
+const _GAME_DURATION_HOURS: int = 6
 const _GAME_DURATION_SECONDS: int = _GAME_DURATION_HOURS * _HOUR_DURATION
 
 const _AIR_DECREASE = 100.0/8.0
