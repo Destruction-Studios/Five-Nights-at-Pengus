@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://brfi3cqofld6q"
-path="res://.godot/imported/game_bg.png-5afd6ef189a8a7d6ec74ba31f2d24bbd.ctex"
+uid="uid://t75xj3863ton"
+path="res://.godot/imported/hand.png-a300ad864c72e55476a1fe57ec0978cb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/game/game_bg.png"
-dest_files=["res://.godot/imported/game_bg.png-5afd6ef189a8a7d6ec74ba31f2d24bbd.ctex"]
+source_file="res://assets/images/game/jumpscare/hand.png"
+dest_files=["res://.godot/imported/hand.png-a300ad864c72e55476a1fe57ec0978cb.ctex"]
 
 [params]
 

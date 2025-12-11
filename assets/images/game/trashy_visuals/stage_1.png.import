@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://brfi3cqofld6q"
-path="res://.godot/imported/game_bg.png-5afd6ef189a8a7d6ec74ba31f2d24bbd.ctex"
+uid="uid://8l6182y5dkot"
+path="res://.godot/imported/stage_1.png-1404dfeb40064eb5f57026e763e2a4d5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/game/game_bg.png"
-dest_files=["res://.godot/imported/game_bg.png-5afd6ef189a8a7d6ec74ba31f2d24bbd.ctex"]
+source_file="res://assets/images/game/trashy_visuals/stage_1.png"
+dest_files=["res://.godot/imported/stage_1.png-1404dfeb40064eb5f57026e763e2a4d5.ctex"]
 
 [params]
 

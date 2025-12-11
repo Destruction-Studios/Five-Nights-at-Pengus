@@ -2,12 +2,12 @@ extends Node
 
 # GAME
 const _HARD_MODE_START: int = 1
-const _HOUR_DURATION: int = 10
+const _HOUR_DURATION: int = 200
 const _GAME_DURATION_HOURS: int = 60
 const _GAME_DURATION_SECONDS: int = _GAME_DURATION_HOURS * _HOUR_DURATION
 
-const _AIR_DECREASE = 100.0/3.2
-const _AIR_INCREASE = 100.0/7.0
+const _AIR_DECREASE = 100.0/8.0
+const _AIR_INCREASE = 100.0/10.0
 
 # COOKIES
 const _START_COOKIES: int = 12000
@@ -19,6 +19,11 @@ const _COOKIES_TO_FEED: int = 10
 const _PENGU_MAX_COOKIES: int = 18
 const _MOVE_SUCCESS_TIME_MULTI: float = 1.2
 const _MOVE_CHANCE: int = 3
+
+# TRASHY
+const _TRASHY_CHANCE = 5
+const _TRASHY_ATTACK_DELAY = 1.75
+const _TRASHY_DURATION = 2.5
 
 # MINIGAME
 const _BAG_WAIT: float = 1.5
@@ -56,6 +61,15 @@ var MOVE_CHANCE: int = _MOVE_CHANCE
 var MOVE_TIME: FloatRange = FloatRange.new(2.5, 4.0)
 var ATTACK_DELAY: FloatRange = FloatRange.new(4, 6.0)
 
+# TRASHY
+var TRASHY_ATTACK_DELAY = _TRASHY_ATTACK_DELAY
+
+var TRASHY_ATTACK_RANGE: FloatRange = FloatRange.new(15.0, 30.0)#25.0, 45.0)
+var TRASHY_DURATION = _TRASHY_DURATION
+
+var TRASHY_COOLDOWN: FloatRange = FloatRange.new(1, 1.55)
+var TRASHY_CHANCE = _TRASHY_CHANCE
+
 # MINIGAME
 var BAG_WAIT = _BAG_WAIT
 var BUMP_RANGE: FloatRange = FloatRange.new(0.22, 1.5)
@@ -69,8 +83,15 @@ func set_hard() -> void:
 	Utils.AI_PATHS = Utils.hard_ai_paths
 	MOVE_TIME.decrease(1.8)
 	ATTACK_DELAY.decrease(5)
+	TRASHY_COOLDOWN.decrease(5)
+	TRASHY_ATTACK_RANGE.decrease(3.5)
+	TRASHY_CHANCE -= 2
 	MOVE_CHANCE = 1
 	BAG_WAIT = 1.5
+	TRASHY_ATTACK_DELAY = 1.25
+	
+	AIR_DECREASE = 100.0/4.5
+	AIR_INCREASE = 100.0/7.5
 
 func reset() -> void:
 	Utils.AI_PATHS = Utils.normal_ai_paths
@@ -78,6 +99,11 @@ func reset() -> void:
 	BUMP_RANGE.reset()
 	ATTACK_DELAY.reset()
 	MOVE_TIME.reset()
+	TRASHY_COOLDOWN.reset()
+	TRASHY_ATTACK_RANGE.reset()
+	
+	AIR_DECREASE = _AIR_DECREASE
+	AIR_INCREASE = _AIR_INCREASE
 
 	HARD_MODE_START = _HARD_MODE_START
 	HOUR_DURATION = _HOUR_DURATION
@@ -95,6 +121,10 @@ func reset() -> void:
 	PENGU_MAX_COOKIES = _PENGU_MAX_COOKIES
 	MOVE_SUCCESS_TIME_MULTI = _MOVE_SUCCESS_TIME_MULTI
 	MOVE_CHANCE = _MOVE_CHANCE
+	
+	TRASHY_CHANCE = _TRASHY_CHANCE
+	TRASHY_ATTACK_DELAY = _TRASHY_ATTACK_DELAY
+	TRASHY_DURATION = _TRASHY_DURATION
 
 	BAG_WAIT = _BAG_WAIT
 	MINIGAME_DURATION = _MINIGAME_DURATION

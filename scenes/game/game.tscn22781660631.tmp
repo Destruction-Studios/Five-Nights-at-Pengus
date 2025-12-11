@@ -216,9 +216,8 @@ grow_vertical = 2
 texture = ExtResource("1_sul5r")
 expand_mode = 1
 
-[node name="Trashy" parent="." node_paths=PackedStringArray("game") instance=ExtResource("14_3jaai")]
+[node name="Trashy" parent="." instance=ExtResource("14_3jaai")]
 layout_mode = 1
-game = NodePath("..")
 
 [node name="Shudders" type="TextureRect" parent="."]
 visible = false
@@ -298,16 +297,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Buttons" type="Control" parent="GameUI"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Door" type="Control" parent="GameUI/Buttons"]
+[node name="Door" type="Control" parent="GameUI"]
 custom_minimum_size = Vector2(70, 50)
 layout_mode = 1
 anchors_preset = 2
@@ -322,7 +312,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 mouse_filter = 2
 
-[node name="Label" type="Label" parent="GameUI/Buttons/Door"]
+[node name="Label" type="Label" parent="GameUI/Door"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -335,7 +325,7 @@ pivot_offset = Vector2(-139, 341)
 text = "DOOR"
 horizontal_alignment = 1
 
-[node name="DoorToggle" type="Button" parent="GameUI/Buttons/Door"]
+[node name="DoorToggle" type="Button" parent="GameUI/Door"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -347,7 +337,7 @@ theme_override_styles/normal = ExtResource("8_2a8rs")
 theme_override_styles/pressed = ExtResource("8_2a8rs")
 theme_override_styles/hover = ExtResource("9_4j704")
 
-[node name="Bag" type="Control" parent="GameUI/Buttons"]
+[node name="Bag" type="Control" parent="GameUI"]
 custom_minimum_size = Vector2(70, 50)
 layout_mode = 1
 anchors_preset = 2
@@ -362,7 +352,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 mouse_filter = 2
 
-[node name="Label" type="Label" parent="GameUI/Buttons/Bag"]
+[node name="Label" type="Label" parent="GameUI/Bag"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -377,7 +367,7 @@ pivot_offset = Vector2(-139, 341)
 text = "BAG"
 horizontal_alignment = 1
 
-[node name="BagToggle" type="Button" parent="GameUI/Buttons/Bag"]
+[node name="BagToggle" type="Button" parent="GameUI/Bag"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -389,7 +379,7 @@ theme_override_styles/normal = ExtResource("8_2a8rs")
 theme_override_styles/pressed = ExtResource("8_2a8rs")
 theme_override_styles/hover = ExtResource("9_4j704")
 
-[node name="MarginContainer" type="MarginContainer" parent="GameUI/Buttons/Bag"]
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/Bag"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -402,7 +392,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 10
 
-[node name="AirProgress" type="ProgressBar" parent="GameUI/Buttons/Bag/MarginContainer"]
+[node name="AirProgress" type="ProgressBar" parent="GameUI/Bag/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 1
@@ -569,8 +559,8 @@ mouse_default_cursor_shape = 2
 [connection signal="timeout" from="Timers/HourTimer" to="." method="_on_hour_timer_timeout"]
 [connection signal="timeout" from="Timers/SoundTimer" to="." method="_on_sound_timer_timeout"]
 [connection signal="timeout" from="Timers/PenguSoundTimer" to="." method="_on_pengu_sound_timer_timeout"]
-[connection signal="button_down" from="GameUI/Buttons/Door/DoorToggle" to="." method="_on_door_toggle_button_down"]
-[connection signal="button_down" from="GameUI/Buttons/Bag/BagToggle" to="." method="_on_bag_toggle_button_down"]
+[connection signal="button_down" from="GameUI/Door/DoorToggle" to="." method="_on_door_toggle_button_down"]
+[connection signal="button_down" from="GameUI/Bag/BagToggle" to="." method="_on_bag_toggle_button_down"]
 [connection signal="mouse_entered" from="GameUI/MarginContainer/LocatorButton" to="." method="_on_locator_button_mouse_entered"]
 [connection signal="button_down" from="GameUI/FeedButton" to="." method="_on_feed_button_button_down"]
 [connection signal="button_down" from="GameUI/TrashyStop" to="." method="_on_trashy_stop_button_down"]
