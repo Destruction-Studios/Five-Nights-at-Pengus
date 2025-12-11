@@ -3,3 +3,4 @@
 - Trashy volume increase
 - Increase trashy delay
 - make = (cookies) to + (cookies)
+- Trashy Attacking during minigame (wait till after)
