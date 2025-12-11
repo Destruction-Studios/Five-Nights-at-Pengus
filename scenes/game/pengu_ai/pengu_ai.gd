@@ -152,11 +152,16 @@ func try_move() -> void:
 		#var delay = GameSettings.ATTACK_DELAY.rand()
 		#attack_timer.start(delay)
 		#await attack_timer.timeout
-
+		
+		var new_pos = Utils.PENGU_POSITIONS.START
+		if current_pos == Utils.PENGU_POSITIONS.DOOR:
+			if randi_range(1, 2) == 1:
+				new_pos = Utils.PENGU_POSITIONS._RL_ALT
+		
 		var can_attack := !(current_pos == Utils.PENGU_POSITIONS.DOOR and game.is_door_closed)
 		if !can_attack:
 			await do_blink()
-			move(Utils.PENGU_POSITIONS.START)
+			move(new_pos)
 			start_move_timer()
 			return
 
@@ -202,7 +207,7 @@ func try_move() -> void:
 	
 	var multi: float = 1.0
 	if next_pos == Utils.PENGU_POSITIONS.DOOR:
-		multi = 0.3
+		multi = 0.75
 	
 	# DEFAULT MOVE
 	await do_blink()

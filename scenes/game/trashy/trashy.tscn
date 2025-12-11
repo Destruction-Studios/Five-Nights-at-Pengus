@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://e80oxti6fd2x"]
+
+[ext_resource type="Script" uid="uid://nmexi1qlluak" path="res://scenes/game/trashy/trashy.gd" id="1_16vn8"]
+[ext_resource type="Texture2D" uid="uid://btipxj8mw28sd" path="res://assets/images/game/trashy_visuals/trashy_out_sign.png" id="2_16vn8"]
+[ext_resource type="AudioStream" uid="uid://de1g5n8few7yn" path="res://assets/audio/sound_effects/trashy_out.mp3" id="3_5vpp0"]
+
+[node name="Trashy" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_16vn8")
+
+[node name="AttackTimer" type="Timer" parent="."]
+
+[node name="MoveTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Visual" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_16vn8")
+expand_mode = 1
+
+[node name="Out" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_5vpp0")
+
+[connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]

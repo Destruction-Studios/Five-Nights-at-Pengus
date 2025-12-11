@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://brfi3cqofld6q"
-path="res://.godot/imported/game_bg.png-5afd6ef189a8a7d6ec74ba31f2d24bbd.ctex"
+uid="uid://7taj2cssdkdg"
+path="res://.godot/imported/trashy_out.png-3a6bdf6cbe3950e3c15e78c5f769251f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/game/game_bg.png"
-dest_files=["res://.godot/imported/game_bg.png-5afd6ef189a8a7d6ec74ba31f2d24bbd.ctex"]
+source_file="res://assets/images/game/trashy_visuals/trashy_out.png"
+dest_files=["res://.godot/imported/trashy_out.png-3a6bdf6cbe3950e3c15e78c5f769251f.ctex"]
 
 [params]
 

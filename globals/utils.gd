@@ -17,8 +17,8 @@ enum PENGU_POSITIONS {
 	ROOM_BOTTOM_LEFT = 12,
 	HALLWAY_BEHIND_2 = 13,
 	
-	DOOR = 10,
-	TABLE = 11,
+	DOOR = 14,
+	TABLE = 15,
 	PLAYER = 999,
 	
 	_RL_ALT = 110,
@@ -72,7 +72,7 @@ var hard_ai_paths = {
 	
 	PENGU_POSITIONS.DOOR: {
 		PENGU_POSITIONS.PLAYER: 1,
-		PENGU_POSITIONS._RL_ALT: 1,
+		#PENGU_POSITIONS._RL_ALT: 1,
 	},
 	
 	#Alt Behind

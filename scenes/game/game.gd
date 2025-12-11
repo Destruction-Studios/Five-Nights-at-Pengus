@@ -62,6 +62,7 @@ const PAUSE_SCREEN = preload("uid://b7vjkiyy0e5io")
 
 @export var pengu_ai: PenguAI
 @export var cookie_controller: CookieController
+@export var trashy: Trashy
 
 @onready var time_label: Label = $GameUI/VBoxContainer/Time
 @onready var sound_timer: Timer = $Timers/SoundTimer
@@ -293,6 +294,8 @@ func close_map() -> void:
 	$MapCover.visible = false
 	cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
 	$Sounds/LocatorClose.play()
+	
+	trashy.disable_moving()
 
 func open_map() -> void:
 	var inst: Map = MAP.instantiate()
@@ -302,6 +305,8 @@ func open_map() -> void:
 	$MapCover.visible = true
 	cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
 	$Sounds/LocatorOpen.play()
+	
+	trashy.enable_moving()
 
 func _on_locator_button_mouse_entered() -> void:
 	if is_bag_down: return
@@ -317,6 +322,7 @@ func _on_pengu_ai_position_updated() -> void:
 
 
 func _on_door_toggle_button_down() -> void:
+	if current_map != null: return
 	if is_bag_down: return
 	toggle_door(!is_door_closed)
 
@@ -346,12 +352,16 @@ func bag_up() -> void:
 	is_bag_down = false
 	$Sounds/BagUp.play()
 	$AnimationPlayer.play_backwards("bag")
+	
+	trashy.disable_moving()
 
 func bag_down() -> void:
 	is_bag_down = true
 	if current_map:
 		close_map()
-		
+	
+	trashy.enable_moving()
+	
 	$AnimationPlayer.play("bag")
 	$Sounds/BagDown.play()
 
@@ -362,3 +372,9 @@ func _on_bag_toggle_button_down() -> void:
 		bag_down()
 	else:
 		bag_up()
+
+
+func _on_trashy_stop_button_down() -> void:
+	var success = trashy.go_away()
+	if success:
+		$Sounds/HitTrashy.play()
