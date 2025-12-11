@@ -59,6 +59,7 @@ const WIN_SCREEN = preload("uid://dvnbsrvtdfuwf")
 const MAP = preload("uid://c46r23oby0gq4")
 const BEHIND_MINIGAME = preload("uid://dmdpvvlx8kuo2")
 const PAUSE_SCREEN = preload("uid://b7vjkiyy0e5io")
+const JUMPSCARE = preload("uid://044jkvm4t1b7")
 
 @export var pengu_ai: PenguAI
 @export var cookie_controller: CookieController
@@ -74,7 +75,7 @@ const PAUSE_SCREEN = preload("uid://b7vjkiyy0e5io")
 @onready var pengu_sound_timer: Timer = $Timers/PenguSoundTimer
 @onready var locator_button: Button = $GameUI/MarginContainer/LocatorButton
 @onready var feed_button: Button = $GameUI/FeedButton
-@onready var air_progress: ProgressBar = $GameUI/Bag/MarginContainer/AirProgress
+@onready var air_progress: ProgressBar = $GameUI/Buttons/Bag/MarginContainer/AirProgress
 
 var light_flickering = false
 
@@ -175,9 +176,14 @@ func game_hour_passed() -> void:
 	else:
 		$Sounds/ClockTickSound.play()
 
-func jumpscare() -> void:
+func jumpscare(type: Jumpscare.JUMPSCARE_TYPES) -> void:
 	is_game_over = true
-	get_tree().change_scene_to_file("res://scenes/game/jumpscare/jumpscare.tscn")
+	var inst: Jumpscare = JUMPSCARE.instantiate()
+	inst.jumpscare_type = type
+	get_tree().root.add_child(inst)
+	get_tree().current_scene.queue_free()
+	get_tree().current_scene = inst
+	#get_tree().change_scene_to_file("res://scenes/game/jumpscare/jumpscare.tscn")
 
 func start_minigame() -> bool:
 	if current_map:
@@ -188,7 +194,7 @@ func start_minigame() -> bool:
 	await inst.minigame_completed
 	
 	if inst.failed:
-		jumpscare()
+		jumpscare(Jumpscare.JUMPSCARE_TYPES.PENGU)
 		return false
 	else:
 		inst.queue_free()
@@ -295,6 +301,7 @@ func close_map() -> void:
 	cookie_controller.decrease_rate(GameSettings.LOCATOR_RATE_INCREASE)
 	$Sounds/LocatorClose.play()
 	
+	%Buttons.visible = true
 	trashy.disable_moving()
 
 func open_map() -> void:
@@ -306,6 +313,7 @@ func open_map() -> void:
 	cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
 	$Sounds/LocatorOpen.play()
 	
+	%Buttons.visible = false
 	trashy.enable_moving()
 
 func _on_locator_button_mouse_entered() -> void:
@@ -366,6 +374,7 @@ func bag_down() -> void:
 	$Sounds/BagDown.play()
 
 func _on_bag_toggle_button_down() -> void:
+	if current_map != null: return
 	if must_wait_until_air_full: return
 	is_bag_down = !is_bag_down
 	if is_bag_down:

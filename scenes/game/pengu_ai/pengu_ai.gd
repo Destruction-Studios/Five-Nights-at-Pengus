@@ -123,7 +123,7 @@ func move(new_pos: Utils.PENGU_POSITIONS) -> void:
 	position_updated.emit()
 
 func reach_player() -> void:
-	game.jumpscare()
+	game.jumpscare(Jumpscare.JUMPSCARE_TYPES.PENGU)
 
 func will_jumpscare() -> bool:
 	if current_pos == Utils.PENGU_POSITIONS.DOOR or current_pos == Utils.PENGU_POSITIONS.ROOM_BEHIND: return true
@@ -165,7 +165,7 @@ func try_move() -> void:
 			start_move_timer()
 			return
 
-		game.jumpscare()
+		reach_player()
 		return
 
 	# TABLE (Minigame)
