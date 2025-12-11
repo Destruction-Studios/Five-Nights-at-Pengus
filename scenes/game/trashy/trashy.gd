@@ -12,7 +12,10 @@ var VISUALS = {
 	str(99): preload("res://assets/images/game/trashy_visuals/trashy_out_sign.png")
 }
 
+@export var game: Game
+
 @onready var move_timer: Timer = $MoveTimer
+@onready var attack_timer: Timer = $AttackTimer
 @onready var visual: TextureRect = $Visual
 
 var is_out = false
@@ -27,6 +30,7 @@ func _ready() -> void:
 
 func start_attacking() -> void:
 	print("Trashy Enemy Out")
+	attack_timer.start(GameSettings.TRASHY_ATTACK_RANGE.rand())
 
 func update_stage() -> void:
 	var new_nexture = VISUALS.get(str(stage))
@@ -84,3 +88,21 @@ func _on_move_timer_timeout() -> void:
 	var multi = 0.0
 	if success: multi = 1.75
 	move_timer.start(GameSettings.TRASHY_COOLDOWN.rand() * multi)
+
+
+func _on_attack_timer_timeout() -> void:
+	$Laugh.play()
+	await get_tree().create_timer(GameSettings.TRASHY_ATTACK_DELAY).timeout
+	
+	
+	var i = 0.0
+	while i < GameSettings.TRASHY_DURATION:
+		if !game.is_bag_down:
+			game.jumpscare(Jumpscare.JUMPSCARE_TYPES.TRASHY)
+			break
+		i += 0.1
+		await get_tree().create_timer(.1).timeout
+	
+	$Laugh.stop()
+	
+	attack_timer.start(GameSettings.TRASHY_ATTACK_RANGE.rand())
