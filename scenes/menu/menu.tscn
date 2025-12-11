@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://db2ggwppht65o"]
 
 [ext_resource type="PackedScene" uid="uid://b58cxu6yv1577" path="res://scenes/menu/static/static.tscn" id="1_klgdb"]
-[ext_resource type="Script" uid="uid://fu4tpuin3up7" path="res://scenes/menu/menu.gd" id="1_y1o0p"]
+[ext_resource type="Script" path="res://scenes/menu/menu.gd" id="1_y1o0p"]
 [ext_resource type="PackedScene" uid="uid://8gxfels746n5" path="res://scenes/menu/pengu_menu/pengu_menu.tscn" id="2_037ec"]
 [ext_resource type="LabelSettings" uid="uid://gqd788f1nt5m" path="res://resources/theme/white_54.tres" id="3_e0arn"]
 [ext_resource type="AudioStream" uid="uid://be0nyb7ixlx1l" path="res://assets/audio/music/menu.ogg" id="4_037ec"]
@@ -73,6 +73,7 @@ theme_override_font_sizes/font_size = 34
 text = "Play"
 
 [node name="Options" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
