@@ -262,6 +262,14 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[node name="CMCont" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Bag" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -442,10 +450,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 15
+theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 1
+theme_override_constants/margin_bottom = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GameUI/MarginContainer"]
 layout_mode = 2
@@ -520,6 +528,7 @@ layout_mode = 2
 text = ": 67"
 
 [node name="LocatorButton" type="Button" parent="GameUI/MarginContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(550, 35)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -541,6 +550,47 @@ text = "Locator"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="CookieButtonCont" type="Control" parent="GameUI/MarginContainer"]
+custom_minimum_size = Vector2(35, 500)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="CookieButton" type="Button" parent="GameUI/MarginContainer/CookieButtonCont"]
+custom_minimum_size = Vector2(35, 500)
+layout_mode = 0
+offset_right = 35.0
+offset_bottom = 500.0
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("8_2a8rs")
+theme_override_styles/pressed = ExtResource("8_2a8rs")
+theme_override_styles/hover = ExtResource("9_4j704")
+
+[node name="Label" type="Label" parent="GameUI/MarginContainer/CookieButtonCont/CookieButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+text = ">
+>
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TrashyStop" type="Button" parent="GameUI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 741.0
+offset_top = 335.0
+offset_right = 806.0
+offset_bottom = 402.0
+mouse_default_cursor_shape = 2
+
 [node name="FeedButton" type="Button" parent="GameUI"]
 layout_mode = 1
 anchors_preset = -1
@@ -554,14 +604,6 @@ offset_right = 44.567993
 offset_bottom = 94.01599
 disabled = true
 
-[node name="TrashyStop" type="Button" parent="GameUI"]
-layout_mode = 0
-offset_left = 741.0
-offset_top = 335.0
-offset_right = 806.0
-offset_bottom = 402.0
-mouse_default_cursor_shape = 2
-
 [connection signal="cookies_updated" from="CookieController" to="." method="_on_cookie_controller_cookies_updated"]
 [connection signal="position_updated" from="PenguAI" to="." method="_on_pengu_ai_position_updated"]
 [connection signal="timeout" from="Timers/LightTimer" to="." method="_on_light_timer_timeout"]
@@ -572,5 +614,6 @@ mouse_default_cursor_shape = 2
 [connection signal="button_down" from="GameUI/Buttons/Door/DoorToggle" to="." method="_on_door_toggle_button_down"]
 [connection signal="button_down" from="GameUI/Buttons/Bag/BagToggle" to="." method="_on_bag_toggle_button_down"]
 [connection signal="mouse_entered" from="GameUI/MarginContainer/LocatorButton" to="." method="_on_locator_button_mouse_entered"]
-[connection signal="button_down" from="GameUI/FeedButton" to="." method="_on_feed_button_button_down"]
+[connection signal="button_down" from="GameUI/MarginContainer/CookieButtonCont/CookieButton" to="." method="_on_cookie_button_button_down"]
 [connection signal="button_down" from="GameUI/TrashyStop" to="." method="_on_trashy_stop_button_down"]
+[connection signal="button_down" from="GameUI/FeedButton" to="." method="_on_feed_button_button_down"]

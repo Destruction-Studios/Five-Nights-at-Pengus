@@ -60,6 +60,7 @@ const MAP = preload("uid://c46r23oby0gq4")
 const BEHIND_MINIGAME = preload("uid://dmdpvvlx8kuo2")
 const PAUSE_SCREEN = preload("uid://b7vjkiyy0e5io")
 const JUMPSCARE = preload("uid://044jkvm4t1b7")
+const COOKIE_MAKER = preload("uid://q6xblmvrg2u7")
 
 @export var pengu_ai: PenguAI
 @export var cookie_controller: CookieController
@@ -79,6 +80,8 @@ const JUMPSCARE = preload("uid://044jkvm4t1b7")
 
 var light_flickering = false
 
+var has_ui_open = false
+
 var is_hard_mode = false
 var is_game_over = false
 var is_door_closed = false
@@ -94,6 +97,7 @@ var flicker_range: FloatRange = FloatRange.new(1.5, 9.0)
 var available_pengu_sounds: Array[Resource] = PENGU_SOUNDS.duplicate()
 
 var current_map: Map
+var current_cookie_maker: CookieMaker
 
 func _ready() -> void:
 	GameSettings.reset()
@@ -302,6 +306,7 @@ func close_map() -> void:
 	$Sounds/LocatorClose.play()
 	
 	%Buttons.visible = true
+	has_ui_open = true
 	trashy.disable_moving()
 
 func open_map() -> void:
@@ -313,10 +318,12 @@ func open_map() -> void:
 	cookie_controller.increase_rate(GameSettings.LOCATOR_RATE_INCREASE)
 	$Sounds/LocatorOpen.play()
 	
+	has_ui_open = false
 	%Buttons.visible = false
 	trashy.enable_moving()
 
 func _on_locator_button_mouse_entered() -> void:
+	if current_cookie_maker != null: return
 	if is_bag_down: return
 	if cookie_controller.is_empty(): return
 	if current_map == null:
@@ -330,7 +337,7 @@ func _on_pengu_ai_position_updated() -> void:
 
 
 func _on_door_toggle_button_down() -> void:
-	if current_map != null: return
+	if has_ui_open: return
 	if is_bag_down: return
 	toggle_door(!is_door_closed)
 
@@ -374,7 +381,7 @@ func bag_down() -> void:
 	$Sounds/BagDown.play()
 
 func _on_bag_toggle_button_down() -> void:
-	if current_map != null: return
+	if has_ui_open: return
 	if must_wait_until_air_full: return
 	is_bag_down = !is_bag_down
 	if is_bag_down:
@@ -387,3 +394,26 @@ func _on_trashy_stop_button_down() -> void:
 	var success = trashy.go_away()
 	if success:
 		$Sounds/HitTrashy.play()
+
+
+func _on_cookie_button_button_down() -> void:
+	if current_cookie_maker:
+		%Buttons.visible = true
+		%LocatorButton.visible = true
+		current_cookie_maker.queue_free()
+		current_cookie_maker = null
+		has_ui_open = false
+		%TrashyStop.visible = true
+		
+		#trashy.disable_moving()
+	else:
+		var inst = COOKIE_MAKER.instantiate()
+		inst.cookie_controller = cookie_controller
+		$CMCont.add_child(inst)
+		current_cookie_maker = inst
+		has_ui_open = true
+		%Buttons.visible = false
+		%TrashyStop.visible = false
+		%LocatorButton.visible = false
+		
+		#trashy.enable_moving()
