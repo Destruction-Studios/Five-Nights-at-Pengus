@@ -121,7 +121,7 @@ libraries = {
 autoplay = "cookie_idle"
 
 [node name="CookieController" parent="." instance=ExtResource("2_vaxfo")]
-min_time = 0.45
+min_time = 1.15
 max_time = 1.5
 
 [node name="PenguCookieController" parent="." instance=ExtResource("2_vaxfo")]

@@ -15,7 +15,7 @@ const _LOCATOR_RATE_INCREASE: int = 2
 const _DOOR_RATE_INCREASE: int = 3
 const _COOKIES_TO_FEED: int = 10
 
-const _COOKIE_REWARD = 50
+const _COOKIE_REWARD = 60
 const _TOTAL_BARS = 3
 const _FILL_INCREASE_RATE = 50.0
 const _FILL_DECREASE_RATE = 6.0
@@ -28,8 +28,8 @@ const _MOVE_CHANCE: int = 3
 
 # TRASHY
 const _TRASHY_CHANCE = 5
-const _TRASHY_ATTACK_DELAY = 1.75
-const _TRASHY_DURATION = 2.5
+const _TRASHY_ATTACK_DELAY = 2.5
+const _TRASHY_DURATION = 3.5
 
 # MINIGAME
 const _BAG_WAIT: float = 1.5
@@ -76,10 +76,10 @@ var ATTACK_DELAY: FloatRange = FloatRange.new(4, 6.0)
 # TRASHY
 var TRASHY_ATTACK_DELAY = _TRASHY_ATTACK_DELAY
 
-var TRASHY_ATTACK_RANGE: FloatRange = FloatRange.new(15.0, 30.0)#25.0, 45.0)
+var TRASHY_ATTACK_RANGE: FloatRange = FloatRange.new(20.0, 35.0)#25.0, 45.0)
 var TRASHY_DURATION = _TRASHY_DURATION
 
-var TRASHY_COOLDOWN: FloatRange = FloatRange.new(1, 1.55)
+var TRASHY_COOLDOWN: FloatRange = FloatRange.new(1.2, 1.5)
 var TRASHY_CHANCE = _TRASHY_CHANCE
 
 # MINIGAME

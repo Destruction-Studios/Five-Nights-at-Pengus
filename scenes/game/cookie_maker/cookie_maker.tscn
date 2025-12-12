@@ -63,7 +63,7 @@ grow_vertical = 2
 [node name="CookieLabel" type="Label" parent="Control/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "="
+text = "+"
 label_settings = ExtResource("2_i2vhl")
 
 [node name="Control" type="Control" parent="Control/HBoxContainer"]

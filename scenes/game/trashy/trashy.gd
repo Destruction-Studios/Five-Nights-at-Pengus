@@ -58,8 +58,24 @@ func disable_moving() -> void:
 	can_move = false
 	move_timer.stop()
 
+var did_try_to_move = false
+var minigame = false
+func minigame_start() -> void:
+	minigame = true
+
+func minigame_end() -> void:
+	minigame = false
+	did_try_to_move = false
+	if !did_try_to_move:
+		return
+	print("Minigame over trashy moving")
+	_on_attack_timer_timeout()
+
 func try_move() -> bool:
 	if !can_move or is_out: return false
+	if minigame:
+		did_try_to_move = true
+		return false
 	print("trashy trying to move")
 	if randi_range(1, GameSettings.TRASHY_CHANCE) != 1:
 		return false

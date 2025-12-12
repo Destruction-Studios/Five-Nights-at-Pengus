@@ -193,9 +193,13 @@ func start_minigame() -> bool:
 	if current_map:
 		close_map()
 	
+	trashy.minigame_start()
+	
 	var inst: StarvingMinigame = BEHIND_MINIGAME.instantiate()
 	add_child(inst)
 	await inst.minigame_completed
+	
+	trashy.minigame_end()
 	
 	if inst.failed:
 		jumpscare(Jumpscare.JUMPSCARE_TYPES.PENGU)
@@ -414,7 +418,7 @@ func open_cookie_maker() -> void:
 	var inst: CookieMaker = COOKIE_MAKER.instantiate()
 	
 	var is_enabled = false
-	if cookie_controller.cookies <= 20:
+	if cookie_controller.cookies <= 35:
 		is_enabled = true
 	
 	inst.is_active = is_enabled

@@ -13,7 +13,7 @@ var current_down = null
 var is_active = true
 
 func _ready() -> void:
-	%CookieLabel.text = "= " + str(GameSettings.COOKIE_REWARD)
+	%CookieLabel.text = "+ " + str(GameSettings.COOKIE_REWARD)
 	
 	for i in GameSettings.TOTAL_BARS:
 		var a_range = create_range()
