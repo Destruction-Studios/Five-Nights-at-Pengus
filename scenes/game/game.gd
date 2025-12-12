@@ -65,6 +65,7 @@ const COOKIE_MAKER = preload("uid://q6xblmvrg2u7")
 @export var pengu_ai: PenguAI
 @export var cookie_controller: CookieController
 @export var trashy: Trashy
+@export var jackson_ai: JacksonAI
 
 @onready var time_label: Label = $GameUI/VBoxContainer/Time
 @onready var sound_timer: Timer = $Timers/SoundTimer
@@ -87,6 +88,8 @@ var is_game_over = false
 var is_door_closed = false
 var is_bag_down = false
 var must_wait_until_air_full = false
+var jackson_cooldown = false
+
 var air: float = 100.0
 var time = 0
 
@@ -310,6 +313,7 @@ func _on_pengu_sound_timer_timeout() -> void:
 	pengu_sound_timer.start(pengu_sound_range.rand())
 
 func close_map() -> void:
+	if !current_map: return
 	current_map.queue_free()
 	current_map = null
 	$MapCover.visible = false
@@ -331,9 +335,23 @@ func open_map() -> void:
 	
 	has_ui_open = false
 	%Buttons.visible = false
-	trashy.enable_moving()
+	
+	if jackson_ai.is_attacking:
+		print("Locator open with Jackson")
+		jackson_ai.attack()
+		%JacksonSmile.modulate.a = 0.0
+		jackson_cooldown = true
+
+		close_map()
+		
+		await get_tree().create_timer(4.8).timeout
+		jackson_cooldown = false
+		jackson_ai.after()
+	else:
+		trashy.enable_moving()
 
 func _on_locator_button_mouse_entered() -> void:
+	if jackson_cooldown: return
 	if current_cookie_maker != null: return
 	if is_bag_down: return
 	if cookie_controller.is_empty(): return
@@ -348,6 +366,7 @@ func _on_pengu_ai_position_updated() -> void:
 
 
 func _on_door_toggle_button_down() -> void:
+	if jackson_cooldown: return
 	if has_ui_open: return
 	if is_bag_down: return
 	toggle_door(!is_door_closed)
@@ -392,6 +411,7 @@ func bag_down() -> void:
 	$Sounds/BagDown.play()
 
 func _on_bag_toggle_button_down() -> void:
+	if jackson_cooldown: return
 	if has_ui_open: return
 	if must_wait_until_air_full: return
 	is_bag_down = !is_bag_down
@@ -437,7 +457,16 @@ func open_cookie_maker() -> void:
 	%LocatorButton.visible = false
 
 func _on_cookie_button_button_down() -> void:
+	if jackson_cooldown: return
 	if current_cookie_maker:
 		close_cookie_maker()
 	else:
 		open_cookie_maker()
+
+func go_away_jackson() -> void:
+	pass
+
+func _on_jackson_ai_jackson_attack() -> void:
+	print("Jackson attacking")
+	var tween := create_tween()
+	tween.tween_property(%JacksonSmile, "modulate:a", .2, .1)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://b7ypfeo8f3h3y"]
+[gd_scene load_steps=33 format=4 uid="uid://b7ypfeo8f3h3y"]
 
 [ext_resource type="Script" uid="uid://41dnrd7v5jmp" path="res://scenes/game/game.gd" id="1_0sr1o"]
 [ext_resource type="Texture2D" uid="uid://brfi3cqofld6q" path="res://assets/images/game/game_bg.png" id="1_sul5r"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dbkc3124udmd" path="res://scenes/game/pengu_ai/pengu_ai.tscn" id="2_bdhmt"]
 [ext_resource type="AudioStream" uid="uid://bbnpnh36tw7b3" path="res://assets/audio/sound_effects/tick.ogg" id="2_kelw5"]
 [ext_resource type="PackedScene" uid="uid://mg5halcrfnsv" path="res://scenes/game/cookie_controller/cookie_controller.tscn" id="2_vaxfo"]
+[ext_resource type="PackedScene" uid="uid://dwadegew0mbhs" path="res://scenes/game/jackson_ai/jackson_ai.tscn" id="4_4vuph"]
 [ext_resource type="AudioStream" uid="uid://llbu20112al5" path="res://assets/audio/sound_effects/door_close.mp3" id="5_kp23o"]
 [ext_resource type="Texture2D" uid="uid://cqttjtl5775lu" path="res://assets/images/cookie.png" id="6_5i0tg"]
 [ext_resource type="Texture2D" uid="uid://n1ub2n2p72u2" path="res://assets/images/game/pengu_visuals/pengu_door.png" id="7_5jirj"]
@@ -24,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://e80oxti6fd2x" path="res://scenes/game/trashy/trashy.tscn" id="14_3jaai"]
 [ext_resource type="Texture2D" uid="uid://bwglon04v3ybr" path="res://assets/images/game/bag.png" id="15_10c2w"]
 [ext_resource type="StyleBox" uid="uid://cm1t2qo1xkex3" path="res://resources/theme/progress_filled_white.tres" id="20_8b66f"]
+[ext_resource type="Texture2D" uid="uid://bav52nwlltdtq" path="res://assets/images/game/creeepy.jpg" id="26_wdnak"]
 
 [sub_resource type="Animation" id="Animation_5i0tg"]
 length = 0.001
@@ -101,7 +103,7 @@ sampling_rate = 44100.0
 [sub_resource type="AudioStreamOggVorbis" id="AudioStreamOggVorbis_lfrn8"]
 packet_sequence = SubResource("OggPacketSequence_ktrky")
 
-[node name="Game" type="Control" node_paths=PackedStringArray("pengu_ai", "cookie_controller", "trashy")]
+[node name="Game" type="Control" node_paths=PackedStringArray("pengu_ai", "cookie_controller", "trashy", "jackson_ai")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -112,6 +114,7 @@ script = ExtResource("1_0sr1o")
 pengu_ai = NodePath("PenguAI")
 cookie_controller = NodePath("CookieController")
 trashy = NodePath("Trashy")
+jackson_ai = NodePath("JacksonAI")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../GameUI/MarginContainer/VBoxContainer/CookieLabelCont/Control")
@@ -228,6 +231,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("10_3xj4h")
 expand_mode = 1
 
@@ -238,6 +242,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("7_5jirj")
 expand_mode = 2
 
@@ -249,6 +254,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("7_kp23o")
 expand_mode = 2
 
@@ -542,6 +548,19 @@ theme_override_styles/normal = ExtResource("8_2a8rs")
 theme_override_styles/pressed = ExtResource("8_2a8rs")
 theme_override_styles/hover = ExtResource("9_4j704")
 
+[node name="JacksonSmile" type="TextureRect" parent="GameUI/MarginContainer/LocatorButton"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("26_wdnak")
+expand_mode = 1
+
 [node name="Label" type="Label" parent="GameUI/MarginContainer/LocatorButton"]
 layout_mode = 1
 anchors_preset = 15
@@ -609,6 +628,8 @@ offset_right = 44.567993
 offset_bottom = 94.01599
 disabled = true
 
+[node name="JacksonAI" parent="." instance=ExtResource("4_4vuph")]
+
 [connection signal="cookies_updated" from="CookieController" to="." method="_on_cookie_controller_cookies_updated"]
 [connection signal="position_updated" from="PenguAI" to="." method="_on_pengu_ai_position_updated"]
 [connection signal="timeout" from="Timers/LightTimer" to="." method="_on_light_timer_timeout"]
@@ -622,3 +643,4 @@ disabled = true
 [connection signal="button_down" from="GameUI/MarginContainer/CookieButtonCont/CookieButton" to="." method="_on_cookie_button_button_down"]
 [connection signal="button_down" from="GameUI/TrashyStop" to="." method="_on_trashy_stop_button_down"]
 [connection signal="button_down" from="GameUI/FeedButton" to="." method="_on_feed_button_button_down"]
+[connection signal="jackson_attack" from="JacksonAI" to="." method="_on_jackson_ai_jackson_attack"]

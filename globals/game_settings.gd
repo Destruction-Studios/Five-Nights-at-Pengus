@@ -82,6 +82,10 @@ var TRASHY_DURATION = _TRASHY_DURATION
 var TRASHY_COOLDOWN: FloatRange = FloatRange.new(1.2, 1.5)
 var TRASHY_CHANCE = _TRASHY_CHANCE
 
+# JACKSON
+
+var JACKSON_ATTACK_RANGE: FloatRange = FloatRange.new(5.0, 10.0)
+
 # MINIGAME
 var BAG_WAIT = _BAG_WAIT
 var BUMP_RANGE: FloatRange = FloatRange.new(0.22, 1.5)
@@ -97,6 +101,7 @@ func set_hard() -> void:
 	ATTACK_DELAY.decrease(5)
 	TRASHY_COOLDOWN.decrease(5)
 	TRASHY_ATTACK_RANGE.decrease(3.5)
+	JACKSON_ATTACK_RANGE.increase(1.75)
 	TRASHY_CHANCE -= 1
 	MOVE_CHANCE = 1
 	BAG_WAIT = 1.5
@@ -113,6 +118,7 @@ func reset() -> void:
 	MOVE_TIME.reset()
 	TRASHY_COOLDOWN.reset()
 	TRASHY_ATTACK_RANGE.reset()
+	JACKSON_ATTACK_RANGE.reset()
 	
 	AIR_DECREASE = _AIR_DECREASE
 	AIR_INCREASE = _AIR_INCREASE
