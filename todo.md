@@ -4,3 +4,5 @@
 - Increase trashy delay
 - make = (cookies) to + (cookies)
 - Trashy Attacking during minigame (wait till after)
+- make trashy not go during bag
+- make trashy easier
