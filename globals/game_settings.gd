@@ -84,7 +84,7 @@ var TRASHY_CHANCE = _TRASHY_CHANCE
 
 # JACKSON
 
-var JACKSON_ATTACK_RANGE: FloatRange = FloatRange.new(5.0, 10.0)
+var JACKSON_ATTACK_RANGE: FloatRange = FloatRange.new(16.5, 34.5)
 
 # MINIGAME
 var BAG_WAIT = _BAG_WAIT
@@ -101,7 +101,7 @@ func set_hard() -> void:
 	ATTACK_DELAY.decrease(5)
 	TRASHY_COOLDOWN.decrease(5)
 	TRASHY_ATTACK_RANGE.decrease(3.5)
-	JACKSON_ATTACK_RANGE.increase(1.75)
+	JACKSON_ATTACK_RANGE.increase(1.35)
 	TRASHY_CHANCE -= 1
 	MOVE_CHANCE = 1
 	BAG_WAIT = 1.5
