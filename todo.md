@@ -1,8 +1,0 @@
-- Change min cookies to 20
-- Decrease the cookie rate
-- Trashy volume increase
-- Increase trashy delay
-- make = (cookies) to + (cookies)
-- Trashy Attacking during minigame (wait till after)
-- make trashy not go during bag
-- make trashy easier
