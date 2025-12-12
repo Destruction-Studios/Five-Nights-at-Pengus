@@ -17,6 +17,7 @@ mono_crash.*.json
 
 #stuff
 .exports/
+todo.md
 # *.exe
 # *.console.exe
 # *.zip
