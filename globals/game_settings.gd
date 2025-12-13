@@ -28,12 +28,12 @@ const _MOVE_CHANCE: int = 3
 
 # TRASHY
 const _TRASHY_CHANCE = 5
-const _TRASHY_ATTACK_DELAY = 2.5
-const _TRASHY_DURATION = 3.5
+const _TRASHY_ATTACK_DELAY = 3.0
+const _TRASHY_DURATION = 2.5
 
 # MINIGAME
 const _BAG_WAIT: float = 1.5
-const _MINIGAME_DURATION: int = 20
+const _MINIGAME_DURATION: int = 60
 const _BUMP_OFFSET: Vector2 = Vector2(130, 75)
 const _START_PROGRESS: int = 30
 const _PROGRESS_INCREASE: int = 16

@@ -30,6 +30,11 @@ func after() -> void:
 	
 	attack_timer.start(GameSettings.JACKSON_ATTACK_RANGE.rand())
 
+func cancel() -> void:
+	if !is_attacking: return
+	is_attacking = false
+	$Image.modulate.a = 0.0
+	$AnimationPlayer.play("RESET")
 
 func _on_attack_timeout() -> void:
 	wait()

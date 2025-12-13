@@ -33,13 +33,15 @@ func _ready() -> void:
 	
 	Input.warp_mouse(target_pos)
 	
-	$BumpTimer.start(.1)
+	$BumpTimer.start(.22)
 	$GameTimer.start(GameSettings.MINIGAME_DURATION)
 	
 	update_progress()
 
 
 func _process(delta: float) -> void:
+	$Timer.text = "%.1f" % $GameTimer.time_left
+	
 	current_pos = lerp(current_pos, target_pos, LERP_INTERP * delta)
 	
 	mouse_circle.circle_position = current_pos
@@ -90,5 +92,6 @@ func _on_bump_timer_timeout() -> void:
 
 
 func _on_game_timer_timeout() -> void:
-	#minigame_completed.emit(true)
-	pass
+	print("Failed")
+	failed = true
+	minigame_completed.emit()

@@ -196,6 +196,9 @@ func start_minigame() -> bool:
 	if current_map:
 		close_map()
 	
+	jackson_cooldown = false
+	jackson_ai.cancel()
+	
 	trashy.minigame_start()
 	
 	var inst: StarvingMinigame = BEHIND_MINIGAME.instantiate()
@@ -398,14 +401,14 @@ func bag_up() -> void:
 	$Sounds/BagUp.play()
 	$AnimationPlayer.play_backwards("bag")
 	
-	trashy.disable_moving()
+	#trashy.disable_moving()
 
 func bag_down() -> void:
 	is_bag_down = true
 	if current_map:
 		close_map()
 	
-	trashy.enable_moving()
+	#trashy.enable_moving()
 	
 	$AnimationPlayer.play("bag")
 	$Sounds/BagDown.play()
@@ -422,6 +425,7 @@ func _on_bag_toggle_button_down() -> void:
 
 
 func _on_trashy_stop_button_down() -> void:
+	if is_bag_down: return
 	var success = trashy.go_away()
 	if success:
 		$Sounds/HitTrashy.play()
@@ -469,4 +473,13 @@ func go_away_jackson() -> void:
 func _on_jackson_ai_jackson_attack() -> void:
 	print("Jackson attacking")
 	var tween := create_tween()
-	tween.tween_property(%JacksonSmile, "modulate:a", .2, .1)
+	tween.tween_property(%JacksonSmile, "modulate:a", .4, .1)
+	
+	var dur = 2.5
+	if is_hard_mode:
+		dur = 1.5
+	
+	await get_tree().create_timer(dur).timeout
+	if jackson_ai.is_attacking:
+		%JacksonSmile.modulate.a = 0.0
+		jackson_ai.cancel()

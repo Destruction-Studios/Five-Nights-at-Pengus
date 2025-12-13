@@ -9,7 +9,7 @@ signal position_updated
 @onready var move_timer: Timer = $MoveTimer
 @onready var attack_timer: Timer = $AttackTimer
 
-var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.START
+var current_pos: Utils.PENGU_POSITIONS = Utils.PENGU_POSITIONS.ROOM_BEHIND
 
 var has_been_fed: bool = false
 
