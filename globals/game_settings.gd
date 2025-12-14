@@ -33,7 +33,7 @@ const _TRASHY_DURATION = 2.5
 
 # MINIGAME
 const _BAG_WAIT: float = 1.5
-const _MINIGAME_DURATION: int = 60
+const _MINIGAME_DURATION: int = 35
 const _BUMP_OFFSET: Vector2 = Vector2(130, 75)
 const _START_PROGRESS: int = 30
 const _PROGRESS_INCREASE: int = 16
@@ -84,7 +84,7 @@ var TRASHY_CHANCE = _TRASHY_CHANCE
 
 # JACKSON
 
-var JACKSON_ATTACK_RANGE: FloatRange = FloatRange.new(16.5, 34.5)
+var JACKSON_ATTACK_RANGE: FloatRange = FloatRange.new(3, 4)#FloatRange.new(16.5, 34.5)
 
 # MINIGAME
 var BAG_WAIT = _BAG_WAIT

@@ -347,7 +347,7 @@ func open_map() -> void:
 
 		close_map()
 		
-		await get_tree().create_timer(4.8).timeout
+		await get_tree().create_timer(3.8).timeout
 		jackson_cooldown = false
 		jackson_ai.after()
 	else:
@@ -468,6 +468,7 @@ func _on_cookie_button_button_down() -> void:
 		open_cookie_maker()
 
 func go_away_jackson() -> void:
+	push_error("DONT USE")
 	pass
 
 func _on_jackson_ai_jackson_attack() -> void:
@@ -481,5 +482,6 @@ func _on_jackson_ai_jackson_attack() -> void:
 	
 	await get_tree().create_timer(dur).timeout
 	if jackson_ai.is_attacking:
+		print("Canceling Jackson")
 		%JacksonSmile.modulate.a = 0.0
 		jackson_ai.cancel()
